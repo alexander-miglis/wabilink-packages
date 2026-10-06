@@ -1,0 +1,59 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Architectures: amd64 arm64 armhf
+Codename: stable
+Components: main
+Date: Tue, 06 Oct 2026 04:30:22 +0000
+Description: WabiLink packages
+Label: WabiLink
+Origin: WabiLink
+Suite: stable
+MD5Sum:
+ 70df7c21de5f2be59234a9252dda820f              183 Release
+ 7c23509619443e7d879ca707d219846d             1200 main/binary-amd64/Packages
+ e19b603941dbf37ea5b47a36cc3e19b4              744 main/binary-amd64/Packages.gz
+ 8b5ea9a26a59e55481166de089bd21aa             1200 main/binary-arm64/Packages
+ 17e80ae3ce50a77e30c65ca524401d00              739 main/binary-arm64/Packages.gz
+ 7c189af54ed8cd0f100091c918c832f8             1200 main/binary-armhf/Packages
+ 5a669f8bbc84b9aff0a0e3ac13368d23              741 main/binary-armhf/Packages.gz
+SHA1:
+ cd008b5a2b402ddee4ff07429ff982c710d62f7f              183 Release
+ 85be31a8b8979a635648c34fd55fbcb40d21b226             1200 main/binary-amd64/Packages
+ 7546d988791a14bf3bc9b01a121bd27a4ec5e666              744 main/binary-amd64/Packages.gz
+ be340c4ff41d4e9ea646aa826a746c8e44ab0ad0             1200 main/binary-arm64/Packages
+ a954a3cc04c937e7e527ec1a2824573fb7c8ba28              739 main/binary-arm64/Packages.gz
+ 235aa3c06969eb6fdf7942c6d760e2554bfebd30             1200 main/binary-armhf/Packages
+ e094ca07cd1999081f8c71dda599bae82e657d07              741 main/binary-armhf/Packages.gz
+SHA256:
+ c2cdf09a16cf1d19355d2e2d22ad917e48444be327dd2ec4e8eebd253650b337              183 Release
+ 9944552fec3e6fc25efa40332e28269588f1516fec5de5fcf6f1e1c0a64ad705             1200 main/binary-amd64/Packages
+ 4f6e343b0aa0dab4b97de1e12f65a8e5ac65ef65781847d0c47ab608feef81b3              744 main/binary-amd64/Packages.gz
+ 18b955d6432a727c21d40a5a446defd51e5c43de007c6ad3c24be69f241751de             1200 main/binary-arm64/Packages
+ cf2143b4359cf000cd52565aa2b875a170c0dd7a460ef453eb1e093a27199141              739 main/binary-arm64/Packages.gz
+ 2aed0413c3f256b987d20758443e3b9f9c846aaf89931067c746b67a3c5b4abb             1200 main/binary-armhf/Packages
+ 0e8b216a02c831f3ef12cb86d06251cc0fb4ec268f1b6c9fa9dfbd047fbbc077              741 main/binary-armhf/Packages.gz
+SHA512:
+ b58e584f4b7824ce46d7b442d552406cbe8f737be41738598f230a67e20795138000cda34b7681fb970670512b2e8bde1b6730139cd328a24bdc7acb2e82edd4              183 Release
+ 07ad1b0d31843fbdff07b46ce7a40c3ee19aa0c7a3fc94433972a47c088a25c3e8c9eb2f833acce7087c0527288000a22c61bbd257cbaa5d032634f1f1b413c0             1200 main/binary-amd64/Packages
+ c26a414e22660ba8fcfd725ebd4bcdad6da199eee0ba576bd6304c18acb221e10574b7cb374da6e0a6d4f57a4884ee32e517dd2bb55c4eae641f6601309a7932              744 main/binary-amd64/Packages.gz
+ 7c160620e0ff607d7d39039d4e52747591aca6f0aefe216946b95570489a58cf420bc82cb94a5f6ca37c1f64a5288524b7d09778134fa562aaf22df16e201d14             1200 main/binary-arm64/Packages
+ a2b7caa4de9e9926aa04b50a2efbb1dee11f26c31aa3f04e1d7bca0c993995e55a365374eac5e4ef6d9583bfc88f8ce21af748a91e4cefbcf5f1b65e75fc6a66              739 main/binary-arm64/Packages.gz
+ 75924966b9d99a27222b2b30c9cd047220028b5bab31f84bf2a5a02ef098c2d24385860ec71f4d268f8d9731b01dc48f82bcb8c6fc380edcd810ce876c0c7f73             1200 main/binary-armhf/Packages
+ e7e83945d47c46a971567e32b35db23a043c7b41a7f42aba31dedcb6355ed9a5e16a96137f499ba826f04e5e38fd9723b3c7e64febf49c2df9cc5e8f660b8fa9              741 main/binary-armhf/Packages.gz
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEELJ9pCaKfwf4vlX9/rLqGBV0+utIFAmrEeV4ACgkQrLqGBV0+
+utI5wxAAo4bVpafMc4x+O1jD27OQyc5XOU3bxkwuFxwn9Q9ti+6vVEaVYj0sLlkd
+A9NWkrDPrkXsJmOTQeEhRNLp2OcDE6/PA8vtTH7ccjl28X/csHdPPj2BjnurnYCL
+4mroqw7Uxj0dI15Mpeu+SGfgzZq3IjVMAwr9XOoAOS5XDbvGPqn6ru6OzjIb0IeA
+RqhibH5jcqPmGgr5FCItdo4iZkkHks3SHlro2n8Q8n977zVJBX6Zb7o/yapVoqI4
+UJGXL207ITAvn6r3/RNO2/hu9u2XANSaqcUbgUMDF8K3ZzD7faIujNcueHbPjT8I
+zwSZ352SLm4TDy9SlIIa+F23AhftjFHhN6xClApRSKDq8zeKOI3SGVKg+l34SnRv
+6/spsPDM7MBlnSBJzKghTn9pUlaoSNXkrM3R5f6ZAElpfl9o/N+eiAjRy93w2Gev
+rHVF3n+sMaqCG5NfrpLoxDeyaaBTpHiBkb/nbQMkUWT/ZEz9M4rxhPQOyWOt9/Vf
+pBpsuegcluls81WPFhN2PCrgt3GkQMlprZcQnwxGLRSa3G2dTnDBXKZfp59ndcA+
+Yx8R4yKnHOD2SyO3q95c/WhnTpArdlRpUjduH9GFY/wKEZp0R+DlY9GwD64ZOAFz
+afdeKozTjTkdZuBv7l0F4ZyIc7W9EiMf6COBHdFXCnfDz9pREd4=
+=thly
+-----END PGP SIGNATURE-----

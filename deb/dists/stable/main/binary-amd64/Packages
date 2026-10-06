@@ -1,0 +1,22 @@
+Package: wabilink-server
+Architecture: amd64
+Version: 1.1.6-1
+Priority: optional
+Section: net
+Maintainer: WabiLink <wabilink@users.noreply.github.com>
+Installed-Size: 84543
+Depends: libc6, libssl3t64 | libssl3
+Recommends: openssh-client, libx11-6, libxext6, libxtst6, libxfixes3, libxrandr2, libpipewire-0.3-0t64 | libpipewire-0.3-0, pulseaudio-utils, libsvtav1enc3 | libsvtav1enc2, libavcodec62 | libavcodec61 | libavcodec60 | libavcodec59
+Filename: pool/main/wabilink-server_1.1.6-1_amd64.deb
+Size: 32899282
+MD5sum: de344a51e4106525b7b7c0392c773aa0
+SHA1: 902de15a6438b4b1905fbfb337c168dfaa13ab8c
+SHA256: aa1b4f4e71b76d8953297649ac10c0451713deb09a5f4da8b8fdd948f8c3feb5
+SHA512: b6bf6b926e96296e02967b969f78c52d6495b9e532b7d836ba9cba1533ebaab3fd3e0170ffcf0389b1c4a4bc24888ca44717e5455bd8efd779fadd76f2e81faa
+Homepage: https://alexander-miglis.github.io/wabilink-packages/
+Description: WabiLink file server
+ A multiplexed file server: clients connect over several TCP connections at
+ once and stripe their transfers across them. Also serves terminals, remote
+ desktops and tunnels to the users allowed them. Runs as the systemd service
+ wabilink, under its own account; managed with wabilink-server.
+

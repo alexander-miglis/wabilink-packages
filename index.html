@@ -1,0 +1,870 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WabiLink</title>
+<meta name="description" content="WabiLink: your files, terminals, tunnels and desktop, over one fast, encrypted connection. Client and server for Windows, macOS and Linux.">
+<style>
+  :root {
+    --bg: #ffffff; --bg2: #f5f7fa; --fg: #161a22; --muted: #5b6372; --line: #e3e6eb;
+    --card: #ffffff; --accent: #2563eb; --accent2: #0ea5a4; --accent-soft: #eaf1ff; --code: #f3f5f8; --off: #a3a9b4;
+    --warn: #b45309; --warn-soft: #fff7e8;
+    --shadow: 0 1px 2px rgba(16,24,40,.05), 0 6px 20px rgba(16,24,40,.06);
+    --shadow-hi: 0 2px 4px rgba(16,24,40,.06), 0 12px 32px rgba(37,99,235,.14);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0f1217; --bg2: #141820; --fg: #e8ebef; --muted: #98a1af; --line: #283039;
+      --card: #171c24; --accent: #6ea2ff; --accent2: #3fd0c9; --accent-soft: #1a2638; --code: #1c222b; --off: #59616d;
+      --warn: #f2b45a; --warn-soft: #2a2216;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 6px 20px rgba(0,0,0,.25);
+      --shadow-hi: 0 2px 4px rgba(0,0,0,.35), 0 12px 32px rgba(110,162,255,.16);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0f1217; --bg2: #141820; --fg: #e8ebef; --muted: #98a1af; --line: #283039;
+    --card: #171c24; --accent: #6ea2ff; --accent2: #3fd0c9; --accent-soft: #1a2638; --code: #1c222b; --off: #59616d;
+    --warn: #f2b45a; --warn-soft: #2a2216;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 6px 20px rgba(0,0,0,.25);
+    --shadow-hi: 0 2px 4px rgba(0,0,0,.35), 0 12px 32px rgba(110,162,255,.16);
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--fg); margin: 0; font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  a { color: var(--accent); }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 16px; }
+
+  header.top { position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+  header.top .wrap { display: flex; align-items: center; gap: 12px; height: 60px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.1rem; color: var(--fg); text-decoration: none; }
+  nav { margin-left: auto; display: flex; gap: 20px; font-size: .95rem; align-items: center; }
+  nav a { color: var(--muted); text-decoration: none; }
+  nav a:hover { color: var(--fg); }
+  nav a.pill { color: #fff; background: var(--accent); padding: 6px 14px; border-radius: 999px; font-weight: 600; }
+
+  .hero { padding: 72px 0 56px; background: radial-gradient(1200px 400px at 20% -10%, color-mix(in srgb, var(--accent) 14%, transparent), transparent), linear-gradient(180deg, var(--bg2), var(--bg)); }
+  .hero h1 { font-size: clamp(2rem, 5vw, 3.3rem); line-height: 1.1; margin: 0 0 18px; letter-spacing: -0.025em; max-width: 800px; }
+  .hero h1 em { font-style: normal; background: linear-gradient(90deg, var(--accent), var(--accent2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .hero p.lead { font-size: 1.2rem; color: var(--muted); max-width: 680px; margin: 0 0 30px; }
+  .cta { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .button { display: inline-block; padding: 12px 22px; border-radius: 10px; font-weight: 600; text-decoration: none; border: 0; font-size: 1rem; cursor: pointer; }
+  .button.primary { background: var(--accent); color: #fff; box-shadow: var(--shadow-hi); }
+  .button.ghost { border: 1px solid var(--line); color: var(--fg); background: var(--card); }
+  .meta { color: var(--muted); font-size: .9rem; margin-top: 20px; display: flex; flex-wrap: wrap; gap: 6px 18px; }
+  .meta span::before { content: "✓ "; color: var(--accent2); font-weight: 700; }
+
+  section { padding: 64px 0; }
+  section h2 { font-size: 1.8rem; margin: 0 0 8px; letter-spacing: -0.015em; }
+  section p.sub { color: var(--muted); margin: 0 0 28px; max-width: 720px; }
+
+  .features { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr)); gap: 16px; }
+  .feature { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 22px; box-shadow: var(--shadow); min-width: 0; }
+  .feature svg { width: 30px; height: 30px; stroke: var(--accent); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; padding: 5px; border-radius: 8px; background: var(--accent-soft); box-sizing: content-box; }
+  .feature h3 { margin: 12px 0 6px; font-size: 1.08rem; }
+  .feature p { margin: 0; color: var(--muted); font-size: .97rem; }
+
+  /* ── the guide: choose, choose, choose, then the steps ── */
+  #get { background: var(--bg2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .crumbs { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0 0 22px; min-height: 36px; }
+  .crumb { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; background: var(--card); border: 1px solid var(--line); font-size: .92rem; font-weight: 600; color: var(--fg); cursor: pointer; }
+  .crumb:hover { border-color: var(--accent); }
+  .crumb small { color: var(--muted); font-weight: 400; }
+  .crumbs .sep { color: var(--off); }
+  .crumbs .reset { margin-left: auto; font-size: .88rem; color: var(--muted); background: none; border: 0; cursor: pointer; text-decoration: underline; }
+
+  .stage h3.ask { font-size: 1.15rem; margin: 0 0 14px; }
+  .stage h3.ask .n { display: inline-grid; place-items: center; width: 26px; height: 26px; margin-right: 8px; border-radius: 50%; background: var(--accent); color: #fff; font-size: .85rem; vertical-align: 2px; }
+  .choices { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(220px, 100%), 1fr)); gap: 12px; }
+  .choice { position: relative; text-align: left; background: var(--card); border: 1.5px solid var(--line); border-radius: 14px; padding: 18px; cursor: pointer; color: var(--fg); font: inherit; box-shadow: var(--shadow); transition: border-color .15s, box-shadow .15s, transform .15s; min-width: 0; }
+  .choice:hover, .choice:focus-visible { border-color: var(--accent); box-shadow: var(--shadow-hi); transform: translateY(-1px); outline: none; }
+  .choice .icon { width: 40px; height: 40px; display: grid; place-items: center; border-radius: 10px; background: var(--accent-soft); margin-bottom: 10px; }
+  .choice .icon svg { width: 24px; height: 24px; fill: var(--accent); }
+  .choice .icon svg.line { fill: none; stroke: var(--accent); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .choice .icon b { font-size: .95rem; color: var(--accent); letter-spacing: -.02em; }
+  .choice strong { display: block; font-size: 1.05rem; }
+  .choice span.d { display: block; color: var(--muted); font-size: .9rem; margin-top: 2px; }
+  .choice .badge { position: absolute; top: 12px; right: 12px; font-size: .72rem; font-weight: 700; color: var(--accent2); border: 1px solid var(--accent2); border-radius: 999px; padding: 1px 8px; }
+
+  .guide { display: none; }
+  .guide.shown { display: block; }
+  .guide > .head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; margin: 0 0 6px; }
+  .guide > .head h3 { font-size: 1.45rem; margin: 0; letter-spacing: -.01em; }
+  .version { display: inline-block; font-size: .8rem; font-weight: 700; color: var(--accent2); border: 1px solid var(--accent2); border-radius: 999px; padding: 1px 10px; }
+  .guide > p.intro { color: var(--muted); margin: 0 0 22px; max-width: 760px; }
+  ol.steps { list-style: none; margin: 0; padding: 0; counter-reset: step; }
+  ol.steps > li { position: relative; counter-increment: step; padding: 0 0 26px 52px; min-width: 0; }
+  ol.steps > li::before { content: counter(step); position: absolute; left: 0; top: 0; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; color: var(--accent); background: var(--card); border: 2px solid var(--accent); }
+  ol.steps > li::after { content: ""; position: absolute; left: 16px; top: 38px; bottom: 4px; width: 2px; background: var(--line); }
+  ol.steps > li:last-child::after { display: none; }
+  ol.steps h4 { margin: 4px 0 6px; font-size: 1.07rem; }
+  ol.steps p { margin: 6px 0; }
+  ol.steps ul { margin: 6px 0; padding-left: 20px; }
+  ol.steps .optional { font-size: .78rem; font-weight: 600; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 1px 8px; margin-left: 6px; vertical-align: 2px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; box-shadow: var(--shadow); min-width: 0; }
+
+  .buttons { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 4px; }
+  .dl { display: inline-flex; align-items: baseline; gap: 6px; padding: 9px 16px; border-radius: 10px; background: var(--accent); border: 1px solid var(--accent); color: #fff; text-decoration: none; font-size: .95rem; font-weight: 600; }
+  .dl::before { content: "↓"; font-weight: 700; }
+  .dl:hover { filter: brightness(1.08); }
+  .dl small { font-weight: 400; opacity: .85; }
+  .dl.off { background: none; border-color: var(--line); color: var(--off); cursor: default; }
+  .dl.off::before { content: ""; }
+  .dl.off:hover { filter: none; }
+
+  .codebox { position: relative; }
+  pre { background: var(--code); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; padding-right: 64px; overflow-x: auto; font-size: .86rem; line-height: 1.55; margin: 8px 0; }
+  pre .c { color: var(--muted); }
+  .copy { position: absolute; top: 7px; right: 7px; font: 600 .75rem system-ui, sans-serif; padding: 4px 9px; border-radius: 6px; border: 1px solid var(--line); background: var(--card); color: var(--muted); cursor: pointer; }
+  .copy:hover { color: var(--fg); border-color: var(--accent); }
+  code { font-family: ui-monospace, "Cascadia Mono", Menlo, Consolas, monospace; }
+  p code, li code, td code { background: var(--code); padding: 1px 5px; border-radius: 4px; font-size: .9em; }
+  .tip, .warn { border-radius: 10px; padding: 10px 14px; font-size: .93rem; margin: 10px 0; }
+  .tip { background: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent); }
+  .warn { background: var(--warn-soft); border: 1px solid color-mix(in srgb, var(--warn) 35%, transparent); }
+  .warn strong { color: var(--warn); }
+  details { margin: 10px 0; border: 1px solid var(--line); border-radius: 10px; padding: 8px 14px; background: var(--card); }
+  details[open] { padding-bottom: 12px; }
+  summary { cursor: pointer; font-weight: 600; }
+  .kbd { font: 600 .82em system-ui, sans-serif; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 5px; padding: 0 5px; background: var(--card); }
+  .after { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: 14px; margin-top: 8px; }
+  .after h4 { margin: 0 0 6px; }
+
+  footer { padding: 32px 0 52px; color: var(--muted); font-size: .9rem; }
+  footer code { word-break: break-all; }
+  @media (max-width: 640px) {
+    nav a:not(.pill) { display: none; }
+    .hero { padding: 44px 0 36px; }
+    section { padding: 44px 0; }
+    ol.steps > li { padding-left: 44px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#">
+      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2563eb"/><stop offset="1" stop-color="#0ea5a4"/></linearGradient></defs><rect width="28" height="28" rx="7" fill="url(#g)"/><path d="M6 9l3.5 10L14 11l4.5 8L22 9" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      WabiLink
+    </a>
+    <nav>
+      <a href="#features">Features</a>
+      <a href="#verify">Checksums</a>
+      <a class="pill" href="#get">Download</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <h1>Your files, terminals and desktop &mdash; <em>over one fast, encrypted link.</em></h1>
+    <p class="lead">WabiLink connects you to your own server: move files at full speed, open a terminal,
+      reach services behind its firewall, and use its desktop with sound &mdash; from Windows, macOS or Linux.</p>
+    <div class="cta">
+      <a class="button primary" href="#get" id="hero-get">Download</a>
+      <a class="button ghost" href="#get" data-pick-role="server">Set up a server</a>
+    </div>
+    <p class="meta"><span>Version 1.1.6, released 6 October 2026</span><span>Windows, macOS and Linux</span><span>x86_64 and ARM, Raspberry Pi included</span><span>Nothing else to install</span></p>
+  </div>
+</div>
+
+<section id="features">
+  <div class="wrap">
+    <h2>One connection, everything on your server</h2>
+    <p class="sub">The client logs in once; files, terminals, tunnels and the desktop all travel over that
+      session, encrypted end to end. Only one port needs to be open.</p>
+    <div class="features">
+      <div class="feature">
+        <svg viewBox="0 0 24 24"><path d="M4 7h11M4 12h16M4 17h8"/><path d="M15 4l3 3-3 3M17 14l3 3-3 3"/></svg>
+        <h3>Fast transfers</h3>
+        <p>Files go over several connections at once and are put back together, so a long or lossy link is
+          used to the full. Transfers resume where they stopped.</p>
+      </div>
+      <div class="feature">
+        <svg viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M8 13h8"/></svg>
+        <h3>Shares and live folders</h3>
+        <p>Browse the server's shares like a local disk. Folders update as they change, and a file opened from
+          the server is saved back to it.</p>
+      </div>
+      <div class="feature">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9l3 3-3 3M12 15h5"/></svg>
+        <h3>Terminals</h3>
+        <p>A shell on the server, or a login over SSH, in a tab of the client &mdash; with no SSH port reachable from
+          outside.</p>
+      </div>
+      <div class="feature">
+        <svg viewBox="0 0 24 24"><path d="M4 12h6M14 12h6"/><circle cx="12" cy="12" r="2"/><path d="M7 8l-3 4 3 4M17 8l3 4-3 4"/></svg>
+        <h3>Tunnels</h3>
+        <p>Reach a database, a web interface or any TCP service near the server through a local port &mdash; the
+          administrator decides who may use which.</p>
+      </div>
+      <div class="feature">
+        <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/><path d="M9 9l2 2 4-4"/></svg>
+        <h3>Remote desktop, at 60&ndash;120 fps</h3>
+        <p>The server's own desktop, built in: coded on its graphics card where it has one, sharp when still,
+          every monitor, sound in step with the picture, and a clipboard that carries text, images and files.</p>
+      </div>
+      <div class="feature">
+        <svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg>
+        <h3>Yours, and secure</h3>
+        <p>Your server, your accounts: per-user rights, the server's identity checked by fingerprint, and every
+          byte encrypted. An admin tool manages it all from your desk.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="get">
+  <div class="wrap">
+    <h2>Get WabiLink</h2>
+    <p class="sub">Three quick choices, and you get the download and the instructions for exactly your machine.
+      <span class="version">Version 1.1.6</span> released 6 October 2026.</p>
+
+    <div class="crumbs" id="crumbs" aria-live="polite"></div>
+
+    <!-- 1 · the system -->
+    <div class="stage" id="stage-os">
+      <h3 class="ask"><span class="n">1</span>Which system is it for?</h3>
+      <div class="choices">
+        <button class="choice" data-os="windows">
+          <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5.5l7.5-1v7H3zM11.5 4.4L21 3v8.5h-9.5zM3 12.5h7.5v7l-7.5-1zM11.5 12.5H21V21l-9.5-1.4z"/></svg></span>
+          <strong>Windows</strong><span class="d">Windows 10 and 11, x64 and ARM</span>
+        </button>
+        <button class="choice" data-os="macos">
+          <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.4 12.6c0-2.4 2-3.5 2-3.6-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.2-2.8.9-3.5.9s-1.8-.8-3-.8C6.9 7.3 5.4 8.2 4.6 9.7c-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7c1.3 0 2.1-1.1 2.8-2.3.9-1.3 1.3-2.6 1.3-2.6s-2.4-1-2.4-3.8zM14.1 5.6c.6-.8 1.1-1.9 1-3-.9 0-2.1.6-2.7 1.4-.6.7-1.1 1.8-1 2.9 1 .1 2.1-.5 2.7-1.3z"/></svg></span>
+          <strong>macOS</strong><span class="d">macOS 13 and later, Apple silicon and Intel</span>
+        </button>
+        <button class="choice" data-os="linux">
+          <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c-2.2 0-3.6 1.9-3.6 4.6 0 1.4.4 2.3.1 3.2-.5 1.4-3.2 3.6-3.6 6.3-.2 1.4.5 2.3 1.2 2.6.8.3 1.3.9 2.1 1.6.9.8 2.2.9 3.8.9s2.9-.1 3.8-.9c.8-.7 1.3-1.3 2.1-1.6.7-.3 1.4-1.2 1.2-2.6-.4-2.7-3.1-4.9-3.6-6.3-.3-.9.1-1.8.1-3.2C15.6 3.9 14.2 2 12 2zm-1.5 3.6c.4 0 .7.5.7 1.1s-.3 1.1-.7 1.1-.7-.5-.7-1.1.3-1.1.7-1.1zm3 0c.4 0 .7.5.7 1.1s-.3 1.1-.7 1.1-.7-.5-.7-1.1.3-1.1.7-1.1z"/></svg></span>
+          <strong>Linux</strong><span class="d">Fedora, Ubuntu, Debian, Raspberry Pi OS and more</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 2 · the distribution (Linux) -->
+    <div class="stage" id="stage-distro" hidden>
+      <h3 class="ask"><span class="n">2</span>Which distribution?</h3>
+      <div class="choices">
+        <button class="choice" data-distro="fedora"><span class="icon"><b>Fe</b></span><strong>Fedora</strong><span class="d">Current releases</span></button>
+        <button class="choice" data-distro="rhel"><span class="icon"><b>EL</b></span><strong>RHEL, Rocky, AlmaLinux</strong><span class="d">9 and 10</span></button>
+        <button class="choice" data-distro="ubuntu"><span class="icon"><b>Ub</b></span><strong>Ubuntu</strong><span class="d">24.04 and later</span></button>
+        <button class="choice" data-distro="debian"><span class="icon"><b>De</b></span><strong>Debian</strong><span class="d">12 and later</span></button>
+        <button class="choice" data-distro="raspi"><span class="icon"><b>Pi</b></span><strong>Raspberry Pi OS</strong><span class="d">12 and later, 64- or 32-bit</span></button>
+        <button class="choice" data-distro="arch"><span class="icon"><b>Ar</b></span><strong>Arch Linux</strong><span class="d">And Manjaro, EndeavourOS</span></button>
+        <button class="choice" data-distro="opensuse"><span class="icon"><b>Su</b></span><strong>openSUSE</strong><span class="d">Tumbleweed, Leap</span></button>
+        <button class="choice" data-distro="other"><span class="icon"><b>&hellip;</b></span><strong>Something else</strong><span class="d">Any with glibc, OpenSSL 3 and systemd</span></button>
+      </div>
+    </div>
+
+    <!-- 3 · what for -->
+    <div class="stage" id="stage-role" hidden>
+      <h3 class="ask"><span class="n" id="role-n">2</span>What do you want to install?</h3>
+      <div class="choices">
+        <button class="choice" data-role="client">
+          <span class="icon"><svg class="line" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></span>
+          <strong>WabiLink</strong><span class="d">The app: connect to a server for files, terminals, tunnels and its desktop</span>
+        </button>
+        <button class="choice" data-role="server">
+          <span class="icon"><svg class="line" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01"/></svg></span>
+          <strong>Server</strong><span class="d">Run on the machine you want to reach, as a service that starts at boot</span>
+        </button>
+        <button class="choice" data-role="admin">
+          <span class="icon"><svg class="line" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></span>
+          <strong>Admin tool</strong><span class="d">Manage a server's users, shares and settings from your desk</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════ the guides ═══════════════════════ -->
+
+    <!-- Windows · client -->
+    <div class="guide" data-guide="windows/client">
+      <div class="head"><h3>WabiLink for Windows</h3><span class="version">Version 1.1.6</span></div>
+      <p class="intro">The app you connect with. It comes with everything it needs: no installer, nothing else to set up.</p>
+      <ol class="steps">
+        <li><h4>Download it</h4>
+          <p>Most PCs are <strong>x64</strong>; take <strong>ARM64</strong> for a Snapdragon laptop or a Surface Pro X.</p>
+          <div class="buttons"><a class="dl" href="files/wabilink-client-1.1.6-windows-x64.zip">x64 <small>1.1.6 · 74 MB</small></a> <a class="dl" href="files/wabilink-client-1.1.6-windows-arm64.zip">ARM64 <small>1.1.6 · 72 MB</small></a></div>
+        </li>
+        <li><h4>Unpack it</h4>
+          <p>Right-click the downloaded <code>.zip</code> &rarr; <strong>Extract All&hellip;</strong>, and choose where it should
+            live, for example <code>C:\Users\you\Apps</code>. Then open the <code>wabilink-client</code> folder and run
+            <strong>WabiLink.exe</strong>.</p>
+          <p>Right-click <strong>WabiLink.exe</strong> &rarr; <strong>Pin to Start</strong> to find it again.</p>
+          <div class="warn"><strong>Windows protected your PC?</strong> WabiLink is not yet known to SmartScreen. Click
+            <strong>More info</strong> &rarr; <strong>Run anyway</strong>. It asks only the first time.</div>
+        </li>
+        <li><h4>Connect</h4>
+          <p>Click <strong>New profile</strong> and fill in the server's address (port <code>8009</code>), your account and
+            password. The first time, WabiLink shows the server's fingerprint: compare it with what the server's
+            administrator got from <code>wabilink-server identity</code>, and accept it.</p>
+        </li>
+        <li><h4>Video for the remote desktop <span class="optional">optional</span></h4>
+          <p>The server's desktop is decoded on your graphics card with Windows' own decoders. For HEVC install
+            Microsoft's <strong>HEVC Video Extensions</strong>, and on Windows 10 the free <strong>AV1 Video Extension</strong>,
+            from the Microsoft Store. Without them, WabiLink picks a codec you do have.</p>
+        </li>
+      </ol>
+      <div class="after">
+        <div class="card"><h4>Updating</h4><p>Close WabiLink, unpack the new <code>.zip</code> over the old folder, and start it again. Your profiles are kept.</p></div>
+        <div class="card"><h4>Removing</h4><p>Delete the folder. Profiles and settings are in <code>%LOCALAPPDATA%\WabiLink</code>.</p></div>
+      </div>
+    </div>
+
+    <!-- Windows · admin -->
+    <div class="guide" data-guide="windows/admin">
+      <div class="head"><h3>WabiLink Admin for Windows</h3><span class="version">Version 1.1.6</span></div>
+      <p class="intro">Manages a WabiLink server from your desk: users and their rights, shares, the remote desktop, and the server's settings.</p>
+      <ol class="steps">
+        <li><h4>Download it</h4>
+          <p>Most PCs are <strong>x64</strong>; take <strong>ARM64</strong> for an ARM laptop.</p>
+          <div class="buttons"><a class="dl" href="files/wabilink-admin-1.1.6-windows-x64.zip">x64 <small>1.1.6 · 72 MB</small></a> <a class="dl" href="files/wabilink-admin-1.1.6-windows-arm64.zip">ARM64 <small>1.1.6 · 70 MB</small></a></div>
+        </li>
+        <li><h4>Unpack it and start it</h4>
+          <p>Right-click the <code>.zip</code> &rarr; <strong>Extract All&hellip;</strong>, open the <code>wabilink-admin</code>
+            folder and run <strong>WabiLink Admin.exe</strong>. If SmartScreen warns: <strong>More info</strong> &rarr; <strong>Run anyway</strong>.</p>
+        </li>
+        <li><h4>Log in to a server</h4>
+          <p>Use the server's address and its admin port, <code>8010</code>, with an <strong>administrator</strong> account &mdash;
+            one created with <code>user add NAME --admin</code> on the server.</p>
+          <div class="tip">The admin port should be open only to where you administer from. If you cannot reach it, check
+            the server's firewall for TCP <code>8010</code>.</div>
+        </li>
+      </ol>
+    </div>
+
+    <!-- Windows · server -->
+    <div class="guide" data-guide="windows/server">
+      <div class="head"><h3>WabiLink Server for Windows</h3><span class="version">Version 1.1.6</span></div>
+      <p class="intro">Runs as a Windows service: it starts with Windows, restarts if it stops, and shows this PC's own desktop to the people you allow.</p>
+      <ol class="steps">
+        <li><h4>Download it</h4>
+          <div class="buttons"><a class="dl" href="files/wabilink-server-1.1.6-windows-x64.zip">x64 <small>1.1.6 · 37 MB</small></a> <a class="dl" href="files/wabilink-server-1.1.6-windows-arm64.zip">ARM64 <small>1.1.6 · 35 MB</small></a></div>
+        </li>
+        <li><h4>Unpack it where it will stay</h4>
+          <p>The service runs from this folder, so put it somewhere permanent. Open <strong>PowerShell as administrator</strong>
+            (<span class="kbd">Win</span>+<span class="kbd">X</span> &rarr; <strong>Terminal (Admin)</strong>) and run:</p>
+          <pre><code>Get-Item $HOME\Downloads\wabilink-server-*-windows-*.zip | Unblock-File
+Expand-Archive -Path $HOME\Downloads\wabilink-server-*-windows-*.zip -DestinationPath "C:\Program Files\WabiLink"
+cd "C:\Program Files\WabiLink\wabilink-server"</code></pre>
+        </li>
+        <li><h4>Install and start the service</h4>
+          <pre><code>.\wabilink-service install --start</code></pre>
+          <p>It runs as LocalSystem; its data and logs are in <code>C:\ProgramData\WabiLink\Server</code>.
+            <code>.\wabilink-service status</code> says whether it is running.</p>
+        </li>
+        <li><h4>Add yourself and a share</h4>
+          <pre><code>.\wabilink-service user add $env:USERNAME --admin          <span class="c"># asks for a password, twice</span>
+.\wabilink-service share add $env:USERNAME Files C:\Users\Public
+.\wabilink-service identity                       <span class="c"># the fingerprint clients will be shown</span></code></pre>
+          <p>Your WabiLink account is named as your Windows account, with a password of its own; <strong>Files</strong> is the PC's
+            Public folder. Write down the fingerprint: you will compare it the first time you connect.</p>
+        </li>
+        <li><h4>Open the firewall</h4>
+          <p>Clients connect on <code>8009</code>; the admin tool on <code>8010</code>, which this opens to your local network only:</p>
+          <pre><code>New-NetFirewallRule -DisplayName "WabiLink" -Direction Inbound -Protocol TCP -LocalPort 8009 -Action Allow
+New-NetFirewallRule -DisplayName "WabiLink Admin" -Direction Inbound -Protocol TCP -LocalPort 8010 -RemoteAddress LocalSubnet -Action Allow</code></pre>
+        </li>
+        <li><h4>This PC's desktop <span class="optional">optional</span></h4>
+          <p>Let users see and use this PC's screen from WabiLink, in their session:</p>
+          <pre><code>.\wabilink-service config set desktop-enabled yes
+.\wabilink-service user desktop $env:USERNAME yes</code></pre>
+          <p>That is all on Windows: with nobody logged in, the viewer shows the login screen. With a graphics card,
+            the screen is coded on it.</p>
+        </li>
+      </ol>
+      <div class="after">
+        <div class="card"><h4>Updating</h4>
+          <pre><code>.\wabilink-service stop
+Expand-Archive -Path $HOME\Downloads\wabilink-server-*-windows-*.zip -DestinationPath "C:\Program Files\WabiLink" -Force
+.\wabilink-service start</code></pre></div>
+        <div class="card"><h4>Removing</h4>
+          <pre><code>.\wabilink-service uninstall</code></pre>
+          <p>The data in <code>C:\ProgramData\WabiLink\Server</code> is kept; delete it too to remove everything.</p></div>
+      </div>
+    </div>
+
+    <!-- macOS · client -->
+    <div class="guide" data-guide="macos/client">
+      <div class="head"><h3>WabiLink for macOS</h3><span class="version">Version 1.1.6</span></div>
+      <p class="intro">The app you connect with. One command downloads the right version for your Mac and puts it in Applications.</p>
+      <div class="tip"><strong>You need:</strong> macOS 13 (Ventura) or later, and an administrator account on the Mac (the one you set it up with usually is).</div>
+      <ol class="steps">
+        <li><h4>Open Terminal</h4>
+          <p>Press <span class="kbd">⌘</span>+<span class="kbd">Space</span>, type <strong>Terminal</strong> and press <span class="kbd">Return</span>.</p>
+        </li>
+        <li><h4>Copy this, paste it into Terminal, and press Return</h4>
+          <pre><code>curl -fsSL https://alexander-miglis.github.io/wabilink-packages/install-macos.sh | bash -s client</code></pre>
+          <p>It finds out whether your Mac has Apple silicon or Intel, downloads the newest WabiLink for it, checks it, and puts
+            <strong>WabiLink</strong> in Applications. It says when it is done.</p>
+        </li>
+        <li><h4>Open WabiLink</h4>
+          <p>Open <strong>Applications</strong> in Finder (or Launchpad) and double-click <strong>WabiLink</strong>.</p>
+        </li>
+        <li><h4>Connect</h4>
+          <p>Click <strong>New profile</strong>: the server's address (port <code>8009</code>), your account and password. The first
+            time, WabiLink shows the server's fingerprint: compare it with what the server's administrator got from
+            <code>wabilink-server identity</code>, and accept it.</p>
+        </li>
+        <li><h4>AV1 video <span class="optional">optional</span></h4>
+          <p>H.264 and HEVC are decoded by macOS itself. For AV1, the best codec for a slow link, install dav1d with
+            <a href="https://brew.sh">Homebrew</a>:</p>
+          <pre><code>brew install dav1d</code></pre>
+        </li>
+      </ol>
+      <details><summary>Or download it yourself</summary>
+        <p>Apple silicon (M1 and later) or Intel: Apple menu &rarr; <strong>About This Mac</strong>.</p>
+        <div class="buttons"><a class="dl" href="files/wabilink-client-1.1.6-macos-arm64.zip">Apple silicon <small>1.1.6 · 48 MB</small></a> <a class="dl" href="files/wabilink-client-1.1.6-macos-x64.zip">Intel <small>1.1.6 · 50 MB</small></a></div>
+        <p>Open the <code>.zip</code> (Safari may already have) and drag <strong>WabiLink</strong> into Applications. The first time,
+          Control-click it &rarr; <strong>Open</strong> &rarr; <strong>Open</strong>; on macOS 15 and later, open it, then System Settings
+          &rarr; <strong>Privacy &amp; Security</strong> &rarr; <strong>Open Anyway</strong>.</p>
+      </details>
+      <div class="after">
+        <div class="card"><h4>Updating</h4><p>Quit WabiLink and paste the same command again. Your profiles are kept.</p>
+          <pre><code>curl -fsSL https://alexander-miglis.github.io/wabilink-packages/install-macos.sh | bash -s client</code></pre></div>
+        <div class="card"><h4>Removing</h4><p>Drag WabiLink from Applications to the Bin. Settings are in <code>~/Library/Application Support/WabiLink</code>.</p></div>
+      </div>
+    </div>
+
+    <!-- macOS · admin -->
+    <div class="guide" data-guide="macos/admin">
+      <div class="head"><h3>WabiLink Admin for macOS</h3><span class="version">Version 1.1.6</span></div>
+      <p class="intro">Manages a WabiLink server's users, shares and settings.</p>
+      <div class="tip"><strong>You need:</strong> macOS 13 (Ventura) or later, and an administrator account on the Mac.</div>
+      <ol class="steps">
+        <li><h4>Open Terminal</h4>
+          <p>Press <span class="kbd">⌘</span>+<span class="kbd">Space</span>, type <strong>Terminal</strong> and press <span class="kbd">Return</span>.</p>
+        </li>
+        <li><h4>Copy this, paste it into Terminal, and press Return</h4>
+          <pre><code>curl -fsSL https://alexander-miglis.github.io/wabilink-packages/install-macos.sh | bash -s admin</code></pre>
+          <p><strong>WabiLink Admin</strong> is then in Applications.</p>
+        </li>
+        <li><h4>Log in to a server</h4>
+          <p>The server's address and admin port, <code>8010</code>, with an administrator account (<code>user add NAME --admin</code> on the server).</p>
+        </li>
+      </ol>
+      <details><summary>Or download it yourself</summary>
+        <div class="buttons"><a class="dl" href="files/wabilink-admin-1.1.6-macos-arm64.zip">Apple silicon <small>1.1.6 · 46 MB</small></a> <a class="dl" href="files/wabilink-admin-1.1.6-macos-x64.zip">Intel <small>1.1.6 · 48 MB</small></a></div>
+        <p>Drag <strong>WabiLink Admin</strong> into Applications. The first time, Control-click it &rarr; <strong>Open</strong> &rarr;
+          <strong>Open</strong> (on macOS 15: Privacy &amp; Security &rarr; <strong>Open Anyway</strong>).</p>
+      </details>
+    </div>
+
+    <!-- macOS · server -->
+    <div class="guide" data-guide="macos/server">
+      <div class="head"><h3>WabiLink Server for macOS</h3><span class="version">Version 1.1.6</span></div>
+      <p class="intro">Runs as a service: it starts when the Mac starts, before anyone logs in, and restarts if it stops. Copy each
+        box into Terminal as it is - nothing in them needs changing.</p>
+      <div class="tip"><strong>You need:</strong>
+        <ul style="margin:6px 0 0">
+          <li>macOS 13 (Ventura) or later, Apple silicon or Intel;</li>
+          <li>an administrator account on the Mac: <code>sudo</code> asks for its password. Nothing shows as you type it - type it
+            and press <span class="kbd">Return</span>;</li>
+          <li>for others to reach it, the Mac on and awake: System Settings &rarr; <strong>Energy</strong> (or <strong>Battery</strong>
+            &rarr; <strong>Options</strong>) &rarr; <strong>Prevent automatic sleeping when the display is off</strong>.</li>
+        </ul>
+      </div>
+      <ol class="steps">
+        <li><h4>Open Terminal</h4>
+          <p>Press <span class="kbd">⌘</span>+<span class="kbd">Space</span>, type <strong>Terminal</strong> and press <span class="kbd">Return</span>.</p>
+        </li>
+        <li><h4>Install the server</h4>
+          <pre><code>curl -fsSL https://alexander-miglis.github.io/wabilink-packages/install-macos.sh | sudo bash</code></pre>
+          <p>It downloads the newest server for your Mac, checks it, installs it in <code>/usr/local/wabilink-server</code>, and starts it
+            as a service. It ends with <em>"&hellip; is installed, running, and starts at every boot."</em></p>
+        </li>
+        <li><h4>Make yourself an account</h4>
+          <p>Your WabiLink account, named as your Mac account, and an administrator. It asks for a password for it, twice - one for
+            WabiLink, which may be different from the Mac's:</p>
+          <pre><code>sudo wabilink-server user add "$USER" --admin</code></pre>
+        </li>
+        <li><h4>Share a folder</h4>
+          <p>The Mac's shared folder, as <strong>Files</strong>:</p>
+          <pre><code>sudo wabilink-server share add "$USER" Files /Users/Shared</code></pre>
+          <details><summary>Sharing your Documents, Desktop or Downloads instead</summary>
+            <p>macOS protects those folders: the server may read them only once allowed. System Settings &rarr;
+              <strong>Privacy &amp; Security</strong> &rarr; <strong>Full Disk Access</strong> &rarr; <strong>+</strong>, press
+              <span class="kbd">⌘</span>+<span class="kbd">Shift</span>+<span class="kbd">G</span>, paste
+              <code>/usr/local/wabilink-server/wabilink-server</code>, and turn it on. Then, for example:</p>
+            <pre><code>sudo wabilink-server share add "$USER" Documents "$HOME/Documents"</code></pre>
+          </details>
+        </li>
+        <li><h4>Note the server's fingerprint</h4>
+          <pre><code>sudo wabilink-server identity</code></pre>
+          <p>The app shows it the first time it connects: it should be the same.</p>
+        </li>
+        <li><h4>Let other computers in</h4>
+          <p>Only if the Mac's firewall is on (System Settings &rarr; <strong>Network</strong> &rarr; <strong>Firewall</strong>):
+            <strong>Options&hellip;</strong> &rarr; <strong>+</strong>, <span class="kbd">⌘</span>+<span class="kbd">Shift</span>+<span class="kbd">G</span>,
+            paste <code>/usr/local/wabilink-server/wabilink-server</code>, and set it to <strong>Allow incoming connections</strong>.</p>
+          <p>Other computers connect to this Mac's address, which this shows:</p>
+          <pre><code>ipconfig getifaddr en0 || ipconfig getifaddr en1</code></pre>
+        </li>
+        <li><h4>This Mac's desktop <span class="optional">optional</span></h4>
+          <pre><code>sudo wabilink-server config set desktop-enabled yes
+sudo wabilink-server user desktop "$USER" yes</code></pre>
+          <p>Then allow it twice, once, in System Settings &rarr; <strong>Privacy &amp; Security</strong> - in each, <strong>+</strong>,
+            <span class="kbd">⌘</span>+<span class="kbd">Shift</span>+<span class="kbd">G</span>, paste
+            <code>/usr/local/wabilink-server/wabilink-server</code>, and turn it on:</p>
+          <ul>
+            <li><strong>Screen &amp; System Audio Recording</strong> &mdash; to show the screen;</li>
+            <li><strong>Accessibility</strong> &mdash; for the keyboard and the pointer.</li>
+          </ul>
+          <p>macOS may ask by itself the first time someone connects. After an update it may need turning on again.</p>
+        </li>
+      </ol>
+      <div class="after">
+        <div class="card"><h4>Updating</h4><p>The same command again: the newest version, the accounts and shares kept.</p>
+          <pre><code>curl -fsSL https://alexander-miglis.github.io/wabilink-packages/install-macos.sh | sudo bash</code></pre></div>
+        <div class="card"><h4>Is it running?</h4>
+          <pre><code>sudo launchctl print system/com.wabilink.server | grep state
+tail -n 20 /Library/Logs/WabiLink/server.log</code></pre></div>
+        <div class="card"><h4>Removing</h4>
+          <pre><code>sudo wabilink-server uninstall-launchd
+sudo rm -rf /usr/local/wabilink-server /usr/local/bin/wabilink-server</code></pre>
+          <p>The accounts and settings stay in <code>/Library/Application Support/WabiLink</code>; delete that too to remove everything.</p></div>
+      </div>
+    </div>
+
+    <!-- Linux · client -->
+    <div class="guide" data-guide="linux/client">
+      <div class="head"><h3>WabiLink for <span data-distro-name>Linux</span></h3><span class="version">Version 1.1.6</span></div>
+      <p class="intro">The app you connect with. It brings its own runtime; the system provides fonts, the display and, optionally, video decoders and sound.</p>
+      <ol class="steps">
+        <li><h4>Install what it uses from the system</h4>
+          <div data-only="fedora">
+            <pre><code>sudo dnf install fontconfig libICE libSM libdav1d libavcodec-free pulseaudio-utils</code></pre>
+          </div>
+          <div data-only="rhel">
+            <p>The video decoders come from EPEL:</p>
+            <pre><code>sudo dnf install epel-release
+sudo dnf install fontconfig libICE libSM libdav1d pulseaudio-utils</code></pre>
+          </div>
+          <div data-only="ubuntu debian raspi">
+            <pre><code>sudo apt update
+sudo apt install libfontconfig1 libice6 libsm6 pulseaudio-utils libavcodec-extra
+sudo apt install libdav1d7 || sudo apt install libdav1d6</code></pre>
+          </div>
+          <div data-only="arch">
+            <pre><code>sudo pacman -S --needed fontconfig libice libsm dav1d ffmpeg libpulse</code></pre>
+          </div>
+          <div data-only="opensuse">
+            <pre><code>sudo zypper install fontconfig libICE6 libSM6 libdav1d7 pulseaudio-utils</code></pre>
+          </div>
+          <div data-only="other">
+            <p>Fontconfig, libICE and libSM (any desktop has them), and for the remote desktop's video dav1d
+              (<code>libdav1d.so.7</code>) and FFmpeg's libavcodec; for its sound <code>pacat</code> or <code>aplay</code>.</p>
+          </div>
+          <p>dav1d and libavcodec decode the remote desktop's video; without them it is sent as lossless tiles, which needs a faster link.</p>
+        </li>
+        <li><h4>Download it</h4>
+          <p data-only="raspi">For a Raspberry Pi 3, 4 or 5 with the <strong>64-bit</strong> Raspberry Pi OS take <strong>ARM64</strong>; the 32-bit system has no WabiLink app.</p>
+          <p data-not="raspi">Most PCs are <strong>x86_64</strong>; ARM boards and laptops take <strong>ARM64</strong>. <code>uname -m</code> says which.</p>
+          <div class="buttons"><a class="dl" href="files/wabilink-client-1.1.6-linux-x64.tar.gz">x86_64 <small>1.1.6 · 48 MB</small></a> <a class="dl" href="files/wabilink-client-1.1.6-linux-arm64.tar.gz">ARM64 <small>1.1.6 · 45 MB</small></a></div>
+        </li>
+        <li><h4>Install it for yourself, with a menu entry</h4>
+          <pre><code>mkdir -p ~/.local/opt ~/.local/bin ~/.local/share/applications
+tar -xzf ~/Downloads/wabilink-client-*-linux-*.tar.gz -C ~/.local/opt
+ln -sf ~/.local/opt/wabilink-client/wabilink-client ~/.local/bin/wabilink-client
+cat &gt; ~/.local/share/applications/wabilink.desktop &lt;&lt;EOF
+[Desktop Entry]
+Type=Application
+Name=WabiLink
+Comment=Files, terminals, tunnels and desktop of your server
+Exec=$HOME/.local/opt/wabilink-client/wabilink-client
+Terminal=false
+Categories=Network;FileTransfer;RemoteAccess;
+EOF</code></pre>
+          <p>WabiLink is now in your applications menu, and <code>wabilink-client</code> starts it from a terminal.</p>
+        </li>
+        <li><h4>Connect</h4>
+          <p>Click <strong>New profile</strong>: the server's address (port <code>8009</code>), your account and password. Compare
+            the fingerprint shown the first time with the server's <code>wabilink-server identity</code>.</p>
+        </li>
+      </ol>
+      <div class="after">
+        <div class="card"><h4>Updating</h4><p>Close WabiLink and unpack the new version over the old one:</p>
+          <pre><code>tar -xzf ~/Downloads/wabilink-client-*-linux-*.tar.gz -C ~/.local/opt</code></pre></div>
+        <div class="card"><h4>Removing</h4>
+          <pre><code>rm -rf ~/.local/opt/wabilink-client ~/.local/bin/wabilink-client ~/.local/share/applications/wabilink.desktop</code></pre></div>
+      </div>
+    </div>
+
+    <!-- Linux · admin -->
+    <div class="guide" data-guide="linux/admin">
+      <div class="head"><h3>WabiLink Admin for <span data-distro-name>Linux</span></h3><span class="version">Version 1.1.6</span></div>
+      <p class="intro">Manages a WabiLink server's users, shares and settings.</p>
+      <ol class="steps">
+        <li><h4>Install what it uses from the system</h4>
+          <div data-only="fedora rhel"><pre><code>sudo dnf install fontconfig libICE libSM</code></pre></div>
+          <div data-only="ubuntu debian raspi"><pre><code>sudo apt install libfontconfig1 libice6 libsm6</code></pre></div>
+          <div data-only="arch"><pre><code>sudo pacman -S --needed fontconfig libice libsm</code></pre></div>
+          <div data-only="opensuse"><pre><code>sudo zypper install fontconfig libICE6 libSM6</code></pre></div>
+          <p data-only="other">Fontconfig, libICE and libSM: any desktop has them.</p>
+        </li>
+        <li><h4>Download it</h4>
+          <p data-only="raspi">Take <strong>ARM64</strong>, for the 64-bit Raspberry Pi OS.</p>
+          <div class="buttons"><a class="dl" href="files/wabilink-admin-1.1.6-linux-x64.tar.gz">x86_64 <small>1.1.6 · 46 MB</small></a> <a class="dl" href="files/wabilink-admin-1.1.6-linux-arm64.tar.gz">ARM64 <small>1.1.6 · 44 MB</small></a></div>
+        </li>
+        <li><h4>Install it for yourself, with a menu entry</h4>
+          <pre><code>mkdir -p ~/.local/opt ~/.local/bin ~/.local/share/applications
+tar -xzf ~/Downloads/wabilink-admin-*-linux-*.tar.gz -C ~/.local/opt
+ln -sf ~/.local/opt/wabilink-admin/wabilink-admin ~/.local/bin/wabilink-admin
+cat &gt; ~/.local/share/applications/wabilink-admin.desktop &lt;&lt;EOF
+[Desktop Entry]
+Type=Application
+Name=WabiLink Admin
+Exec=$HOME/.local/opt/wabilink-admin/wabilink-admin
+Terminal=false
+Categories=Network;System;
+EOF</code></pre>
+        </li>
+        <li><h4>Log in to a server</h4>
+          <p>The server's address and admin port, <code>8010</code>, with an administrator account (<code>user add NAME --admin</code> on the server).</p>
+        </li>
+      </ol>
+    </div>
+
+    <!-- Linux · server -->
+    <div class="guide" data-guide="linux/server">
+      <div class="head"><h3>WabiLink Server for <span data-distro-name>Linux</span></h3><span class="version">Version 1.1.6</span></div>
+      <p class="intro" data-only="fedora rhel ubuntu debian raspi">Installed from WabiLink's signed package repository, so it
+        updates with the rest of the system. It runs as a systemd service under its own <code>wabilink</code> account.</p>
+      <p class="intro" data-only="arch opensuse other">There are no packages for this distribution yet: the server comes as a
+        self-contained archive, installed as a systemd service under its own <code>wabilink</code> account.</p>
+      <ol class="steps">
+        <li data-only="fedora rhel ubuntu debian raspi"><h4>Install it</h4>
+          <pre><code>curl -fsSL https://alexander-miglis.github.io/wabilink-packages/install.sh | sudo sh</code></pre>
+          <p>This adds the repository and its signing key, then installs <code>wabilink-server</code> with what its optional parts
+            use: ssh for login terminals, the libraries of the remote desktop, and SVT-AV1 for AV1 video where the system has it.
+            It does not start the server yet.</p>
+          <p data-only="raspi">It picks the 64-bit or 32-bit package by itself (Raspberry Pi 2 and later).</p>
+          <details><summary>Or add the repository by hand</summary>
+            <div data-only="fedora rhel"><pre><code>sudo curl -fsSLo /etc/yum.repos.d/wabilink.repo https://alexander-miglis.github.io/wabilink-packages/wabilink.repo
+sudo dnf install wabilink-server</code></pre></div>
+            <div data-only="ubuntu debian raspi"><pre><code>sudo install -d -m 0755 /etc/apt/keyrings
+sudo curl -fsSLo /etc/apt/keyrings/wabilink.asc https://alexander-miglis.github.io/wabilink-packages/wabilink.asc
+echo "deb [signed-by=/etc/apt/keyrings/wabilink.asc] https://alexander-miglis.github.io/wabilink-packages/deb stable main" | sudo tee /etc/apt/sources.list.d/wabilink.list
+sudo apt update &amp;&amp; sudo apt install wabilink-server</code></pre></div>
+          </details>
+        </li>
+        <li data-only="arch opensuse other"><h4>Download it</h4>
+          <p><code>uname -m</code> says which: <code>x86_64</code>, <code>aarch64</code> (ARM64) or <code>armv7l</code> (32-bit ARM).</p>
+          <div class="buttons"><a class="dl" href="files/wabilink-server-1.1.6-linux-x86_64.tar.gz">x86_64 <small>1.1.6 · 37 MB</small></a> <a class="dl" href="files/wabilink-server-1.1.6-linux-aarch64.tar.gz">ARM64 <small>1.1.6 · 35 MB</small></a> <a class="dl" href="files/wabilink-server-1.1.6-linux-armv7l.tar.gz">32-bit ARM <small>1.1.6 · 35 MB</small></a></div>
+          <p>It needs glibc, OpenSSL 3 and systemd from the system<span data-only="arch">: <code>sudo pacman -S --needed openssl</code></span><span data-only="opensuse">: <code>sudo zypper install libopenssl3</code></span>.</p>
+        </li>
+        <li data-only="arch opensuse other"><h4>Install it as a service</h4>
+          <pre><code>sudo mkdir -p /opt/wabilink
+sudo tar -xzf ~/Downloads/wabilink-server-*-linux-*.tar.gz -C /opt/wabilink --strip-components=1
+sudo /opt/wabilink/wabilink-server install-systemd
+sudo ln -sf /opt/wabilink/wabilink-server /usr/local/bin/wabilink-server</code></pre>
+          <p>This creates the <code>wabilink</code> account and <code>/var/lib/wabilink</code>, and starts the service now and at every boot.</p>
+        </li>
+        <li><h4>Add yourself and a share</h4>
+          <pre><code>sudo wabilink-server user add "$USER" --admin        <span class="c"># asks for a password, twice</span>
+sudo mkdir -p /srv/files &amp;&amp; sudo chown wabilink: /srv/files
+sudo wabilink-server share add "$USER" Files /srv/files
+sudo wabilink-server identity                     <span class="c"># the fingerprint clients will be shown</span></code></pre>
+          <p>The service runs as <code>wabilink</code>: it needs to read each share's folder, and write where people upload. For a
+            folder of your own, <code>sudo setfacl -R -m u:wabilink:rwX,d:u:wabilink:rwX /path</code> gives it access.</p>
+        </li>
+        <li data-only="fedora rhel ubuntu debian raspi"><h4>Start it</h4>
+          <pre><code>sudo systemctl enable --now wabilink</code></pre>
+          <p><code>systemctl status wabilink</code> shows it running; <code>journalctl -u wabilink -f</code> follows its log.</p>
+        </li>
+        <li><h4>Open the firewall</h4>
+          <p>Clients connect on <code>8009</code>. The admin tool uses <code>8010</code>: open that only to where you administer from.</p>
+          <div data-only="fedora rhel opensuse"><pre><code>sudo firewall-cmd --permanent --add-port=8009/tcp
+sudo firewall-cmd --reload</code></pre></div>
+          <div data-only="ubuntu"><p>If ufw is on (<code>sudo ufw status</code>):</p><pre><code>sudo ufw allow 8009/tcp</code></pre></div>
+          <p data-only="debian raspi">There is no firewall on by default. If you set one up with nftables or iptables, allow TCP <code>8009</code>.</p>
+          <p data-only="arch other">If a firewall is on (firewalld, ufw, nftables), allow TCP <code>8009</code>.</p>
+        </li>
+        <li><h4>This machine's desktop <span class="optional">optional</span></h4>
+          <pre><code>sudo wabilink-server config set desktop-enabled yes
+sudo wabilink-server user desktop "$USER" yes</code></pre>
+          <p>Viewers see the session of whoever is logged in at the machine - locked or not, as on its monitor; unlock it from the viewer.</p>
+          <div class="warn"><strong>Lock, don't log out.</strong> GNOME doesn't share its login screen, so once you log out there is
+            nothing to show until someone logs in at the machine. Lock instead (<span class="kbd">Super</span>+<span class="kbd">L</span>):
+            the viewer shows the lock screen, and you unlock it from there.</div>
+          <ul>
+            <li>Works with <strong>GNOME on Wayland</strong> and any <strong>X11</strong> session.</li>
+            <li data-only="fedora rhel"><strong>Always on, with no monitor:</strong> <code>sudo wabilink-server desktop-setup "$USER"</code>
+              starts a locked headless GNOME session for you at every boot.</li>
+            <li data-only="ubuntu debian"><strong>Always on:</strong> turn on GDM's automatic login for the account
+              (Settings &rarr; Users &rarr; Automatic Login), and set <code>sudo wabilink-server config set desktop-user "$USER"</code>.</li>
+            <li data-only="raspi">Raspberry Pi OS's own desktop (labwc) is not supported yet: switch it to X11 with
+              <code>sudo raspi-config</code> &rarr; Advanced Options &rarr; Wayland &rarr; X11. The screen is sent as lossless tiles.</li>
+            <li>With a graphics card (NVIDIA, AMD, Intel) the screen is coded on it, through FFmpeg.</li>
+          </ul>
+        </li>
+      </ol>
+      <div class="after">
+        <div class="card" data-only="fedora rhel"><h4>Updating</h4><p>With the system's updates:</p><pre><code>sudo dnf upgrade --refresh</code></pre><p>A running server restarts by itself.</p></div>
+        <div class="card" data-only="ubuntu debian raspi"><h4>Updating</h4><p>With the system's updates:</p><pre><code>sudo apt update &amp;&amp; sudo apt upgrade</code></pre><p>A running server restarts by itself.</p></div>
+        <div class="card" data-only="arch opensuse other"><h4>Updating</h4>
+          <pre><code>sudo tar -xzf ~/Downloads/wabilink-server-*-linux-*.tar.gz -C /opt/wabilink --strip-components=1
+sudo systemctl restart wabilink</code></pre></div>
+        <div class="card" data-only="fedora rhel"><h4>Removing</h4><pre><code>sudo dnf remove wabilink-server</code></pre><p>The data in <code>/var/lib/wabilink</code> is kept.</p></div>
+        <div class="card" data-only="ubuntu debian raspi"><h4>Removing</h4><pre><code>sudo apt remove wabilink-server</code></pre><p>The data in <code>/var/lib/wabilink</code> is kept.</p></div>
+        <div class="card" data-only="arch opensuse other"><h4>Removing</h4><pre><code>sudo wabilink-server uninstall-systemd
+sudo rm -rf /opt/wabilink /usr/local/bin/wabilink-server</code></pre><p>The data in <code>/var/lib/wabilink</code> is kept.</p></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="verify">
+  <div class="wrap">
+    <h2>Checksums and signatures</h2>
+    <p class="sub">Every download is listed with its SHA-256 in <a href="files/SHA256SUMS">SHA256SUMS</a>. The Linux packages and
+      repositories are signed with <a href="wabilink.asc">wabilink.asc</a>.</p>
+    <div class="card">
+      <p style="margin-top:0">To check a download, in the folder it is in:</p>
+      <pre><code>curl -fsSLO https://alexander-miglis.github.io/wabilink-packages/files/SHA256SUMS
+sha256sum --ignore-missing -c SHA256SUMS          <span class="c"># macOS: shasum -a 256 --ignore-missing -c SHA256SUMS</span></code></pre>
+      <p style="margin-bottom:0">The signing key's fingerprint: <code>2C9F6909A29FC1FE2F957F7FACBA86055D3EBAD2</code></p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>WabiLink 1.1.6, released 6 October 2026 &middot; client and admin tool for Windows, macOS and Linux &middot; server for Windows, macOS, Linux and Raspberry Pi.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var names = {
+    windows: 'Windows', macos: 'macOS', linux: 'Linux',
+    fedora: 'Fedora', rhel: 'RHEL, Rocky, AlmaLinux', ubuntu: 'Ubuntu', debian: 'Debian', raspi: 'Raspberry Pi OS',
+    arch: 'Arch Linux', opensuse: 'openSUSE', other: 'Linux',
+    client: 'WabiLink', server: 'Server', admin: 'Admin tool'
+  };
+  var state = { os: null, distro: null, role: null };
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+
+  // The system this browser runs on, to suggest it.
+  function guess() {
+    var p = ((navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || navigator.userAgent || '').toLowerCase();
+    var ua = (navigator.userAgent || '').toLowerCase();
+    if (p.indexOf('win') >= 0) return { os: 'windows' };
+    if (p.indexOf('mac') >= 0 && !/iphone|ipad/.test(ua)) return { os: 'macos' };
+    if (p.indexOf('linux') >= 0 && ua.indexOf('android') < 0) {
+      var d = /fedora/.test(ua) ? 'fedora' : /ubuntu/.test(ua) ? 'ubuntu' : /debian/.test(ua) ? 'debian' : /raspbian/.test(ua) ? 'raspi' : null;
+      return { os: 'linux', distro: d };
+    }
+    return {};
+  }
+  var guessed = guess();
+  if (guessed.os) {
+    var b = $('[data-os="' + guessed.os + '"]');
+    if (b) b.insertAdjacentHTML('beforeend', '<span class="badge">This computer</span>');
+  }
+  if (guessed.distro) {
+    var d = $('[data-distro="' + guessed.distro + '"]');
+    if (d) d.insertAdjacentHTML('beforeend', '<span class="badge">This computer</span>');
+  }
+
+  function crumb(label, value, back) {
+    var c = document.createElement('button');
+    c.className = 'crumb';
+    c.innerHTML = value + ' <small>change</small>';
+    c.title = 'Change the ' + label;
+    c.addEventListener('click', back);
+    return c;
+  }
+
+  function render(scroll) {
+    var needDistro = state.os === 'linux';
+    var stageOs = $('#stage-os'), stageDistro = $('#stage-distro'), stageRole = $('#stage-role');
+    stageOs.hidden = !!state.os;
+    stageDistro.hidden = !(state.os && needDistro && !state.distro);
+    stageRole.hidden = !(state.os && (!needDistro || state.distro) && !state.role);
+    $('#role-n').textContent = needDistro ? '3' : '2';
+
+    var crumbs = $('#crumbs');
+    crumbs.innerHTML = '';
+    var parts = [];
+    if (state.os) parts.push(crumb('system', names[state.os], function () { state = { os: null, distro: null, role: state.role }; go(); }));
+    if (state.distro) parts.push(crumb('distribution', names[state.distro], function () { state.distro = null; go(); }));
+    if (state.role) parts.push(crumb('choice', names[state.role], function () { state.role = null; go(); }));
+    parts.forEach(function (p, i) {
+      if (i > 0) { var s = document.createElement('span'); s.className = 'sep'; s.textContent = '›'; crumbs.appendChild(s); }
+      crumbs.appendChild(p);
+    });
+    if (parts.length) {
+      var r = document.createElement('button');
+      r.className = 'reset'; r.textContent = 'Start over';
+      r.addEventListener('click', function () { state = { os: null, distro: null, role: null }; go(); });
+      crumbs.appendChild(r);
+    }
+
+    var key = state.os && state.role && (!needDistro || state.distro) ? state.os + '/' + state.role : null;
+    $$('.guide').forEach(function (g) {
+      var on = g.getAttribute('data-guide') === key;
+      g.classList.toggle('shown', on);
+      if (!on) return;
+      // The parts for this distribution only.
+      $$('[data-only]', g).forEach(function (el) { el.hidden = el.getAttribute('data-only').split(' ').indexOf(state.distro) < 0; });
+      $$('[data-not]', g).forEach(function (el) { el.hidden = el.getAttribute('data-not').split(' ').indexOf(state.distro) >= 0; });
+      $$('[data-distro-name]', g).forEach(function (el) { el.textContent = names[state.distro] || 'Linux'; });
+    });
+
+    if (scroll) {
+      var target = key ? $('.guide.shown') : $('#get');
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  // The choice is kept in the address, so a link shows the same instructions: #linux/fedora/server.
+  function go() {
+    var parts = [state.os, state.distro, state.role].filter(Boolean);
+    var hash = parts.length ? '#' + parts.join('/') : '#get';
+    if (location.hash !== hash) history.replaceState(null, '', hash);
+    render(false);
+  }
+
+  function fromHash() {
+    var parts = location.hash.replace(/^#/, '').split('/');
+    if (!names[parts[0]] || ['windows', 'macos', 'linux'].indexOf(parts[0]) < 0) return false;
+    state = { os: parts[0], distro: null, role: null };
+    var i = 1;
+    if (state.os === 'linux' && names[parts[1]] && ['client', 'server', 'admin'].indexOf(parts[1]) < 0) state.distro = parts[i++];
+    if (['client', 'server', 'admin'].indexOf(parts[i]) >= 0) state.role = parts[i];
+    return true;
+  }
+
+  $$('[data-os]').forEach(function (b) { b.addEventListener('click', function () { state.os = b.getAttribute('data-os'); state.distro = null; go(); render(true); }); });
+  $$('[data-distro]').forEach(function (b) { b.addEventListener('click', function () { state.distro = b.getAttribute('data-distro'); go(); render(true); }); });
+  $$('[data-role]').forEach(function (b) { b.addEventListener('click', function () { state.role = b.getAttribute('data-role'); go(); render(true); }); });
+  // "Set up a server" in the hero: the role first, the system next.
+  $$('[data-pick-role]').forEach(function (a) { a.addEventListener('click', function () { state.role = a.getAttribute('data-pick-role'); }); });
+
+  // A copy button on every command.
+  $$('pre').forEach(function (pre) {
+    var box = document.createElement('div');
+    box.className = 'codebox';
+    pre.parentNode.insertBefore(box, pre);
+    box.appendChild(pre);
+    var b = document.createElement('button');
+    b.className = 'copy'; b.type = 'button'; b.textContent = 'Copy';
+    b.addEventListener('click', function () {
+      var text = pre.innerText.split('\n').map(function (l) { return l.replace(/\s+#\s.*$/, ''); }).join('\n').trim();
+      var done = function () { b.textContent = 'Copied'; setTimeout(function () { b.textContent = 'Copy'; }, 1500); };
+      if (navigator.clipboard) navigator.clipboard.writeText(text).then(done, function () {});
+    });
+    box.appendChild(b);
+  });
+
+  window.addEventListener('hashchange', function () { if (fromHash()) render(true); });
+  if (fromHash()) render(true); else render(false);
+})();
+</script>
+</body>
+</html>
