@@ -1,0 +1,40 @@
+Architectures: amd64 arm64 armhf
+Codename: stable
+Components: main
+Date: Sat, 17 Oct 2026 15:10:14 +0000
+Description: WabiLink packages
+Label: WabiLink
+Origin: WabiLink
+Suite: stable
+MD5Sum:
+ 607361cc6b155a2ef4e78525b0d730a3              183 Release
+ 89cdb4f65749cb8ed387862e55d78657             1202 main/binary-amd64/Packages
+ efb4de38fbb2ccb7fc8758856f883a4e              740 main/binary-amd64/Packages.gz
+ f18248fc84b22f52dd23516c475472c1             1202 main/binary-arm64/Packages
+ 0c4a4c601fc91b5eb62a37a2bb6929b2              742 main/binary-arm64/Packages.gz
+ 11c121474cc34ad8fa2f2086f39f5367             1202 main/binary-armhf/Packages
+ 88ef084c9f0259b95339f3af2b21cfd8              743 main/binary-armhf/Packages.gz
+SHA1:
+ 44a2e0ce69e6a0295ab1e4248b74e0a713ea3ee7              183 Release
+ 490e18bcc82f7f89e2de15de500dd04d2ef8cb2c             1202 main/binary-amd64/Packages
+ 07d43b329366dbc560bcf824978c4623aec44dec              740 main/binary-amd64/Packages.gz
+ 35d15c9e2f7f164ed3b6def7741cef2dde7cb8d5             1202 main/binary-arm64/Packages
+ 9fdd22ea86a5e0218bf443ade41a673a6992bf00              742 main/binary-arm64/Packages.gz
+ cb89ce127c706a88b580a264ec0e98f1f3802c82             1202 main/binary-armhf/Packages
+ fdbf84be9e29b9cd83f8a632b536d630ae04cf91              743 main/binary-armhf/Packages.gz
+SHA256:
+ 0a809aa49c681c4a572be1521e81f95ad56a8c88d4b19d611726745175b0dfee              183 Release
+ f95e6f0664ab5a64bd8cd26801e7301d2e9a148c4ea781449e768d2352b9e08f             1202 main/binary-amd64/Packages
+ 926f9e49be6a30ec2e000a1d1a9f9e658dc3108ca9f9aee6f5b8e4cc9d2130fc              740 main/binary-amd64/Packages.gz
+ 80bf31b1ebeae011d865a3ed7bcaa6a1078afd116898615e1dfea02e6216e67d             1202 main/binary-arm64/Packages
+ a4627ced0920e5b012eaa38c386cf4f36e192c558ee7b7753812c8da0164c45b              742 main/binary-arm64/Packages.gz
+ 1a9cae692d5f7b5682d070fef8e1ea2c6ad43f0b8ac452e76ea60ccdfea77867             1202 main/binary-armhf/Packages
+ 586ebe75ddda493ac0074575c7c5a59d48882bf6049fcddc0c7bf080ff2a9fce              743 main/binary-armhf/Packages.gz
+SHA512:
+ ea3b6a07ffb1c1a9ecaa0a27e3a0347a723eebd913cf5126a8ef2dd665886fba76f666d961738e8fe326dad15a3f0a624566c620596ba4769ef93038d95b8c42              183 Release
+ 65858f47e762835dcc3fc9d4672bb32c6c7df8cd136916b5ac70bbab511b43ff5ca3e93d832e2dbb62fa0e34f06db423443c1b635a51f72338c1777aad5f48b7             1202 main/binary-amd64/Packages
+ d7f17a8715757246d20d91e15cacb3eb0c9f294822e3bd07f46a4e16d59dca74110090c9feeaf3a25f7f6e753321e3311b60ba7de523c7352aba09b9a9765bc0              740 main/binary-amd64/Packages.gz
+ 27ecc6a11174b572f218aa7e62812370248fc321c5606ee7c2fc872b61ff9a69b5bf097c3da1a01dcdf7ea4f6bfb3e52399cdd74dc1d9eadd00734766f3b0ef3             1202 main/binary-arm64/Packages
+ b52657e478d2b4bd0d9086c319779ed264bbd8e34065c232531014f0e4e7bbd3cd26e482f1273176b61c8b54946b721ad726d8e7f083dc5a86d44f3e0c72f7ea              742 main/binary-arm64/Packages.gz
+ ba68476ced604a5c42b2b35ecef997b45fc4807b088089bc88f54f26d5d2f1db5544ac8f70b397a3af1c13508c19925293a62bc4bf3ce8b5ff369ea1a5aa92cb             1202 main/binary-armhf/Packages
+ f720a6dba2d93ca317a43baee34353774f6a8f04be4e2a0a6f34713b64929841c01f16a194de9e0eee8764f1943835915a07e223213c0fdb0da3c1bbbbcf5085              743 main/binary-armhf/Packages.gz
