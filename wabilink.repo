@@ -1,0 +1,7 @@
+[wabilink]
+name=WabiLink
+baseurl=https://link.wabione.com/rpm
+enabled=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://link.wabione.com/wabilink.asc
