@@ -1,0 +1,572 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#07080a">
+<title>WabiLink Server commands</title>
+<meta name="description" content="Everything a WabiLink server can be set to, from the command line on the server: accounts and their rights, shares, tunnels, databases, the desktop, WabiOne, and every setting.">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<script src="assets/mesh.js" defer></script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="https://www.wabione.com/"><img class="logo" src="assets/logo.svg" alt="WabiOne" width="160" height="26"></a>
+    <a class="product" href="./">WabiLink</a>
+    <nav aria-label="Main">
+      <a href="server-commands.html" aria-current="page">Server commands</a>
+      <a class="wide" href="./#aws">AWS</a>
+      <a href="./#help">Help</a>
+      <a class="signin" href="https://app.wabione.com/">Sign in</a>
+      <a class="pill" href="./#get">Download</a>
+    </nav>
+  </div>
+</header>
+
+<div class="doc-hero">
+  <div class="wrap">
+    <p class="product-badge"><span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9l3 3-3 3M12 15h5"/></svg></span>WabiLink Server</p>
+    <h1>The server's commands</h1>
+    <p class="lead">Everything a WabiLink server can be set to, from the command line on the server itself: its accounts and
+      what each may use, shares, tunnels, databases, the desktop, WabiOne, and every setting.</p>
+    <div class="os-switch" role="group" aria-label="Show the commands for">
+      <button type="button" data-os="unix" aria-pressed="true">Linux and macOS</button>
+      <button type="button" data-os="windows" aria-pressed="false">Windows</button>
+    </div>
+    <p class="os-note" data-for="unix">As root: <code>sudo wabilink-server ...</code>. The settings are the service's: run without
+      <code>sudo</code>, a command changes a server of your own instead, and the service doesn't see it.</p>
+    <p class="os-note" data-for="windows" hidden>In PowerShell opened as administrator (<span class="kbd">Win</span>+<span class="kbd">X</span>
+      &rarr; <strong>Terminal (Admin)</strong>), in the server's folder (<code>cd "C:\Program Files\WabiLink\wabilink-server"</code>):
+      <code>.\wabilink-service ...</code>. Not as administrator, it stops and says so.</p>
+    <ul class="toc">
+      <li><a href="#basics">Before you start</a></li>
+      <li><a href="#users">Users</a></li>
+      <li><a href="#rights">Rights and groups</a></li>
+      <li><a href="#shares">Shares</a></li>
+      <li><a href="#tunnels">Tunnels</a></li>
+      <li><a href="#databases">Databases</a></li>
+      <li><a href="#settings">Settings</a></li>
+      <li><a href="#modules">Modules</a></li>
+      <li><a href="#desktop">The desktop</a></li>
+      <li><a href="#wabione">WabiOne</a></li>
+      <li><a href="#nat">Behind a router</a></li>
+      <li><a href="#wake">Waking it</a></li>
+      <li><a href="#updates">Updates</a></li>
+      <li><a href="#service">The service</a></li>
+      <li><a href="#admin-tool">Admin tool only</a></li>
+    </ul>
+  </div>
+</div>
+
+<section class="ref" id="basics">
+  <div class="wrap">
+    <h2>Before you start</h2>
+    <ul>
+      <li><strong>When it applies.</strong> Users, rights, shares and settings apply at once, with no restart. The ports and
+        <code>max-connections-per-session</code> apply at the next start (<a href="#service">restarting it</a>).</li>
+      <li><strong>Every command:</strong> <code>help</code> lists them all, with their options.</li>
+      <li><strong>For scripts:</strong> the commands that list or show take <code>--json</code>; <code>user add</code> and
+        <code>user passwd</code> take <code>--password-stdin</code> (one line, read from standard input) instead of asking. The
+        exit code says how it went: <code>0</code> done, <code>1</code> failed, <code>2</code> a wrong command or a change refused,
+        <code>3</code> the server could not start, <code>4</code> it needs root or an administrator, <code>5</code> no such user,
+        share or setting.</li>
+      <li><strong>Registered with WabiOne,</strong> the server's settings are WabiOne's: the commands that change them are refused,
+        saying so, and they are changed in WabiOne's console. What stays the machine's own still works here: passwords of the
+        server's own accounts, database passwords, <code>user unlock</code> and <code>share grant</code>.</li>
+      <li><strong>From your desk instead:</strong> Server settings, in the WabiLink app (port <code>8010</code>, an administrator's account), change the same,
+        except what is marked <span class="only">this machine only</span> below. For an AI assistant, <code>wabilink mcp</code>
+        in the command-line client does it too.</li>
+    </ul>
+    <pre><code>sudo wabilink-server help
+sudo wabilink-server config show</code></pre>
+  </div>
+</section>
+
+<section class="ref" id="users">
+  <div class="wrap">
+    <h2>Users</h2>
+    <p class="sub">The server's own accounts: a name and a password of WabiLink's, not the machine's.</p>
+    <pre><code>sudo wabilink-server user list
+sudo wabilink-server user add ann                 <span class="c"># asks for a password, twice</span>
+sudo wabilink-server user add ann --admin         <span class="c"># and an administrator: may open Server settings</span>
+sudo wabilink-server user add bob --must-change   <span class="c"># chooses a new password at the first login</span>
+sudo wabilink-server user passwd ann              <span class="c"># a new password</span>
+sudo wabilink-server user passwd bob --must-change
+sudo wabilink-server user unlock ann              <span class="c"># locked after too many failed logins</span>
+sudo wabilink-server user disable bob             <span class="c"># kept, but may not log in; user enable bob lets them again</span>
+sudo wabilink-server user remove bob</code></pre>
+    <p>From a script, the password from a file or a secret store, never on the command line:</p>
+    <pre data-for="unix"><code>sudo wabilink-server user add carol --password-stdin &lt; password.txt</code></pre>
+    <pre data-for="windows" hidden><code>Get-Content password.txt | .\wabilink-service user add carol --password-stdin</code></pre>
+    <p><code>--no-password</code> makes an account with no password: it cannot log in until it gets one with <code>user passwd</code>.
+      An account has no shares until it is given some (<a href="#shares">Shares</a>).</p>
+  </div>
+</section>
+
+<section class="ref" id="rights">
+  <div class="wrap">
+    <h2>Rights and groups</h2>
+    <p class="sub">What each account may use beyond its shares. Each needs its part of the server turned on as well
+      (<a href="#settings">Settings</a>).</p>
+    <pre><code>sudo wabilink-server user admin ann yes            <span class="c"># Server settings, in the app, on port 8010</span>
+sudo wabilink-server user terminal ann yes         <span class="c"># terminals, once terminals-enabled is yes</span>
+sudo wabilink-server user login-terminal ann yes   <span class="c"># login terminals, once login-terminals-enabled is yes</span>
+sudo wabilink-server user desktop ann yes          <span class="c"># this machine's desktop, once desktop-enabled is yes</span>
+sudo wabilink-server user desktop-login ann yes    <span class="c"># a login screen of its own (Linux, GNOME with GDM 46 and later)</span>
+sudo wabilink-server user tunnel ann nas-web yes   <span class="c"># a tunnel, by its name</span>
+sudo wabilink-server user db ann reporting read    <span class="c"># a database connection, at a level</span>
+sudo wabilink-server user rights ann               <span class="c"># what each part gives them, their groups' too</span></code></pre>
+    <p>Each of these is a right of one of the server's parts (<a href="#modules">modules</a>), and can also be given by its own
+      name: <code>user right NAME MODULE RIGHT VALUE</code>. The terminals' rights are <code>open</code> and <code>login</code>,
+      the desktop's <code>use</code> and <code>login</code>, the tunnels' <code>tunnels</code>.</p>
+    <pre><code>sudo wabilink-server user right ann terminals open yes</code></pre>
+    <h3>Groups</h3>
+    <p>Groups are made, and given their shares, in Server settings, in the WabiLink app. Here, what every member is given:</p>
+    <pre><code>sudo wabilink-server group list
+sudo wabilink-server group rights support
+sudo wabilink-server group right support desktop use yes</code></pre>
+  </div>
+</section>
+
+<section class="ref" id="shares">
+  <div class="wrap">
+    <h2>Shares</h2>
+    <p class="sub">A folder of this machine, under a name, for one account. Each account also has a private share of its own, kept
+      in <code>private-share-path</code>.</p>
+    <pre data-for="unix"><code>sudo wabilink-server share list ann
+sudo wabilink-server share add ann Files /srv/files --default        <span class="c"># the share the app opens first</span>
+sudo wabilink-server share add ann Photos /srv/photos --read-only --description "Family photos"
+sudo wabilink-server share add ann Projects /home/ann/projects --grant-access --confirm-path /home/ann/projects
+sudo wabilink-server share remove ann Photos</code></pre>
+    <pre data-for="windows" hidden><code>.\wabilink-service share list ann
+.\wabilink-service share add ann Files C:\Users\Public --default      <span class="c"># the share the app opens first</span>
+.\wabilink-service share add ann Photos D:\Photos --read-only --description "Family photos"
+.\wabilink-service share remove ann Photos</code></pre>
+    <h3>The server's access to the folders</h3>
+    <p>The server reads and writes the folders as the account it runs as: <code>wabilink</code> on Linux, root on macOS,
+      LocalSystem on Windows. On Linux, and wherever the server runs as an account of its own, that account needs to read each
+      share's folder, and write where people upload.</p>
+    <pre><code>sudo wabilink-server share check           <span class="c"># can it use every share's folder? exit 1 if not; --json for scripts</span>
+sudo wabilink-server share check ann
+sudo wabilink-server share grant ann Files <span class="c"># give it what the share needs, and no more</span>
+sudo wabilink-server share grant --group support Manuals</code></pre>
+    <ul>
+      <li><code>share grant</code> gives the server's account search on the folders above the share, and read and write on it and
+        in it (read only, for a read-only share). <code>--grant-access</code> on <code>share add</code> does the same.</li>
+      <li>A folder inside a person's home, or a hidden one, is granted only with its path typed out: <code>--confirm-path PATH</code>.</li>
+      <li>Where the server's account cannot be found by itself: <code>--account NAME</code>.</li>
+      <li data-for="unix">By hand on Linux: <code>sudo setfacl -R -m u:wabilink:rwX,d:u:wabilink:rwX /path</code>. On macOS, a share
+        in Documents, Desktop or Downloads needs <strong>Full Disk Access</strong> for
+        <code>/usr/local/wabilink-server/wabilink-server</code> (System Settings &rarr; <strong>Privacy &amp; Security</strong>).</li>
+      <li>System folders (<code>/</code>, <code>/etc</code>, <code>C:\Windows</code> and the like) are refused as shares unless
+        <code>shares-allow-system-folders</code> is <code>yes</code>.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="ref" id="tunnels">
+  <div class="wrap">
+    <h2>Tunnels</h2>
+    <p class="sub">A TCP service on this machine or near it, reached by the people you allow through a local port of theirs. Tunnels
+      are made here only; Server settings, in the app, give them to people.</p>
+    <pre><code>sudo wabilink-server tunnel presets                  <span class="c"># the common services on this machine, with their ports</span>
+sudo wabilink-server tunnel add ssh ssh              <span class="c"># this machine's SSH, as the tunnel "ssh"</span>
+sudo wabilink-server tunnel add nas-web 192.168.1.20:443 --description "The NAS's web page"
+sudo wabilink-server tunnel list
+sudo wabilink-server user tunnel ann nas-web yes
+sudo wabilink-server tunnel remove nas-web</code></pre>
+    <div class="table-scroll">
+      <table class="keys">
+        <thead><tr><th>Preset</th><th>Port on this machine</th><th>Service</th></tr></thead>
+        <tbody>
+          <tr><td><code>ssh</code></td><td>22</td><td>SSH</td></tr>
+          <tr><td><code>http</code>, <code>https</code></td><td>80, 443</td><td>A web page</td></tr>
+          <tr><td><code>web8080</code></td><td>8080</td><td>A web app on 8080</td></tr>
+          <tr><td><code>postgres</code></td><td>5432</td><td>PostgreSQL</td></tr>
+          <tr><td><code>mysql</code></td><td>3306</td><td>MySQL, MariaDB</td></tr>
+          <tr><td><code>mssql</code></td><td>1433</td><td>Microsoft SQL Server</td></tr>
+          <tr><td><code>redis</code></td><td>6379</td><td>Redis</td></tr>
+          <tr><td><code>mongodb</code></td><td>27017</td><td>MongoDB</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Then, on someone's computer: <code>wabilink tunnel -p work nas-web --local-port 8443</code>, or the app's
+      <strong>Tunnels</strong>. A tunnel hands over the port itself: for a database, a <a href="#databases">database
+      connection</a> keeps its password on the server and holds each person to a level.</p>
+  </div>
+</section>
+
+<section class="ref" id="databases">
+  <div class="wrap">
+    <h2>Databases</h2>
+    <p class="sub">PostgreSQL and MySQL (and MariaDB), opened by the server for the people you give a connection to. The database's
+      address and password stay on the server. Connections are made on this machine only.</p>
+    <pre><code>sudo wabilink-server db add reporting postgres db.internal:5432 --user wabilink_reporting --database reporting
+                                                         <span class="c"># asks for the account's password</span>
+sudo wabilink-server db add shop mysql /run/mysqld/mysqld.sock --user wabilink_shop --database shop
+sudo wabilink-server db test reporting                   <span class="c"># logs in as people's sessions will: version, TLS, what the account may do</span>
+sudo wabilink-server db list
+sudo wabilink-server db password reporting               <span class="c"># a new password for the account</span>
+sudo wabilink-server db remove shop</code></pre>
+    <h3>Giving it to people</h3>
+    <pre><code>sudo wabilink-server user db ann reporting read                <span class="c"># may query it</span>
+sudo wabilink-server user db bob reporting write --export yes  <span class="c"># and change rows, and export them</span>
+sudo wabilink-server user db ann reporting none                <span class="c"># taken away</span></code></pre>
+    <div class="table-scroll">
+      <table class="keys">
+        <thead><tr><th>Level</th><th>May</th></tr></thead>
+        <tbody>
+          <tr><td><code>read</code></td><td><code>SELECT</code>, <code>SHOW</code>, <code>EXPLAIN</code>, describing the database, in a read-only transaction</td></tr>
+          <tr><td><code>write</code></td><td>and <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>, <code>MERGE</code>, transactions</td></tr>
+          <tr><td><code>schema</code></td><td>and <code>CREATE</code>, <code>ALTER</code>, <code>DROP</code> of tables, views and functions; <code>TRUNCATE</code></td></tr>
+          <tr><td><code>admin</code></td><td>and roles and grants, other sessions, server settings, databases, maintenance</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><code>--export yes</code> lets rows out whole (export, dump); <code>--import yes</code> lets them in whole (a CSV import with
+      write, a restore with schema). Give the connection's account no more than the most anyone should do: the database holds
+      every session to that account's rights too.</p>
+    <h3>A connection's options</h3>
+    <pre><code>sudo wabilink-server db set reporting --tls verify-full --ca /etc/ssl/db-ca.pem
+sudo wabilink-server db set reporting --databases sales,stats   <span class="c"># other databases sessions may move to; * for all</span>
+sudo wabilink-server db set reporting --max-rows 50000 --timeout 120 --log-text yes</code></pre>
+    <div class="table-scroll">
+      <table class="keys">
+        <thead><tr><th>Option</th><th>Default</th><th>What it is</th></tr></thead>
+        <tbody>
+          <tr><td><code>--tls</code></td><td><code>verify-full</code> on the network, <code>prefer</code> on this machine</td><td><code>disable</code>, <code>prefer</code>, <code>require</code>, <code>verify-ca</code> or <code>verify-full</code>; <code>--ca FILE</code> for a database with a certificate of its own</td></tr>
+          <tr><td><code>--max-rows</code></td><td>10000</td><td>Rows of a result</td></tr>
+          <tr><td><code>--timeout</code></td><td>60</td><td>A statement's time, in seconds</td></tr>
+          <tr><td><code>--max-value-kb</code></td><td>1024</td><td>A value; the rest is cut, and marked</td></tr>
+          <tr><td><code>--max-result-mb</code></td><td>64</td><td>A result</td></tr>
+          <tr><td><code>--max-sessions</code></td><td>8</td><td>Sessions per person on the connection</td></tr>
+          <tr><td><code>--idle-minutes</code></td><td>30</td><td>An idle session is closed after</td></tr>
+          <tr><td><code>--log-text</code></td><td><code>no</code></td><td>Log each statement's text too, passwords in it masked; every statement is logged either way, never its values</td></tr>
+          <tr><td><code>--tools-dir</code></td><td></td><td>Where <code>pg_dump</code> or <code>mysqldump</code> is, if not on the PATH</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>0 for a limit is its default.</p>
+  </div>
+</section>
+
+<section class="ref" id="settings">
+  <div class="wrap">
+    <h2>Settings</h2>
+    <p class="sub">The server's own settings, and those of its parts.</p>
+    <pre><code>sudo wabilink-server config show            <span class="c"># all of them, as they are now; --json for scripts</span>
+sudo wabilink-server config set terminals-enabled yes
+sudo wabilink-server config set max-sessions-per-user 5</code></pre>
+    <div class="table-scroll">
+      <table class="keys">
+        <thead><tr><th>Setting</th><th>Default</th><th>What it is</th></tr></thead>
+        <tbody>
+          <tr><td><code>file-port</code></td><td>8009</td><td>The port the apps connect on. From the next start.</td></tr>
+          <tr><td><code>admin-port</code></td><td>8010</td><td>The admin port: Server settings, in the app. From the next start.</td></tr>
+          <tr><td><code>private-share-path</code></td><td><code>UserShares</code> in the data folder</td><td>Where each account's private share is kept.</td></tr>
+          <tr><td><code>max-sessions-per-user</code></td><td>3</td><td>Sessions one account may have open at once.</td></tr>
+          <tr><td><code>max-connections-per-session</code></td><td>10</td><td>Connections one session may open, 1 to 10; 0 is 10. From the next start.</td></tr>
+          <tr><td><code>log-folder-limit-mb</code></td><td>1024</td><td>How big the log folder may grow, in MB; 0 is the default.</td></tr>
+          <tr><td><code>shares-allow-system-folders</code></td><td>no</td><td>Whether a share may be a system folder. <span class="only">this machine only</span></td></tr>
+          <tr><td><code>rendezvous-url</code></td><td>none</td><td>A rendezvous, for the apps to reach the server behind a router (<a href="#nat">below</a>); <code>none</code> takes it away. <span class="only">this machine only</span></td></tr>
+          <tr><td><code>rendezvous-admin</code></td><td>no</td><td>Whether the admin port is reached through the rendezvous too, past the machine's firewall and router. <span class="only">this machine only</span></td></tr>
+          <tr><td><code>rendezvous-trust-relayed</code></td><td>no</td><td>Whether a relayed login's address, as the rendezvous gives it, is held to users' IP filters. Not trusted, it is unknown, and a user with IP filters is not let in relayed. <span class="only">this machine only</span></td></tr>
+          <tr><td><code>wabione-machine-settings</code></td><td>no</td><td>Whether WabiOne's console may set what only this machine sets otherwise: the terminals' shell and privileged terminals, shares in system folders, the desktop's consent and locks. Set before registering. <span class="only">this machine only</span></td></tr>
+          <tr><td><code>auto-update</code></td><td>yes</td><td>A newer version, signed by WabiLink's key, installed between 03:00 and 05:00 (<a href="#updates">below</a>).</td></tr>
+          <tr><td><code>terminals-enabled</code></td><td>no</td><td>Terminals offered at all; each account then needs <code>user terminal</code>.</td></tr>
+          <tr><td><code>terminals-allow-privileged</code></td><td>no</td><td>Where the server runs as root or SYSTEM (the Windows service does), its terminals would too: refused unless <code>yes</code>. <span class="only">this machine only</span></td></tr>
+          <tr><td><code>terminal-shell</code></td><td>picked</td><td>The terminals' shell. Not set: the account's login shell, else bash or sh; on Windows PowerShell 7, else Windows PowerShell, else cmd. <span class="only">this machine only</span></td></tr>
+          <tr><td><code>max-terminals-per-user</code></td><td>4</td><td>Terminals one account may have open, 0 to 100; 0 is the default.</td></tr>
+          <tr><td><code>max-terminals</code></td><td>32</td><td>Terminals open on the server in all, 0 to 1000; 0 is the default.</td></tr>
+          <tr><td><code>terminal-max-processes</code></td><td>256</td><td>Processes per terminal, on Windows. On Linux the service's unit limits the server and its terminals together.</td></tr>
+          <tr><td><code>terminal-max-memory-mb</code></td><td>4096</td><td>Memory per terminal, in MB, on Windows.</td></tr>
+          <tr><td><code>login-terminals-enabled</code></td><td>no</td><td>Login terminals: an SSH login to this machine as one of its accounts, with that account's password; each WabiLink account then needs <code>user login-terminal</code>.</td></tr>
+          <tr><td><code>terminals-beside-login-terminals</code></td><td>no</td><td>Ordinary terminals while login terminals are on. Both run as the server's account, and an ordinary terminal could read what is typed into a login terminal; off, ordinary terminals are refused while login terminals are on. <span class="only">this machine only</span></td></tr>
+          <tr><td><code>login-terminal-ssh-host</code></td><td>localhost</td><td>The SSH server login terminals connect to. <span class="only">this machine only</span></td></tr>
+          <tr><td><code>login-terminal-ssh-port</code></td><td>22</td><td>Its port; 0 is 22. <span class="only">this machine only</span></td></tr>
+          <tr><td><code>desktop-enabled</code></td><td>no</td><td>This machine's desktop offered at all; each account then needs <code>user desktop</code>.</td></tr>
+          <tr><td><code>desktop-user</code></td><td>none</td><td>Linux: the account whose session is shown; not set, what is on the machine's screen. <code>desktop-setup</code> sets it.</td></tr>
+          <tr><td><code>desktop-consent</code></td><td>yes</td><td>Linux: ask the person at the machine before their open session is shown. <span class="only">this machine only</span></td></tr>
+          <tr><td><code>desktop-lock-on-leave</code></td><td>yes</td><td>Lock a session viewers signed in to when the last viewer has gone. <span class="only">this machine only</span></td></tr>
+          <tr><td><code>desktop-lock-at-login</code></td><td>no</td><td>Linux: lock an automatic login at once. <code>desktop-setup --login</code> sets it. <span class="only">this machine only</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><span class="only">this machine only</span>: Server settings, in the app, show it and cannot change it, so that an administrator elsewhere
+      cannot turn off a protection of the machine and of the person at it.</p>
+  </div>
+</section>
+
+<section class="ref" id="modules">
+  <div class="wrap">
+    <h2>Modules</h2>
+    <p class="sub">The server's parts: <code>files</code>, <code>terminals</code>, <code>tunnels</code>, <code>desktop</code> and
+      <code>databases</code>. Each is on unless turned off here.</p>
+    <pre><code>sudo wabilink-server module list
+sudo wabilink-server module off tunnels   <span class="c"># refused from the next login, and taken from sessions open</span>
+sudo wabilink-server module on tunnels    <span class="c"># offered again from the next login</span></code></pre>
+    <p>A part turned off is gone from the apps altogether, whatever rights people have: on a server that should never offer it, turn
+      it off rather than giving it to nobody.</p>
+  </div>
+</section>
+
+<section class="ref" id="desktop">
+  <div class="wrap">
+    <h2>The desktop</h2>
+    <p class="sub">This machine's own screen, seen and used from the app, inside the WabiLink session.</p>
+    <pre><code>sudo wabilink-server config set desktop-enabled yes
+sudo wabilink-server user desktop ann yes</code></pre>
+    <p>On Windows that is all. On macOS the server also needs <strong>Screen &amp; System Audio Recording</strong> and
+      <strong>Accessibility</strong> in System Settings &rarr; <strong>Privacy &amp; Security</strong>. On Linux a desktop agent runs
+      in each session (the packages and the install script set it up), and GNOME on Wayland or any X11 session is shown.</p>
+    <h3>Linux: after a restart, and with no monitor <span class="only">Linux, GNOME</span></h3>
+    <pre data-for="unix"><code>sudo wabilink-server desktop-setup ann --login   <span class="c"># ann logged in at boot on the machine's screen, locked at once</span>
+sudo wabilink-server desktop-setup ann           <span class="c"># or: ann's own session at boot, on a virtual monitor, locked</span>
+sudo wabilink-server desktop-setup --off         <span class="c"># either, stopped, and not at boot</span>
+sudo wabilink-server user desktop-login ann yes  <span class="c"># or a login screen of its own for each viewer (GDM 46 and later)</span>
+sudo wabilink-server login-probe                 <span class="c"># whether this machine can show one</span></code></pre>
+    <p data-for="windows" hidden>These are for Linux; switch to <strong>Linux and macOS</strong> above to see them.</p>
+    <p data-for="unix">Checking, on Linux: <code>desktop-check</code> in a desktop session opens it as the agent would and takes one
+      picture; <code>sudo wabilink-server console-probe</code> says whether the machine's screen can be read for its login and
+      lock screens. To turn the console helper off, with anyone connected cut off within a second:
+      <code>sudo mkdir -p /etc/wabilink &amp;&amp; sudo touch /etc/wabilink/console.disabled</code>; the login helper, likewise,
+      with <code>/etc/wabilink/login.disabled</code>.</p>
+  </div>
+</section>
+
+<section class="ref" id="wabione">
+  <div class="wrap">
+    <h2>WabiOne</h2>
+    <p class="sub">Registered with WabiOne, the server is managed in WabiOne's console: its people, shares and every setting, and
+      people sign in with their WabiOne account. The console's <strong>Servers</strong> &rarr; <strong>Add server</strong> gives
+      the code, good once for 15 minutes.</p>
+    <pre><code>sudo wabilink-server register K7M2-QX9P-4HRT --name build-box   <span class="c"># its name in the console; else the host name</span>
+sudo wabilink-server home                                       <span class="c"># registered, with whom, managed, connected? --json for scripts</span>
+sudo wabilink-server unregister                                 <span class="c"># forgotten: the server's own settings are back</span></code></pre>
+    <p>From a release script or a CI pipeline, with no code to copy: an <strong>API token</strong> that may
+      <strong>Register servers</strong>, made by an admin of the organization in the console's <strong>API tokens</strong>. It
+      registers any number of servers until it expires (after 30 to 365 days, or never) or is revoked there. It goes on standard input, never on the
+      command line, where every account on the machine could read it. Registered already, the server is left as it is:
+      registering again would drop what the console set.</p>
+    <pre data-for="unix" id="wabione-token"><code>sudo wabilink-server home &gt;/dev/null || printf '%s\n' "$WABIONE_REGISTRATION_TOKEN" | sudo wabilink-server register --token-stdin</code></pre>
+    <pre data-for="windows" id="windows-wabione-token" hidden><code>.\wabilink-service home *&gt; $null
+if ($LASTEXITCODE -ne 0) { $env:WABIONE_REGISTRATION_TOKEN | .\wabilink-service register --token-stdin }</code></pre>
+    <p>The token is a secret of the pipeline's, given to the step as an environment variable: in GitHub Actions,
+      <code>env: WABIONE_REGISTRATION_TOKEN: ${{ secrets.WABIONE_REGISTRATION_TOKEN }}</code>. A token WabiOne refuses - revoked
+      or expired - fails with exit 1, saying so. On AWS, the <a href="./#aws">first-boot scripts</a> do all of this, the token
+      read from Parameter Store.</p>
+    <ul>
+      <li><strong>Nothing changes on registering:</strong> the server's settings become WabiOne's first version, and the server's
+        own accounts keep their passwords. Unregistering, or being removed in the console, brings back the settings it had
+        before it registered.</li>
+      <li><strong>It dials home</strong> and keeps the connection open, proving itself with its identity key; WabiOne can send it
+        settings over it, and nothing else: it cannot run anything on the server.</li>
+      <li><strong>No restart:</strong> the running server takes a registration up within seconds.</li>
+      <li><strong>Another WabiOne:</strong> <code>--home https://wabione.example.com</code>.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="ref" id="nat">
+  <div class="wrap">
+    <h2>Behind a router</h2>
+    <p class="sub">The apps connect straight to the server where they can. Where they can't, a rendezvous introduces them, and both
+      connect to each other through the routers (hole punching), with no port forwarded and no traffic through the rendezvous.</p>
+    <p>Registered with WabiOne, the server uses WabiOne's rendezvous, with nothing to set. Otherwise, with a rendezvous of your
+      own:</p>
+    <pre><code>sudo wabilink-server config set rendezvous-url https://rv.example.com:8443   <span class="c"># none takes it away</span>
+sudo wabilink-server home                                                   <span class="c"># the rendezvous, and whether it is connected</span></code></pre>
+    <p>The server needs UDP <code>3478</code> out to the rendezvous. Some networks (some mobile and carrier networks) let no punch
+      through: from those, forward TCP <code>8009</code> on the router to the server, or use a VPN.</p>
+  </div>
+</section>
+
+<section class="ref" id="wake">
+  <div class="wrap">
+    <h2>Waking it</h2>
+    <p class="sub">Let the app wake this machine from sleep (Wake-on-LAN), for good: its wired network cards' waking turned on, and
+      kept on.</p>
+    <pre><code>sudo wabilink-server wake-setup
+sudo wabilink-server wake-setup --status   <span class="c"># say how it is, change nothing</span>
+sudo wabilink-server wake-setup --off</code></pre>
+  </div>
+</section>
+
+<section class="ref" id="updates">
+  <div class="wrap">
+    <h2>Updates</h2>
+    <p class="sub">A server updates itself: each night, between 03:00 and 05:00 its own time, it installs a newer version if there
+      is one. The service restarts, so anyone connected is dropped for a few seconds and their app connects again.</p>
+    <pre><code>sudo wabilink-server update --check             <span class="c"># this version, the newest, and how this server is updated</span>
+sudo wabilink-server update                     <span class="c"># install the newest now</span>
+sudo wabilink-server config set auto-update no  <span class="c"># never by itself; update still installs it</span></code></pre>
+    <ul>
+      <li>Nothing is installed that WabiLink's key did not sign: the server carries the key, and checks the signature of the
+        site's list of downloads before it uses it, and each download against that list.</li>
+      <li data-for="unix">Linux: a timer of the system's, <code>wabilink-update.timer</code>, runs it as root, through dnf or apt
+        for the packages. macOS: a launchd job, <code>com.wabilink.update</code>; its log is
+        <code>/Library/Logs/WabiLink/update.log</code>.</li>
+      <li data-for="windows" hidden>Windows: a task, <strong>WabiLink update</strong>, runs WabiLink Setup as SYSTEM; its log is
+        <code>C:\ProgramData\WabiLink\Update.log</code>.</li>
+      <li>A server installed by hand, from an archive or a zip, says in its log that a newer version is out, and is updated by
+        hand.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="ref" id="service">
+  <div class="wrap">
+    <h2>The service</h2>
+    <p class="sub">Installed as the guides say, the server runs as a service that starts at boot.</p>
+    <div data-for="unix">
+      <h3>Linux</h3>
+      <pre><code>systemctl status wabilink
+sudo systemctl restart wabilink           <span class="c"># for the ports, and max-connections-per-session</span>
+journalctl -u wabilink -f                 <span class="c"># its log</span></code></pre>
+      <p>Installed from the archive by hand: <code>sudo wabilink-server install-systemd</code> makes the <code>wabilink</code>
+        account, the data folder and the unit, and starts it (<code>--no-start</code> not yet);
+        <code>uninstall-systemd</code> removes it and keeps the data; <code>systemd-unit</code> prints the unit, to install it
+        yourself.</p>
+      <h3>macOS</h3>
+      <pre><code>sudo launchctl print system/com.wabilink.server | grep state
+sudo launchctl kickstart -k system/com.wabilink.server   <span class="c"># restart it</span>
+tail -f /Library/Logs/WabiLink/server.log</code></pre>
+      <p><code>sudo wabilink-server install-launchd</code> installs the service and the desktop agent;
+        <code>uninstall-launchd</code> removes them and keeps the data.</p>
+    </div>
+    <div data-for="windows" hidden>
+      <pre><code>.\wabilink-service status
+.\wabilink-service restart                <span class="c"># for the ports, and max-connections-per-session</span>
+.\wabilink-service stop
+.\wabilink-service start</code></pre>
+      <p><code>.\wabilink-service install --start</code> registers the service, starting with Windows, as LocalSystem;
+        <code>--account "NT SERVICE\WabiLink"</code> runs it as an account of its own instead, and
+        <code>--account NAME --password-stdin</code> as a Windows account, its password on standard input (it is checked, and
+        the account given the right to run a service, before anything is installed). <code>uninstall</code> removes it
+        and keeps the data. Its log is in <code>C:\ProgramData\WabiLink\Server\logs</code>, and warnings and errors in the
+        Application event log, as <strong>WabiLink</strong>.</p>
+      <h3 id="windows-setup">WabiLink Setup, with no window</h3>
+      <pre data-for="windows"><code>& '.\wabilink-setup-1.1.28-windows.exe' --quiet | Out-Host                     <span class="c"># install, or update what is installed</span>
+& '.\wabilink-setup-1.1.28-windows.exe' --quiet --account service | Out-Host   <span class="c"># as NT SERVICE\WabiLink</span>
+'P@ssw0rd' | & '.\wabilink-setup-1.1.28-windows.exe' --quiet --account alex --password-stdin | Out-Host
+& 'C:\Program Files\WabiLink\WabiLink Setup.exe' --uninstall --quiet | Out-Host   <span class="c"># --delete-data: its users, settings and identity too</span></code></pre>
+      <p>From a prompt opened as administrator, or a deployment tool that runs as one. <code>--from FOLDER</code> takes the
+        <code>wabilink-server</code> and <code>wabilink-client</code> zips from a folder (a share, say) instead of this site. It exits
+        0 when done, 1 when not (saying why), 2 for wrong options and 4 when not run as administrator, in
+        <code>$LASTEXITCODE</code>; what it did is in <code>%TEMP%\WabiLink Setup.log</code>. Setup is a program with a window:
+        <code>| Out-Host</code> is what makes PowerShell wait for it, and show what it says.</p>
+    </div>
+    <h3>In a terminal instead</h3>
+    <pre><code>sudo wabilink-server run --port 9009 --admin-port 9010 -v</code></pre>
+    <p>Until stopped, to try settings before installing it, with the service stopped (only one can hold the ports). While it runs,
+      type <code>status</code>, <code>sessions</code>, <code>disconnect ID</code> or <code>disconnect USER</code>, and
+      <code>stop</code>. <code>--no-admin</code> opens no admin port at all; <code>--data-dir DIR</code> runs it on another data
+      folder.</p>
+    <h3>Its identity and files</h3>
+    <pre><code>sudo wabilink-server identity   <span class="c"># the fingerprint the apps check</span>
+sudo wabilink-server paths      <span class="c"># where the data, identity and logs are</span>
+sudo wabilink-server version</code></pre>
+    <p>The data folder holds the accounts, the settings and the identity key: keep it in your backups. A server reinstalled without
+      it has a new identity, which every app is then asked to accept again.</p>
+  </div>
+</section>
+
+<section class="ref" id="admin-tool">
+  <div class="wrap">
+    <h2>In the app's Server settings only</h2>
+    <p class="sub">A few things have no command here, and are set in the WabiLink app (This PC's server, on this machine; or Server settings, from your desk, on port
+      <code>8010</code>):</p>
+    <ul>
+      <li>making groups, and their shares;</li>
+      <li>speed limits, for the server and for each account;</li>
+      <li>quotas of private shares;</li>
+      <li>IP filters: from where each account may log in;</li>
+      <li>the mail server the server sends its mail through.</li>
+    </ul>
+    <a class="card next" href="./#get"><span><strong>Get the WabiLink app</strong><span class="d">For Windows, macOS and Linux, with the
+      server</span></span><span class="arrow" aria-hidden="true">&rarr;</span></a>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+    <div class="footer-brand">
+      <a class="brand" href="https://www.wabione.com/"><img class="logo" src="assets/logo.svg" alt="WabiOne" width="160" height="26"></a>
+      <p>Tools for people who run their own machines and teams.</p>
+    </div>
+    <nav class="footer-nav" aria-label="Footer">
+      <div>
+        <p class="footer-title">Services</p>
+        <ul>
+          <li><a href="https://www.wabione.com/link">WabiLink</a></li>
+          <li><a href="https://www.wabione.com/id">WabiOne ID</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-title">WabiLink</p>
+        <ul>
+          <li><a href="./#get">Download</a></li>
+          <li><a href="server-commands.html">Server commands</a></li>
+          <li><a href="./#aws">On AWS</a></li>
+          <li><a href="./#help">Help</a></li>
+          <li><a href="./#verify">Checksums</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-title">Get started</p>
+        <ul>
+          <li><a href="https://www.wabione.com/signup">Create your account</a></li>
+          <li><a href="https://app.wabione.com/">Sign in</a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+  <div class="wrap footer-bottom">
+    <p>&copy; 2026 WabiOne &middot; WabiLink 1.1.28, released 7 November 2026.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+
+  // The commands as typed on Linux and macOS (sudo wabilink-server) or on Windows (.\wabilink-service);
+  // what is for one only says so with data-for. #windows, as the Windows guide links here, picks Windows.
+  var shared = $$('pre:not([data-for]) code').map(function (code) { return { code: code, html: code.innerHTML }; });
+  function show(os) {
+    $$('.os-switch button').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-os') === os ? 'true' : 'false'); });
+    $$('[data-for]').forEach(function (el) { el.hidden = el.getAttribute('data-for') !== os; });
+    shared.forEach(function (c) { c.code.innerHTML = os === 'windows' ? c.html.split('sudo wabilink-server').join('.\\wabilink-service') : c.html; });
+  }
+  $$('.os-switch button').forEach(function (b) { b.addEventListener('click', function () { show(b.getAttribute('data-os')); }); });
+  var platform = ((navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || '').toLowerCase();
+  show(location.hash.indexOf('#windows') === 0 || (location.hash.length < 2 && platform.indexOf('win') >= 0) ? 'windows' : 'unix');
+  // A link into the Windows half (#windows-setup) lands once that half is shown.
+  var target = location.hash.length > 1 && document.getElementById(location.hash.slice(1));
+  if (target) target.scrollIntoView();
+
+  // A copy button on every command.
+  $$('pre').forEach(function (pre) {
+    var box = document.createElement('div');
+    box.className = 'codebox';
+    pre.parentNode.insertBefore(box, pre);
+    box.appendChild(pre);
+    // A command for one system only: the box, its button with it, is shown or hidden.
+    if (pre.hasAttribute('data-for')) { box.setAttribute('data-for', pre.getAttribute('data-for')); box.hidden = pre.hidden; pre.removeAttribute('data-for'); pre.hidden = false; }
+    var b = document.createElement('button');
+    b.className = 'copy'; b.type = 'button'; b.textContent = 'Copy';
+    b.addEventListener('click', function () {
+      var text = pre.innerText.split('\n').map(function (l) { return l.replace(/\s+#\s.*$/, ''); }).join('\n').trim();
+      var done = function () { b.textContent = 'Copied'; setTimeout(function () { b.textContent = 'Copy'; }, 1500); };
+      if (navigator.clipboard) navigator.clipboard.writeText(text).then(done, function () {});
+    });
+    box.appendChild(b);
+  });
+})();
+</script>
+</body>
+</html>

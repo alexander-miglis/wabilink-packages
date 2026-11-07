@@ -1,0 +1,1622 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#07080a">
+<title>WabiLink</title>
+<meta name="description" content="WabiLink: your files, terminals, tunnels and desktop, over one fast, encrypted connection. Client and server for Windows, macOS and Linux.">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<script src="assets/mesh.js" defer></script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="https://www.wabione.com/"><img class="logo" src="assets/logo.svg" alt="WabiOne" width="160" height="26"></a>
+    <a class="product" href="#">WabiLink</a>
+    <nav aria-label="Main">
+      <a href="server-commands.html">Server commands</a>
+      <a class="wide" href="#aws">AWS</a>
+      <a href="#help">Help</a>
+      <a class="wide" href="#verify">Checksums</a>
+      <a class="signin" href="https://app.wabione.com/">Sign in</a>
+      <a class="pill" href="#get">Download</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <p class="product-badge"><span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 0 0-5.66-5.66l-1 1"/><path d="M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66l1-1"/></svg></span>WabiLink by WabiOne</p>
+    <h1>Your files, terminals and desktop &mdash; <em>over one fast, encrypted link.</em></h1>
+    <p class="lead">WabiLink connects you to your own server: move files at full speed, open a terminal,
+      reach services behind its firewall, and use its desktop with sound &mdash; from Windows, macOS or Linux.</p>
+    <div class="cta">
+      <a class="button primary" href="#get" id="hero-get">Download</a>
+      <a class="button ghost" href="#get" data-pick-role="server">Set up a server</a>
+    </div>
+    <p class="meta"><span>Version 1.1.28, released 7 November 2026</span><span>Windows, macOS and Linux</span><span>x86_64 and ARM, Raspberry Pi included</span><span>Nothing else to install</span></p>
+  </div>
+</div>
+
+<section id="who">
+  <div class="wrap">
+    <h2>Who it's for</h2>
+    <p class="sub">One app and one encrypted link to every machine you run &mdash; at home, for a team, or for the
+      people you help.</p>
+    <div class="features">
+      <div class="feature">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="7" rx="1.5"/><rect x="3" y="14" width="18" height="7" rx="1.5"/><path d="M7 6.5h.01M7 17.5h.01M11 6.5h6M11 17.5h6"/></svg>
+        <span class="who">Homelab</span>
+        <h3>All your machines, from one app</h3>
+        <p>A server, a few Raspberry Pis, a NAS, a database: each one a card in the app, with its files, a terminal,
+          its desktop and the services behind it.</p>
+        <ul>
+          <li>Wakes a machine that is asleep, with Wake-on-LAN</li>
+          <li>Reach services behind it through a tunnel, with no ports opened for them</li>
+          <li>Let an AI assistant such as Claude Code run commands and manage users and shares, through <code>wabilink mcp</code></li>
+        </ul>
+      </div>
+      <div class="feature">
+        <svg viewBox="0 0 24 24"><circle cx="8" cy="14" r="4"/><path d="M11 11l9-9M16 6l3 3M14 8l2 2"/></svg>
+        <span class="who">Developers and teams</span>
+        <h3>Access to production, without handing out passwords</h3>
+        <p>The database credentials stay on the server. Each person is given a level on each connection &mdash; read,
+          write, schema or admin &mdash; and the password never reaches their machine.</p>
+        <ul>
+          <li>Every database statement and every refusal logged: who, from where, what kind, how it went</li>
+          <li>Terminals, tunnels and the desktop given one person at a time</li>
+          <li>Turn off on a server whatever it should not offer, with one command</li>
+        </ul>
+      </div>
+      <div class="feature">
+        <svg viewBox="0 0 24 24"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="2.5" y="13" width="4" height="6" rx="1.5"/><rect x="17.5" y="13" width="4" height="6" rx="1.5"/><path d="M19.5 19c0 1.7-1.8 2.5-4.5 2.5H13"/></svg>
+        <span class="who">IT support</span>
+        <h3>Help someone at their own screen</h3>
+        <p>With the WabiLink server on the machines you look after, see and use their desktop &mdash; every monitor,
+          with sound and a shared clipboard &mdash; and fix what you find in a terminal or by moving a file.</p>
+        <ul>
+          <li>On Linux, the person at the screen is asked before you see their session</li>
+          <li>Reach the login screen of a machine nobody is signed in to</li>
+          <li>Wake a machine that is asleep before you connect</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="features">
+  <div class="wrap">
+    <h2>One connection, everything on your server</h2>
+    <p class="sub">The client logs in once; files, terminals, tunnels and the desktop all travel over that
+      session, encrypted end to end. Only one port needs to be open.</p>
+    <div class="features">
+      <div class="feature">
+        <svg viewBox="0 0 24 24"><path d="M4 7h11M4 12h16M4 17h8"/><path d="M15 4l3 3-3 3M17 14l3 3-3 3"/></svg>
+        <h3>Fast transfers</h3>
+        <p>Files go over several connections at once and are put back together, so a long or lossy link is
+          used to the full. Transfers resume where they stopped.</p>
+      </div>
+      <div class="feature">
+        <svg viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M8 13h8"/></svg>
+        <h3>Shares and live folders</h3>
+        <p>Browse the server's shares like a local disk. Folders update as they change, and a file opened from
+          the server is saved back to it.</p>
+      </div>
+      <div class="feature">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9l3 3-3 3M12 15h5"/></svg>
+        <h3>Terminals</h3>
+        <p>A shell on the server, or a login over SSH, in a tab of the client &mdash; with no SSH port reachable from
+          outside.</p>
+      </div>
+      <div class="feature">
+        <svg viewBox="0 0 24 24"><path d="M4 12h6M14 12h6"/><circle cx="12" cy="12" r="2"/><path d="M7 8l-3 4 3 4M17 8l3 4-3 4"/></svg>
+        <h3>Tunnels</h3>
+        <p>Reach a database, a web interface or any TCP service near the server through a local port &mdash; the
+          administrator decides who may use which.</p>
+      </div>
+      <div class="feature">
+        <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/><path d="M9 9l2 2 4-4"/></svg>
+        <h3>Remote desktop, at 60&ndash;120 fps</h3>
+        <p>The server's own desktop, built in: coded on its graphics card where it has one, sharp when still,
+          every monitor, sound in step with the picture, and a clipboard that carries text, images and files.</p>
+      </div>
+      <div class="feature">
+        <svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg>
+        <h3>Yours, and secure</h3>
+        <p>Your server, your accounts: per-user rights, the server's identity checked by fingerprint, and every
+          byte encrypted. The same app manages it all from your desk.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="get">
+  <div class="wrap">
+    <h2>Get WabiLink</h2>
+    <p class="sub">Three quick choices, and you get the download and the instructions for exactly your machine.
+      <span class="version">Version 1.1.28</span> released 7 November 2026.</p>
+
+    <div class="crumbs" id="crumbs" aria-live="polite"></div>
+
+    <!-- 1 · the system -->
+    <div class="stage" id="stage-os">
+      <h3 class="ask"><span class="n">1</span>Which system is it for?</h3>
+      <div class="choices">
+        <button class="choice" data-os="windows">
+          <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5.5l7.5-1v7H3zM11.5 4.4L21 3v8.5h-9.5zM3 12.5h7.5v7l-7.5-1zM11.5 12.5H21V21l-9.5-1.4z"/></svg></span>
+          <strong>Windows</strong><span class="d">Windows 10 and 11, x64 and ARM</span>
+        </button>
+        <button class="choice" data-os="macos">
+          <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.4 12.6c0-2.4 2-3.5 2-3.6-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.2-2.8.9-3.5.9s-1.8-.8-3-.8C6.9 7.3 5.4 8.2 4.6 9.7c-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7c1.3 0 2.1-1.1 2.8-2.3.9-1.3 1.3-2.6 1.3-2.6s-2.4-1-2.4-3.8zM14.1 5.6c.6-.8 1.1-1.9 1-3-.9 0-2.1.6-2.7 1.4-.6.7-1.1 1.8-1 2.9 1 .1 2.1-.5 2.7-1.3z"/></svg></span>
+          <strong>macOS</strong><span class="d">macOS 13 and later, Apple silicon and Intel</span>
+        </button>
+        <button class="choice" data-os="linux">
+          <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c-2.2 0-3.6 1.9-3.6 4.6 0 1.4.4 2.3.1 3.2-.5 1.4-3.2 3.6-3.6 6.3-.2 1.4.5 2.3 1.2 2.6.8.3 1.3.9 2.1 1.6.9.8 2.2.9 3.8.9s2.9-.1 3.8-.9c.8-.7 1.3-1.3 2.1-1.6.7-.3 1.4-1.2 1.2-2.6-.4-2.7-3.1-4.9-3.6-6.3-.3-.9.1-1.8.1-3.2C15.6 3.9 14.2 2 12 2zm-1.5 3.6c.4 0 .7.5.7 1.1s-.3 1.1-.7 1.1-.7-.5-.7-1.1.3-1.1.7-1.1zm3 0c.4 0 .7.5.7 1.1s-.3 1.1-.7 1.1-.7-.5-.7-1.1.3-1.1.7-1.1z"/></svg></span>
+          <strong>Linux</strong><span class="d">Fedora, Ubuntu, Debian, Raspberry Pi OS and more</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 2 · the distribution (Linux) -->
+    <div class="stage" id="stage-distro" hidden>
+      <h3 class="ask"><span class="n">2</span>Which distribution?</h3>
+      <div class="choices">
+        <button class="choice" data-distro="fedora"><span class="icon logo" style="color:#51A2DA"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.001 0C5.376 0 .008 5.369.004 11.992H.002v9.287h.002A2.726 2.726 0 0 0 2.73 24h9.275c6.626-.004 11.993-5.372 11.993-11.997C23.998 5.375 18.628 0 12 0zm2.431 4.94c2.015 0 3.917 1.543 3.917 3.671 0 .197.001.395-.03.619a1.002 1.002 0 0 1-1.137.893 1.002 1.002 0 0 1-.842-1.175 2.61 2.61 0 0 0 .013-.337c0-1.207-.987-1.672-1.92-1.672-.934 0-1.775.784-1.777 1.672.016 1.027 0 2.046 0 3.07l1.732-.012c1.352-.028 1.368 2.009.016 1.998l-1.748.013c-.004.826.006.677.002 1.093 0 0 .015 1.01-.016 1.776-.209 2.25-2.124 4.046-4.424 4.046-2.438 0-4.448-1.993-4.448-4.437.073-2.515 2.078-4.492 4.603-4.469l1.409-.01v1.996l-1.409.013h-.007c-1.388.04-2.577.984-2.6 2.47a2.438 2.438 0 0 0 2.452 2.439c1.356 0 2.441-.987 2.441-2.437l-.001-7.557c0-.14.005-.252.02-.407.23-1.848 1.883-3.256 3.754-3.256z"/></svg></span><strong>Fedora</strong><span class="d">Current releases</span></button>
+        <button class="choice" data-distro="rhel"><span class="icon logo pair"><svg viewBox="0 0 24 24" aria-hidden="true" style="color:#10B981"><path d="M23.332 15.957c.433-1.239.668-2.57.668-3.957 0-6.627-5.373-12-12-12S0 5.373 0 12c0 3.28 1.315 6.251 3.447 8.417L15.62 8.245l3.005 3.005zm-2.192 3.819l-5.52-5.52L6.975 22.9c1.528.706 3.23 1.1 5.025 1.1 3.661 0 6.94-1.64 9.14-4.224z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true" style="color:#000000"><path d="M23.994 15.133c.079 1.061-.668 1.927-1.69 2.005a1.8 1.8 0 0 1-1.928-1.651c-.078-1.062.63-1.849 1.691-1.967 1.023-.078 1.849.59 1.927 1.613zm-12.623 4.955c-.944 0-1.73.786-1.73 1.809 0 1.14.747 1.848 1.887 1.848.904-.04 1.691-.865 1.691-1.809 0-.983-.904-1.848-1.848-1.848zm1.061-9.675c-.039-.865-.078-1.73.08-2.556.156-.944.314-1.887.904-2.674.707-.983 1.809-.944 2.399.118.314.511.432 1.062.471 1.652 0 .354.158.432.472.393.944-.157 1.888-.157 2.792.197.118.039.236.118.394 0 .314-.276.393-1.652.196-2.006-.354-.63-.904-.55-1.455-.55-.629.039-1.18-.158-1.612-.67-.393-.471-.511-1.06-.59-1.65-.04-.276-.079-.512-.315-.709-.55-.55-1.809-.432-2.477.118-2.556 2.045-2.989 5.467-1.534 8.18.04.118.118.236.275.157zm7.984 3.658c.354-.511.865-.747 1.415-.983a.973.973 0 0 0 .59-.472c.354-.669-.078-1.81-.747-2.36-2.595-2.006-5.938-1.612-8.18.433-.118.078-.157.196-.078.314.786-.236 1.612-.472 2.477-.51.905-.08 1.848-.158 2.753.235 1.14.472 1.337 1.534.472 2.36-.393.393-.905.668-1.455.825-.315.08-.354.236-.236.551.354.865.59 1.77.472 2.753-.04.157-.079.275.078.393.354.236 1.691 0 1.967-.275.511-.472.314-1.023.196-1.534-.157-.63-.078-1.219.276-1.73zm-7.197-2.045c-.118-.079-.197-.118-.315 0 .472.708.905 1.455 1.259 2.241.314.866.668 1.73.55 2.714-.118 1.18-1.1 1.69-2.123 1.101-.511-.275-.905-.669-1.22-1.14-.196-.276-.393-.276-.629-.08-.747.63-1.533 1.102-2.516 1.26-.158 0-.315 0-.394.157-.118.393.472 1.612.826 1.809.59.354 1.062 0 1.534-.276.55-.314 1.101-.432 1.73-.236.59.197.983.63 1.337 1.102.158.196.315.353.63.432.747.197 1.77-.59 2.084-1.376 1.18-3.028-.157-6.135-2.753-7.708zm-2.556 2.438c.472-.669.826-1.416.983-2.202-.157-.04-.197.04-.315.078-.904.944-1.848 1.849-3.067 2.478-.472.236-.983.433-1.534.433-.865 0-1.376-.551-1.298-1.416a2.92 2.92 0 0 1 .787-1.849c.236-.275.236-.432-.04-.668-.786-.55-1.494-1.22-1.848-2.124-.078-.275-.275-.275-.51-.157a4.293 4.293 0 0 0-.434.236c-1.022.63-1.14 1.416-.275 2.28.63.63.944 1.338.708 2.203-.118.433-.354.747-.63 1.101a.95.95 0 0 0-.235.787c.079.747.826 1.494 1.73 1.573 2.517.236 4.562-.63 5.978-2.753zm-4.68-5.152c1.376 1.18 3.067 1.455 4.837 1.377.157 0 .315 0 .354-.118.04-.197-.157-.197-.275-.236-.826-.354-1.691-.63-2.438-1.14S6.848 8.25 6.534 7.266c-.236-.747.078-1.415.825-1.651.669-.236 1.337-.236 1.967 0 .393.157.55.078.629-.354.118-.747.354-1.455.826-2.085.55-.786.55-.865-.354-1.376-.04 0-.04-.04-.079-.04-.865-.471-1.534-.196-1.848.709-.472 1.376-1.377 1.887-2.832 1.612-.196-.04-.393-.079-.472-.079-.747.118-1.18.55-1.297 1.14-.158 1.81.786 3.107 2.084 4.17zm-2.32 3.658c-.079-.944-1.023-1.652-2.045-1.534-.905.079-1.691 1.022-1.613 1.966.08.983 1.023 1.77 1.967 1.652 1.14-.079 1.73-1.18 1.69-2.084zm15.18-8.298c.943-.079 1.73-.983 1.651-1.927-.078-.983-1.022-1.77-2.005-1.691-1.023.079-1.73.983-1.652 1.966s.983 1.73 2.006 1.652zm-12.27-.826c1.062-.157 1.77-1.023 1.652-2.045C8.107.897 7.163.149 6.18.267c-1.062.118-1.691.944-1.573 2.085.118.865 1.061 1.612 1.966 1.494z"/></svg></span><strong>RHEL, Rocky, AlmaLinux</strong><span class="d">9 and 10</span></button>
+        <button class="choice" data-distro="ubuntu"><span class="icon logo" style="color:#E95420"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.61.455a3.41 3.41 0 0 0-3.41 3.41 3.41 3.41 0 0 0 3.41 3.41 3.41 3.41 0 0 0 3.41-3.41 3.41 3.41 0 0 0-3.41-3.41zM12.92.8C8.923.777 5.137 2.941 3.148 6.451a4.5 4.5 0 0 1 .26-.007 4.92 4.92 0 0 1 2.585.737A8.316 8.316 0 0 1 12.688 3.6 4.944 4.944 0 0 1 13.723.834 11.008 11.008 0 0 0 12.92.8zm9.226 4.994a4.915 4.915 0 0 1-1.918 2.246 8.36 8.36 0 0 1-.273 8.303 4.89 4.89 0 0 1 1.632 2.54 11.156 11.156 0 0 0 .559-13.089zM3.41 7.932A3.41 3.41 0 0 0 0 11.342a3.41 3.41 0 0 0 3.41 3.409 3.41 3.41 0 0 0 3.41-3.41 3.41 3.41 0 0 0-3.41-3.41zm2.027 7.866a4.908 4.908 0 0 1-2.915.358 11.1 11.1 0 0 0 7.991 6.698 11.234 11.234 0 0 0 2.422.249 4.879 4.879 0 0 1-.999-2.85 8.484 8.484 0 0 1-.836-.136 8.304 8.304 0 0 1-5.663-4.32zm11.405.928a3.41 3.41 0 0 0-3.41 3.41 3.41 3.41 0 0 0 3.41 3.41 3.41 3.41 0 0 0 3.41-3.41 3.41 3.41 0 0 0-3.41-3.41z"/></svg></span><strong>Ubuntu</strong><span class="d">24.04 and later</span></button>
+        <button class="choice" data-distro="debian"><span class="icon logo" style="color:#A81D33"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.88 12.685c-.4 0 .08.2.601.28.14-.1.27-.22.39-.33a3.001 3.001 0 01-.99.05m2.14-.53c.23-.33.4-.69.47-1.06-.06.27-.2.5-.33.73-.75.47-.07-.27 0-.56-.8 1.01-.11.6-.14.89m.781-2.05c.05-.721-.14-.501-.2-.221.07.04.13.5.2.22M12.38.31c.2.04.45.07.42.12.23-.05.28-.1-.43-.12m.43.12l-.15.03.14-.01V.43m6.633 9.944c.02.64-.2.95-.38 1.5l-.35.181c-.28.54.03.35-.17.78-.44.39-1.34 1.22-1.62 1.301-.201 0 .14-.25.19-.34-.591.4-.481.6-1.371.85l-.03-.06c-2.221 1.04-5.303-1.02-5.253-3.842-.03.17-.07.13-.12.2a3.551 3.552 0 012.001-3.501 3.361 3.362 0 013.732.48 3.341 3.342 0 00-2.721-1.3c-1.18.01-2.281.76-2.651 1.57-.6.38-.67 1.47-.93 1.661-.361 2.601.66 3.722 2.38 5.042.27.19.08.21.12.35a4.702 4.702 0 01-1.53-1.16c.23.33.47.66.8.91-.55-.18-1.27-1.3-1.48-1.35.93 1.66 3.78 2.921 5.261 2.3a6.203 6.203 0 01-2.33-.28c-.33-.16-.77-.51-.7-.57a5.802 5.803 0 005.902-.84c.44-.35.93-.94 1.07-.95-.2.32.04.16-.12.44.44-.72-.2-.3.46-1.24l.24.33c-.09-.6.74-1.321.66-2.262.19-.3.2.3 0 .97.29-.74.08-.85.15-1.46.08.2.18.42.23.63-.18-.7.2-1.2.28-1.6-.09-.05-.28.3-.32-.53 0-.37.1-.2.14-.28-.08-.05-.26-.32-.38-.861.08-.13.22.33.34.34-.08-.42-.2-.75-.2-1.08-.34-.68-.12.1-.4-.3-.34-1.091.3-.25.34-.74.54.77.84 1.96.981 2.46-.1-.6-.28-1.2-.49-1.76.16.07-.26-1.241.21-.37A7.823 7.824 0 0017.702 1.6c.18.17.42.39.33.42-.75-.45-.62-.48-.73-.67-.61-.25-.65.02-1.06 0C15.082.73 14.862.8 13.8.4l.05.23c-.77-.25-.9.1-1.73 0-.05-.04.27-.14.53-.18-.741.1-.701-.14-1.431.03.17-.13.36-.21.55-.32-.6.04-1.44.35-1.18.07C9.6.68 7.847 1.3 6.867 2.22L6.838 2c-.45.54-1.96 1.611-2.08 2.311l-.131.03c-.23.4-.38.85-.57 1.261-.3.52-.45.2-.4.28-.6 1.22-.9 2.251-1.16 3.102.18.27 0 1.65.07 2.76-.3 5.463 3.84 10.776 8.363 12.006.67.23 1.65.23 2.49.25-.99-.28-1.12-.15-2.08-.49-.7-.32-.85-.7-1.34-1.13l.2.35c-.971-.34-.57-.42-1.361-.67l.21-.27c-.31-.03-.83-.53-.97-.81l-.34.01c-.41-.501-.63-.871-.61-1.161l-.111.2c-.13-.21-1.52-1.901-.8-1.511-.13-.12-.31-.2-.5-.55l.14-.17c-.35-.44-.64-1.02-.62-1.2.2.24.32.3.45.33-.88-2.172-.93-.12-1.601-2.202l.15-.02c-.1-.16-.18-.34-.26-.51l.06-.6c-.63-.74-.18-3.102-.09-4.402.07-.54.53-1.1.88-1.981l-.21-.04c.4-.71 2.341-2.872 3.241-2.761.43-.55-.09 0-.18-.14.96-.991 1.26-.7 1.901-.88.7-.401-.6.16-.27-.151 1.2-.3.85-.7 2.421-.85.16.1-.39.14-.52.26 1-.49 3.151-.37 4.562.27 1.63.77 3.461 3.011 3.531 5.132l.08.02c-.04.85.13 1.821-.17 2.711l.2-.42M9.54 13.236l-.05.28c.26.35.47.73.8 1.01-.24-.47-.42-.66-.75-1.3m.62-.02c-.14-.15-.22-.34-.31-.52.08.32.26.6.43.88l-.12-.36m10.945-2.382l-.07.15c-.1.76-.34 1.511-.69 2.212.4-.73.65-1.541.75-2.362M12.45.12c.27-.1.66-.05.95-.12-.37.03-.74.05-1.1.1l.15.02M3.006 5.142c.07.57-.43.8.11.42.3-.66-.11-.18-.1-.42m-.64 2.661c.12-.39.15-.62.2-.84-.35.44-.17.53-.2.83"/></svg></span><strong>Debian</strong><span class="d">12 and later</span></button>
+        <button class="choice" data-distro="raspi"><span class="icon logo" style="color:#A22846"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m19.8955 10.8961-.1726-.3028c.0068-2.1746-1.0022-3.061-2.1788-3.7348.356-.0938.7237-.1711.8245-.6182.6118-.1566.7397-.4398.8011-.7398.16-.1066.6955-.4061.6394-.9211.2998-.2069.4669-.4725.3819-.8487.3222-.3515.407-.6419.2702-.9096.3868-.4805.2152-.7295.05-.9817.2897-.5254.0341-1.0887-.7758-.9944-.3221-.4733-1.0244-.3659-1.133-.3637-.1215-.1519-.2819-.2821-.7755-.219-.3197-.2851-.6771-.2364-1.0458-.0964-.4378-.3403-.7275-.0675-1.0584.0356-.53-.1706-.6513.0631-.9117.1583-.5781-.1203-.7538.1416-1.0309.4182l-.3224-.0063c-.8719.5061-1.305 1.5366-1.4585 2.0664-.1536-.5299-.5858-1.5604-1.4575-2.0664l-.3223.0063C9.942.5014 9.7663.2394 9.1883.3597 8.9279.2646 8.807.0309 8.2766.2015c-.2172-.0677-.417-.2084-.6522-.2012l.0004.0002C7.5017.0041 7.369.049 7.2185.166c-.3688-.1401-.7262-.1887-1.0459.0964-.4936-.0631-.654.0671-.7756.219C5.2887.4791 4.5862.3717 4.264.845c-.8096-.0943-1.0655.4691-.7756.9944-.1653.2521-.3366.5013.05.9819-.1367.2677-.0519.5581.2703.9096-.085.3763.0822.6418.3819.8487-.0561.515.4795.8144.6394.9211.0614.3001.1894.5832.8011.7398.1008.4472.4685.5244.8245.6183-1.1766.6737-2.1856 1.56-2.1788 3.7348l-.1724.3028c-1.3491.8082-2.5629 3.4056-.6648 5.5167.124.6609.3319 1.1355.5171 1.6609.2769 2.117 2.0841 3.1082 2.5608 3.2255.6984.524 1.4423 1.0212 2.449 1.3696.949.964 1.977 1.3314 3.0107 1.3308.0152 0 .0306.0002.0457 0 1.0337.0006 2.0618-.3668 3.0107-1.3308 1.0067-.3483 1.7506-.8456 2.4491-1.3696.4766-.1173 2.2838-1.1085 2.5607-3.2255.1851-.5253.3931-1 .517-1.6609 1.8981-2.1113.6843-4.7089-.6649-5.517zm-1.0386-.3715c-.0704.8759-4.6354-3.0504-3.8472-3.1808 2.1391-.3558 3.9191.896 3.8472 3.1808zm-2.0155 4.3649c-1.1481.7409-2.8025.2626-3.6953-1.0681-.8928-1.3306-.6858-3.0101.4623-3.7509 1.1481-.7409 2.8025-.2627 3.6953 1.068.8927 1.3307.6858 3.0101-.4623 3.751zM13.6591 1.3721c.0396.1967.0843.321.1354.3577.2537-.272.4611-.5506.7878-.8123.0011.1537-.0776.3205.1169.4425.1752-.2356.4119-.4459.7263-.6244-.1514.2611-.026.3404.0554.4486.24-.2059.4681-.4144.9109-.5759-.121.1474-.2902.2914-.1108.4607.2473-.1544.496-.3086 1.0833-.4183-.1323.1475-.4059.295-.2401.4426.3104-.1186.6539-.2047 1.034-.2546-.182.1496-.3337.2963-.1846.4122.3323-.1022.7899-.2398 1.2372-.1212l-.2832.2849c-.0314.0382.6623.0297 1.1202.0364-.167.2321-.3375.4562-.437.8548.0454.0459.2723.0204.4862 0-.2194.4618-.6004.5783-.6893.776.134.1015.32.075.5232.006-.158.3254-.4892.5484-.7509.8123.0662.047.1818.075.4555.0425-.2418.257-.5339.492-.8802.7032.0614.0708.2722.0681.4678.0727-.3136.3069-.7173.466-1.0955.6668.1885.1288.3234.0988.4678.097-.2676.2198-.7225.3342-1.1448.4668.0803.1249.1607.1589.3324.194-.447.2473-1.0873.1343-1.2679.2607.0435.1243.1665.2053.3139.2728-.7197.0418-2.6879-.0262-3.0652-1.5156.7367-.8094 2.0813-1.7593 4.394-2.934-1.7994.6022-3.4229 1.405-4.7817 2.5096-1.5978-.7436-.4965-2.6197.283-3.3645zm-1.6126 5.3718c1.1329-.0123 2.5356.8325 2.53 1.6286-.005.7027-.9851 1.2715-2.5213 1.2607-1.5043-.0177-2.5172-.7148-2.5137-1.3957.003-.5603 1.2282-1.5263 2.505-1.4936zm-5.7646-.6006c.1717-.0351.252-.0692.3323-.194-.4223-.1327-.8772-.247-1.1448-.4668.1444.0018.2792.0318.4678-.097-.3783-.2008-.782-.3599-1.0956-.6668.1955-.0048.4064-.002.4677-.0728-.3462-.2113-.6383-.4463-.8801-.7033.2738.0325.3893.0045.4555-.0425-.2617-.264-.593-.487-.7509-.8123.2032.069.3892.0954.5232-.006-.089-.1977-.47-.3142-.6894-.776.214.0204.4409.0459.4863 0-.0994-.3985-.2698-.6226-.4369-.8547.4579-.0067 1.1516.0018 1.1202-.0364l-.2831-.2849c.4472-.1186.9049.019 1.2371.1213.1492-.1159-.0026-.2626-.1847-.4123.3801.05.7236.1361 1.034.2547.1659-.1476-.1076-.2951-.24-.4426.5872.1097.8361.2639 1.0833.4183.1794-.1694.0103-.3133-.1108-.4607.4428.1615.6709.37.911.5759.0814-.1082.2068-.1875.0554-.4486.3143.1785.5511.3888.7263.6244.1945-.122.1159-.2888.1169-.4426.3267.2618.534.5404.7879.8124.0511-.0366.0959-.161.1354-.3577.7794.7448 1.8807 2.6208.2831 3.3646-1.3589-1.1039-2.9817-1.9064-4.78-2.5086 2.3115 1.174 3.6556 2.1239 4.392 2.9328-.3773 1.4895-2.3455 1.5575-3.0651 1.5157.1473-.0676.2703-.1485.3139-.2728-.1806-.1264-.8209-.0134-1.2679-.2607zm2.8175 1.1334c.7881.1304-3.7769 4.0567-3.8472 3.1809-.0719-2.2846 1.7079-3.5367 3.8472-3.1809zm-4.847 8.7567c-1.1094-.8789-1.4668-3.4529.5901-4.6097 1.2394-.3273.4184 5.051-.5901 4.6097zm4.2656 4.5989c-.6257.3719-2.1452.2187-3.2252-1.3095-.7283-1.2823-.6345-2.5872-.123-2.9705.7648-.4589 1.9464.1609 2.8559 1.2003.7923.9405 1.1536 2.5927.4923 3.0797zm-1.2415-5.6086c-1.1481-.7409-1.3551-2.4203-.4623-3.7511.8928-1.3307 2.5472-1.8089 3.6952-1.068 1.1481.7409 1.3551 2.4203.4623 3.7509-.8926 1.3308-2.5471 1.809-3.6952 1.0682zm4.7948 8.2279c-1.3763.0584-2.7258-1.1105-2.7081-1.5157-.0206-.594 1.6758-1.0578 2.782-1.0306 1.1131-.0479 2.6068.3531 2.6097.8851.0184.5166-1.3547 1.6838-2.6836 1.6612zm2.7584-5.8578c.0081 1.3899-1.226 2.5225-2.7562 2.5299-1.5302.0073-2.7773-1.1135-2.7854-2.5033v-.0265c-.008-1.3899 1.2259-2.5226 2.7562-2.5299 1.5302-.0073 2.7773 1.1134 2.7853 2.5033a.7794.7794 0 0 1 .0001.0265zm3.855 2.0029c-1.186 1.6208-2.7916 1.684-3.3896 1.2325-.6255-.5811-.148-2.3854.7094-3.3747v-.0003c.9812-1.0912 2.0302-1.8037 2.7609-1.2469.4919.4828.7805 2.3008-.0807 3.3894zm1.0724-3.4301c-1.0086.4413-1.8298-4.9372-.5901-4.61 2.0568 1.1569 1.6994 3.731.5901 4.61zm-.0256-8.3279h.2985v-.5304h.2986c.1502 0 .2053.0624.2262.2052.0152.1088.0113.2395.0477.3253h.2984c-.0533-.0763-.0515-.2358-.0571-.3213-.0097-.1373-.0513-.2796-.1977-.3176v-.0037c.1502-.061.2149-.1807.2149-.341 0-.2048-.1539-.3738-.3974-.3738h-.732v1.3573zm.2985-1.1255h.3269c.1333 0 .2054.0573.2054.188 0 .1369-.0721.1942-.2054.1942H20.03v-.3822zm-1.0337.4633c0 .7009.5682 1.2694 1.2695 1.2694s1.2695-.5684 1.2695-1.2694c0-.7013-.5683-1.2697-1.2695-1.2697-.7013 0-1.2695.5684-1.2695 1.2697zm2.3275 0c0 .5845-.4737 1.058-1.058 1.058s-1.058-.4735-1.058-1.058c0-.5849.4737-1.058 1.058-1.058s1.058.4731 1.058 1.058z"/></svg></span><strong>Raspberry Pi OS</strong><span class="d">12 and later, 64- or 32-bit</span></button>
+        <button class="choice" data-distro="arch"><span class="icon logo" style="color:#1793D1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11.39.605C10.376 3.092 9.764 4.72 8.635 7.132c.693.734 1.543 1.589 2.923 2.554-1.484-.61-2.496-1.224-3.252-1.86C6.86 10.842 4.596 15.138 0 23.395c3.612-2.085 6.412-3.37 9.021-3.862a6.61 6.61 0 01-.171-1.547l.003-.115c.058-2.315 1.261-4.095 2.687-3.973 1.426.12 2.534 2.096 2.478 4.409a6.52 6.52 0 01-.146 1.243c2.58.505 5.352 1.787 8.914 3.844-.702-1.293-1.33-2.459-1.929-3.57-.943-.73-1.926-1.682-3.933-2.713 1.38.359 2.367.772 3.137 1.234-6.09-11.334-6.582-12.84-8.67-17.74zM22.898 21.36v-.623h-.234v-.084h.562v.084h-.234v.623h.331v-.707h.142l.167.5.034.107a2.26 2.26 0 01.038-.114l.17-.493H24v.707h-.091v-.593l-.206.593h-.084l-.205-.602v.602h-.091"/></svg></span><strong>Arch Linux</strong><span class="d">And Manjaro, EndeavourOS</span></button>
+        <button class="choice" data-distro="opensuse"><span class="icon logo" style="color:#73BA25"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.724 0a12 12 0 0 0-9.448 4.623c1.464.391 2.5.727 2.81.832.005-.19.037-1.893.037-1.893s.004-.04.025-.06c.026-.026.065-.018.065-.018.385.056 8.602 1.274 12.066 3.292.427.25.638.517.902.786.958.99 2.223 5.108 2.359 5.957.005.033-.036.07-.054.083a5.177 5.177 0 0 1-.313.228c-.82.55-2.708 1.872-5.13 1.656-2.176-.193-5.018-1.44-8.445-3.699.336.79.668 1.58 1 2.371.497.258 5.287 2.7 7.651 2.651 1.904-.04 3.941-.968 4.756-1.458 0 0 .179-.108.257-.048.085.066.061.167.041.27-.05.234-.164.66-.242.863l-.065.165c-.093.25-.183.482-.356.625-.48.436-1.246.784-2.446 1.305-1.855.812-4.865 1.328-7.66 1.31-1.001-.022-1.968-.133-2.817-.232-1.743-.197-3.161-.357-4.026.269A12 12 0 0 0 10.724 24a12 12 0 0 0 12-12 12 12 0 0 0-12-12zM13.4 6.963a3.503 3.503 0 0 0-2.521.942 3.498 3.498 0 0 0-1.114 2.449 3.528 3.528 0 0 0 3.39 3.64 3.48 3.48 0 0 0 2.524-.946 3.504 3.504 0 0 0 1.114-2.446 3.527 3.527 0 0 0-3.393-3.64zm-.03 1.035a2.458 2.458 0 0 1 2.368 2.539 2.43 2.43 0 0 1-.774 1.706 2.456 2.456 0 0 1-1.762.659 2.461 2.461 0 0 1-2.364-2.542c.02-.655.3-1.26.777-1.707a2.419 2.419 0 0 1 1.756-.655zm.402 1.23c-.602 0-1.087.325-1.087.727 0 .4.485.725 1.087.725.6 0 1.088-.326 1.088-.725 0-.402-.487-.726-1.088-.726Z"/></svg></span><strong>openSUSE</strong><span class="d">Tumbleweed, Leap</span></button>
+        <button class="choice" data-distro="other"><span class="icon"><b>&hellip;</b></span><strong>Something else</strong><span class="d">Any with glibc, OpenSSL 3 and systemd</span></button>
+      </div>
+    </div>
+
+    <!-- 3 · what for -->
+    <div class="stage" id="stage-role" hidden>
+      <h3 class="ask"><span class="n" id="role-n">2</span>What do you want to install?</h3>
+      <div class="choices">
+        <button class="choice" data-role="client">
+          <span class="icon"><svg class="line" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></span>
+          <strong>WabiLink</strong><span class="d">The app: connect to a server for files, terminals, tunnels and its desktop, and manage its users, shares and settings</span>
+        </button>
+        <button class="choice" data-role="server">
+          <span class="icon"><svg class="line" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01"/></svg></span>
+          <strong>Server</strong><span class="d">Run on the machine you want to reach, as a service that starts at boot</span>
+        </button>
+        <!-- Windows only: the installer, the server and the app in one. (The admin tool is part of the
+             app now: an old link to it, #windows/admin, opens the app's guide.) -->
+        <button class="choice" data-role="setup" data-for-os="windows" hidden>
+          <span class="icon"><svg class="line" viewBox="0 0 24 24"><path d="M12 3v11M7.5 9.5 12 14l4.5-4.5"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg></span>
+          <strong>WabiLink Setup</strong><span class="d">The installer: the server as a service and the WabiLink app, set up in a few clicks and kept up to date</span>
+          <span class="badge">Easiest</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════ the guides ═══════════════════════ -->
+
+    <!-- Windows · client -->
+    <div class="guide" data-guide="windows/client">
+      <div class="head"><h3>WabiLink for Windows</h3><span class="version">Version 1.1.28</span></div>
+      <p class="intro">The app you connect with. It comes with everything it needs: no installer, nothing else to set up.</p>
+      <ol class="steps">
+        <li><h4>Download it</h4>
+          <p>Most PCs are <strong>x64</strong>; take <strong>ARM64</strong> for a Snapdragon laptop or a Surface Pro X.</p>
+          <div class="buttons"><a class="dl" href="files/wabilink-client-1.1.28-windows-x64.zip">x64 <small>1.1.28 · 76 MB</small></a> <a class="dl" href="files/wabilink-client-1.1.28-windows-arm64.zip">ARM64 <small>1.1.28 · 73 MB</small></a></div>
+        </li>
+        <li><h4>Unpack it</h4>
+          <p>Right-click the downloaded <code>.zip</code> &rarr; <strong>Extract All&hellip;</strong>, and choose where it should
+            live, for example <code>C:\Users\you\Apps</code>. Then open the <code>wabilink-client</code> folder and run
+            <strong>WabiLink.exe</strong>.</p>
+          <p>Right-click <strong>WabiLink.exe</strong> &rarr; <strong>Pin to Start</strong> to find it again.</p>
+          <div class="warn"><strong>Windows protected your PC?</strong> WabiLink is not yet known to SmartScreen. Click
+            <strong>More info</strong> &rarr; <strong>Run anyway</strong>. It asks only the first time.</div>
+        </li>
+        <li><h4>Connect</h4>
+          <p>Click <strong>New profile</strong> and fill in the server's address (port <code>8009</code>), your account and
+            password. The first time, WabiLink shows the server's fingerprint: compare it with what the server's
+            administrator got from <code>wabilink-server identity</code>, and accept it.</p>
+          <p>A server you administer: <strong>Server settings</strong>, on its card, opens its users, shares and settings,
+            through its admin port (<code>8010</code>). On a PC that runs the server itself, <strong>This PC's server</strong>,
+            at the top, opens its settings on the spot.</p>
+        </li>
+        <li><h4>Video for the remote desktop <span class="optional">optional</span></h4>
+          <p>The server's desktop is decoded on your graphics card with Windows' own decoders. For HEVC install
+            Microsoft's <strong>HEVC Video Extensions</strong>, and on Windows 10 the free <strong>AV1 Video Extension</strong>,
+            from the Microsoft Store. Without them, WabiLink picks a codec you do have.</p>
+        </li>
+        <li><h4>From the command line <span class="optional">optional</span></h4>
+          <p>The folder also has <strong>wabilink-cli.exe</strong>: what the app does, from PowerShell or a script - files, a
+            terminal on the server, tunnels, and the server's desktop (it opens the app's viewer). It uses the app's saved accounts.
+            To type <code>wabilink-cli</code> anywhere, add the folder to your PATH once (the folder you unpacked to):</p>
+          <pre><code>[Environment]::SetEnvironmentVariable("Path", [Environment]::GetEnvironmentVariable("Path", "User") + ";$HOME\Apps\wabilink-client", "User")</code></pre>
+          <p>Then, in a new window:</p>
+          <pre><code>wabilink-cli profile add work --host server.example.com --user you
+wabilink-cli terminal -p work          <span class="c"># a shell on the server; Enter then ~. leaves one that hangs</span>
+wabilink-cli get -p work -r /Files/project .
+wabilink-cli help</code></pre>
+        </li>
+      </ol>
+      <div class="after">
+        <div class="card"><h4>Updating</h4><p>Close WabiLink, unpack the new <code>.zip</code> over the old folder, and start it again. Your profiles are kept.</p></div>
+        <div class="card"><h4>Removing</h4><p>Delete the folder. Profiles and settings are in <code>%LOCALAPPDATA%\WabiLink</code>.</p></div>
+      </div>
+    </div>
+
+    <!-- Windows · WabiLink Setup -->
+    <div class="guide" data-guide="windows/setup">
+      <div class="head"><h3>WabiLink Setup for Windows</h3><span class="version">Version 1.1.28</span></div>
+      <p class="intro">Installs the WabiLink server on this PC, so others can reach it, and the WabiLink app to manage it. It
+        walks you through setting the server up, and then keeps it up to date by itself. Run it on the PC that will be the server.</p>
+      <ol class="steps">
+        <li><h4>Download WabiLink Setup</h4>
+          <p>The same file works on every Windows 10 and 11 PC, x64 or ARM. While it installs, it downloads the rest (about
+            110&nbsp;MB) for this PC, so the PC needs internet.</p>
+          <div class="buttons"><a class="dl" href="files/wabilink-setup-1.1.28-windows.exe">WabiLink Setup <small>1.1.28 · 49 MB</small></a></div>
+        </li>
+        <li><h4>Open it</h4>
+          <p>Open the downloaded file. Two things may come first:</p>
+          <ul>
+            <li><strong>Windows protected your PC</strong>: WabiLink Setup is new to Windows' SmartScreen. Click
+              <strong>More info</strong>, then <strong>Run anyway</strong>.</li>
+            <li><strong>Do you want to allow this app to make changes?</strong> Click <strong>Yes</strong>: installing a server
+              needs administrator rights. If you are not an administrator on this PC, Windows asks for an administrator's name and
+              password here.</li>
+          </ul>
+          <p>Setup opens, and says what it will install. Click <strong>Next</strong>.</p>
+        </li>
+        <li><h4>Choose the account the server runs as</h4>
+          <p>Not sure? Keep the first one.</p>
+          <ul>
+            <li><strong>This PC's system account</strong> (recommended): everything works, with shared folders anywhere on the
+              PC, terminals and the desktop.</li>
+            <li><strong>An account of its own</strong>: safer, because the server can only reach the folders you share with it.</li>
+            <li><strong>A Windows account</strong>: the server can reach what that account can, such as its network drives. Type its
+              name and password.</li>
+          </ul>
+          <p>Click <strong>Install</strong>. Setup installs the server, opens the firewall for it, and adds the WabiLink app to the
+            Start menu. This takes a minute or two.</p>
+        </li>
+        <li><h4>Choose who may use it</h4>
+          <p>Setup then asks how people get access. Pick one; you can switch later.</p>
+          <ul>
+            <li><strong>Online, with WabiOne</strong>: you manage people and their access in WabiOne's console, in your browser,
+              and they sign in with their WabiOne account. In the console at <a href="https://app.wabione.com/">app.wabione.com</a>,
+              go to <strong>Servers</strong> &rarr; <strong>Add server</strong> &rarr; <strong>Get code</strong>, type the code into
+              setup, and click <strong>Register</strong>. Then add people in the console, under <strong>People</strong>.</li>
+            <li><strong>Offline, on this PC</strong>: nothing is sent to WabiOne. Choose a name and password for your own WabiLink
+              account, and a folder to share (the PC's Public folder, unless you pick another), and click <strong>Create</strong>.
+              Setup then shows the server's <strong>fingerprint</strong>: note it, to check the first time you connect.</li>
+          </ul>
+          <p>Or click <strong>Skip</strong>, and do it later in the WabiLink app, under <strong>This PC's server</strong>, or by running setup again.</p>
+        </li>
+        <li><h4>Connect from another computer</h4>
+          <p>Install the <a href="#windows/client">WabiLink app</a> on the computer you connect from (it is there for
+            <a href="#macos/client">macOS</a> and <a href="#linux">Linux</a> too), then:</p>
+          <ul>
+            <li><strong>Online</strong>: click <strong>Sign in</strong> at the top right, with your WabiOne account. The server is
+              listed, ready to connect, from anywhere: usually there is nothing to set up on your router.</li>
+            <li><strong>Offline</strong>: click <strong>New profile</strong> and type this PC's address (setup's last page shows it),
+              port <code>8009</code>, and your account and password. The first time, compare the fingerprint the app shows with the
+              one you noted. To connect from outside your network, forward TCP <code>8009</code> on your router to this PC. Never
+              forward <code>8010</code>.</li>
+          </ul>
+        </li>
+      </ol>
+      <div class="after">
+        <div class="card"><h4>Updating</h4><p>Nothing to do: it installs a newer version by itself, at night between 03:00 and 05:00
+          (<a href="server-commands.html#updates">how</a>). To update at once, run setup again and click <strong>Update</strong>.</p></div>
+        <div class="card"><h4>Removing</h4><p><strong>Settings</strong> &rarr; <strong>Apps</strong> &rarr; <strong>WabiLink Server</strong>
+          &rarr; <strong>Uninstall</strong>. Its users, settings and identity are kept, for when it is installed again, unless you
+          tick the box to delete them too.</p></div>
+        <div class="card"><h4>No desktop, or no internet</h4><p>Windows Server Core has no desktop for setup: install
+          <a href="#windows/server">the server by hand, in PowerShell</a>. A PC with no internet: on another computer, download
+          the <a href="#windows/server">server's zip</a> and <a href="#windows/client">the app's</a> for that PC (x64 or ARM64),
+          and put them in the same folder as setup before you open it. For IT: <a href="server-commands.html#windows-setup">setup
+          with no window</a>.</p></div>
+      </div>
+    </div>
+
+    <!-- Windows · server -->
+    <div class="guide" data-guide="windows/server">
+      <div class="head"><h3>WabiLink Server for Windows</h3><span class="version">Version 1.1.28</span></div>
+      <p class="intro">Runs as a Windows service: it starts with Windows, restarts if it stops, and shows this PC's own desktop to the people you allow.</p>
+      <div class="tip"><strong>The easy way: WabiLink Setup.</strong> One download that installs the server and the WabiLink app, opens
+        the firewall, and asks who may use the server: everything on this page, in a few clicks. It keeps the server up to date too.
+        <a href="#windows/setup">What it asks, step by step</a>.
+        <div class="buttons"><a class="dl" href="files/wabilink-setup-1.1.28-windows.exe">WabiLink Setup <small>1.1.28 · 49 MB</small></a></div>
+      </div>
+      <p class="part">Or install it by hand, in PowerShell</p>
+      <p class="part-intro">For Windows Server Core, which has no desktop for setup's window, or to see each step. Used WabiLink Setup?
+        Skip to <strong>Optional: this PC's desktop</strong> below.</p>
+      <ol class="steps">
+        <li><h4>Download it and unpack it where it will stay</h4>
+          <p>The service runs from this folder, so put it somewhere permanent. Open <strong>PowerShell as administrator</strong>
+            (<span class="kbd">Win</span>+<span class="kbd">X</span> &rarr; <strong>Terminal (Admin)</strong>) and run:</p>
+          <pre><code>$arch = if ($env:PROCESSOR_ARCHITECTURE -eq 'ARM64') { 'arm64' } else { 'x64' }
+$dl = "C:\Program Files\WabiLink\.download"
+New-Item -ItemType Directory -Force $dl | Out-Null
+curl.exe -fLo "$dl\wabilink-server.zip" "https://link.wabione.com/files/wabilink-server-1.1.28-windows-$arch.zip"
+curl.exe -fLo "$dl\SHA256SUMS" "https://link.wabione.com/files/SHA256SUMS"
+$listed = (Select-String -Path "$dl\SHA256SUMS" -Pattern "^([0-9a-f]{64}) [ *]wabilink-server-1.1.28-windows-$arch\.zip$").Matches[0].Groups[1].Value
+if ((Get-FileHash "$dl\wabilink-server.zip" -Algorithm SHA256).Hash -ne $listed) { throw "The download is not the file SHA256SUMS lists: do not unpack it." } else { Expand-Archive "$dl\wabilink-server.zip" -DestinationPath "C:\Program Files\WabiLink" }
+Remove-Item -Recurse -Force $dl
+cd "C:\Program Files\WabiLink\wabilink-server"</code></pre>
+          <p>It takes the x64 or ARM64 build, as this PC is, and unpacks it only if it is the file the site's
+            <code>SHA256SUMS</code> lists. Both are downloaded into the program's own folder, which only administrators can
+            change, not into <code>TEMP</code>, where a program of yours could swap the zip between its check and its unpacking. That list is signed with WabiLink's release key (<code>SHA256SUMS.asc</code>); with
+            <code>gpg</code> installed, <code>gpg --verify SHA256SUMS.asc SHA256SUMS</code> checks it too, against key
+            <code>2C9F 6909 A29F C1FE 2F95 7F7F ACBA 8605 5D3E BAD2</code>. WabiLink Setup checks both by itself. With no internet on
+            the PC, download it here instead, check it the same way (<code>Get-FileHash</code> against the line for it in
+            <code>SHA256SUMS</code>), right-click it &rarr; <strong>Properties</strong> &rarr; <strong>Unblock</strong>, and unpack it to
+            <code>C:\Program Files\WabiLink</code>:</p>
+          <div class="buttons"><a class="dl" href="files/wabilink-server-1.1.28-windows-x64.zip">x64 <small>1.1.28 · 38 MB</small></a> <a class="dl" href="files/wabilink-server-1.1.28-windows-arm64.zip">ARM64 <small>1.1.28 · 37 MB</small></a></div>
+        </li>
+        <li><h4>Install and start the service</h4>
+          <pre><code>.\wabilink-service install --start</code></pre>
+          <p>It runs as LocalSystem; its data and logs are in <code>C:\ProgramData\WabiLink\Server</code>.
+            <code>.\wabilink-service status</code> says whether it is running.</p>
+        </li>
+        <li><h4>Open the firewall</h4>
+          <p>Clients connect on <code>8009</code>; Server settings, in the app, on <code>8010</code>, which this opens to your local network only:</p>
+          <pre><code>New-NetFirewallRule -DisplayName "WabiLink" -Direction Inbound -Protocol TCP -LocalPort 8009 -Action Allow
+New-NetFirewallRule -DisplayName "WabiLink Admin" -Direction Inbound -Protocol TCP -LocalPort 8010 -RemoteAddress LocalSubnet -Action Allow</code></pre>
+        </li>
+      </ol>
+
+      <p class="part">Set it up</p>
+      <p class="part-intro">Decide who may use the server, and what they get. Pick one of the two ways; you can switch later, and
+        unregistering from WabiOne brings back the settings the server had before.</p>
+      <div class="ways">
+        <button class="choice way-pick" data-way="online" aria-pressed="false">
+          <span class="icon"><svg class="line" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></span>
+          <strong>Online, with WabiOne</strong><span class="d">People, shares and settings in WabiOne's console, in your browser. Your organization's people sign in with their WabiOne account, and reach it from anywhere.</span>
+        </button>
+        <button class="choice way-pick" data-way="offline" aria-pressed="false">
+          <span class="icon"><svg class="line" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9l3 3-3 3M12 15h5"/></svg></span>
+          <strong>Offline, on this PC</strong><span class="d">Accounts, shares and settings with commands on this PC, or the WabiLink app. Nothing is sent to WabiOne.</span>
+        </button>
+      </div>
+      <p class="way-none">Pick one to see its steps.</p>
+
+      <div class="way" data-way="online">
+        <ol class="steps">
+          <li><h4>Get a code from WabiOne</h4>
+            <p>Sign in to WabiOne's console at <a href="https://app.wabione.com/">app.wabione.com</a> (no account yet?
+              <a href="https://www.wabione.com/signup">Create one</a>: it makes your organization). Then <strong>Servers</strong>
+              &rarr; <strong>Add server</strong>, a name if you like (otherwise this PC's name), and <strong>Get code</strong>.
+              The code works once, for 15 minutes. From a script or a CI pipeline, with no code to copy, an
+              <a href="server-commands.html#windows-wabione-token">API token</a> that may register servers registers it instead.</p>
+          </li>
+          <li><h4>Register this PC with it</h4>
+            <p>In the same PowerShell, in the server's folder, with the code from the console:</p>
+            <pre><code>.\wabilink-service register K7M2-QX9P-4HRT</code></pre>
+            <p>The console says <strong>Registered</strong>, and within seconds the server is online there.
+              <code>.\wabilink-service home</code> shows the organization and the connection.</p>
+          </li>
+          <li><h4>Give people access, in the console</h4>
+            <p>On the server's page: <strong>People</strong> &rarr; <strong>Add person</strong> for each person of your organization
+              who may use it, with their shares; <strong>Terminals and desktop</strong>, <strong>Tunnels</strong> and
+              <strong>Databases</strong> for the rest. Changes reach the server within seconds.</p>
+          </li>
+          <li><h4>Connect</h4>
+            <p>In the WabiLink app, <strong>Sign in</strong> at the top right, with your WabiOne account: your organization's servers
+              appear, ready to connect. There is no address, password or fingerprint to type: WabiOne vouches for the server.</p>
+            <p>From outside this PC's network, nothing needs forwarding on the router: WabiOne's rendezvous introduces the app to
+              the server. A few networks (some mobile and carrier networks) don't let that through; from those, forward TCP
+              <code>8009</code> to this PC.</p>
+          </li>
+        </ol>
+        <div class="tip"><strong>WabiOne manages it from now on.</strong> On this PC, commands that change its settings are refused,
+          saying so, and the WabiLink app shows them read-only. Its secrets, such as database passwords, stay on the PC.
+          <code>.\wabilink-service unregister</code>
+          takes it back, with the server's own settings as they were.</div>
+      </div>
+
+      <div class="way" data-way="offline">
+        <ol class="steps">
+          <li><h4>Add yourself and a share</h4>
+            <pre><code>.\wabilink-service user add $env:USERNAME --admin          <span class="c"># asks for a password, twice</span>
+.\wabilink-service share add $env:USERNAME Files C:\Users\Public
+.\wabilink-service identity                       <span class="c"># the fingerprint clients will be shown</span></code></pre>
+            <p>Your WabiLink account is named as your Windows account, with a password of its own; <strong>Files</strong> is the PC's
+              Public folder. Write down the fingerprint: you will compare it the first time you connect.</p>
+          </li>
+          <li><h4>Connect</h4>
+            <p>In the WabiLink app, <strong>New profile</strong>: this PC's address (<code>ipconfig</code> shows it), port
+              <code>8009</code>, your account and password. Compare the fingerprint it shows the first time with the one above,
+              and accept it.</p>
+            <p>To reach it from outside your network, forward TCP <code>8009</code> on your router to this PC. Never forward <code>8010</code>.</p>
+          </li>
+          <li><h4>Everything else</h4>
+            <p>More people and their rights, groups, tunnels, databases and every setting: with <code>.\wabilink-service</code> here,
+              or from your desk with Server settings, in the app (port <code>8010</code>, your account).</p>
+            <a class="card next" href="server-commands.html#windows"><span><strong>The server's commands</strong><span class="d">Everything a
+              server can be set to, from the command line, with examples</span></span><span class="arrow" aria-hidden="true">&rarr;</span></a>
+          </li>
+        </ol>
+      </div>
+
+      <p class="part">Optional: this PC's desktop</p>
+      <p>Let people see and use this PC's screen from WabiLink, in their session. In <strong>PowerShell as administrator</strong>, in the
+        server's folder (<code>cd "C:\Program Files\WabiLink\Server"</code> if WabiLink Setup installed it), with the name of each
+        WabiLink account that may use it:</p>
+      <pre><code>.\wabilink-service config set desktop-enabled yes
+.\wabilink-service user desktop $env:USERNAME yes</code></pre>
+      <p>With WabiOne, turn it on in the console instead: <strong>Terminals and desktop</strong>, and the desktop for each person under
+        <strong>People</strong>. The rest is the same either way.</p>
+      <p>That is all it takes on Windows. Viewers see this PC's own screen, UAC prompts included. With nobody signed in - after a
+        restart, or a server with no one at it - it is the login screen, and you sign in from the viewer as at the machine:
+        the viewer's <strong>Ctrl+Alt+Del</strong> button (the keyboard icon), then a Windows account's password. Where the
+        lock screen asks for no Ctrl+Alt+Del - Windows 11 and 10 by default - press Space or click, as at the PC.</p>
+      <p>A session the viewer found at the login or lock screen and signed in to is locked again when the last viewer has
+        gone, so it is not left open on the PC's monitor; one that was already open - someone at the PC, being helped - is
+        left as it was. To leave it open instead: <code>.\wabilink-service config set desktop-lock-on-leave no</code> (with
+        WabiOne, in the console). Signing in to an account with a disconnected session brings that session to the screen; the
+        viewer follows it.</p>
+      <p>For the Ctrl+Alt+Del button, WabiLink lets services send Ctrl+Alt+Del (the <code>SoftwareSASGeneration</code>
+        policy), as remote-support tools do; turning the desktop on sets it, and says so. With a graphics card (NVIDIA, AMD,
+        Intel), the screen is coded on it, at 60 frames a second and more.</p>
+      <p>This is the PC's own screen, not a Remote Desktop session: someone connected by Remote Desktop is not seen (the
+        screen shows the login screen meanwhile), and signing in as them from the viewer takes their session over and ends
+        their Remote Desktop connection. For a separate session, give yourself a WabiLink tunnel to the PC's Remote
+        Desktop and connect a Remote Desktop app of your own through it.</p>
+      <div class="after">
+        <div class="card"><h4>Is it running?</h4>
+          <p>In the server's folder:</p>
+          <pre><code>.\wabilink-service status</code></pre>
+          <p>Its log is in <code>C:\ProgramData\WabiLink\Server\logs</code>; warnings and errors also go to the Application event log, as
+            <strong>WabiLink</strong>.</p></div>
+        <div class="card"><h4>Updating</h4>
+          <p>Installed with WabiLink Setup: nothing to do, it updates itself at night (<a href="server-commands.html#updates">how</a>).
+            Installed by hand, in the server's folder:</p>
+          <pre><code>$arch = if ($env:PROCESSOR_ARCHITECTURE -eq 'ARM64') { 'arm64' } else { 'x64' }
+$dl = "C:\Program Files\WabiLink\.download"
+New-Item -ItemType Directory -Force $dl | Out-Null
+curl.exe -fLo "$dl\wabilink-server.zip" "https://link.wabione.com/files/wabilink-server-1.1.28-windows-$arch.zip"
+curl.exe -fLo "$dl\SHA256SUMS" "https://link.wabione.com/files/SHA256SUMS"
+$listed = (Select-String -Path "$dl\SHA256SUMS" -Pattern "^([0-9a-f]{64}) [ *]wabilink-server-1.1.28-windows-$arch\.zip$").Matches[0].Groups[1].Value
+if ((Get-FileHash "$dl\wabilink-server.zip" -Algorithm SHA256).Hash -ne $listed) { throw "The download is not the file SHA256SUMS lists: do not unpack it." } else { .\wabilink-service stop; Expand-Archive "$dl\wabilink-server.zip" -DestinationPath "C:\Program Files\WabiLink" -Force; .\wabilink-service start }
+Remove-Item -Recurse -Force $dl</code></pre></div>
+        <div class="card"><h4>Removing</h4>
+          <p>Installed with WabiLink Setup: <strong>Settings</strong> &rarr; <strong>Apps</strong> &rarr; <strong>WabiLink Server</strong>
+            &rarr; <strong>Uninstall</strong>. Installed by hand:</p>
+          <pre><code>.\wabilink-service uninstall</code></pre>
+          <p>Either way the data in <code>C:\ProgramData\WabiLink\Server</code> is kept, unless you delete it too.</p></div>
+      </div>
+    </div>
+
+    <!-- macOS · client -->
+    <div class="guide" data-guide="macos/client">
+      <div class="head"><h3>WabiLink for macOS</h3><span class="version">Version 1.1.28</span></div>
+      <p class="intro">The app you connect with. One command downloads the right version for your Mac and puts it in Applications.</p>
+      <div class="tip"><strong>You need:</strong> macOS 13 (Ventura) or later, and an administrator account on the Mac (the one you set it up with usually is).</div>
+      <ol class="steps">
+        <li><h4>Open Terminal</h4>
+          <p>Press <span class="kbd">⌘</span>+<span class="kbd">Space</span>, type <strong>Terminal</strong> and press <span class="kbd">Return</span>.</p>
+        </li>
+        <li><h4>Copy these, paste them into Terminal, and press Return</h4>
+          <pre><code>curl -fsSLO https://link.wabione.com/install-macos.sh
+bash install-macos.sh client</code></pre>
+          <p>The first downloads the install script, the second runs it. It finds out whether your Mac has Apple silicon or Intel, downloads the newest WabiLink for it, checks it, and puts
+            <strong>WabiLink</strong> in Applications. It says when it is done.</p>
+        </li>
+        <li><h4>Open WabiLink</h4>
+          <p>Open <strong>Applications</strong> in Finder (or Launchpad) and double-click <strong>WabiLink</strong>.</p>
+        </li>
+        <li><h4>Connect</h4>
+          <p>Click <strong>New profile</strong>: the server's address (port <code>8009</code>), your account and password. The first
+            time, WabiLink shows the server's fingerprint: compare it with what the server's administrator got from
+            <code>wabilink-server identity</code>, and accept it.</p>
+          <p>A server you administer: <strong>Server settings</strong>, on its card, opens its users, shares and settings,
+            through its admin port (<code>8010</code>).</p>
+        </li>
+        <li><h4>AV1 video <span class="optional">optional</span></h4>
+          <p>H.264 and HEVC are decoded by macOS itself. For AV1, the best codec for a slow link, install dav1d with
+            <a href="https://brew.sh">Homebrew</a>:</p>
+          <pre><code>brew install dav1d</code></pre>
+        </li>
+        <li><h4>From the command line <span class="optional">optional</span></h4>
+          <p>WabiLink brings its command-line client along: what the app does, from Terminal or a script - files, a terminal on
+            the server, tunnels, and the server's desktop (it opens the app's viewer), with the app's saved accounts. The install
+            command makes it <code>wabilink</code> where it can; otherwise it prints the one command that does:</p>
+          <pre><code>sudo mkdir -p /usr/local/bin && sudo ln -sf /Applications/WabiLink.app/Contents/MacOS/wabilink-cli /usr/local/bin/wabilink</code></pre>
+          <pre><code>wabilink profile add work --host server.example.com --user you
+wabilink terminal -p work              <span class="c"># a shell on the server; Enter then ~. leaves one that hangs</span>
+wabilink help</code></pre>
+        </li>
+      </ol>
+      <details><summary>Or download it yourself</summary>
+        <p>Apple silicon (M1 and later) or Intel: Apple menu &rarr; <strong>About This Mac</strong>.</p>
+        <div class="buttons"><a class="dl" href="files/wabilink-client-1.1.28-macos-arm64.zip">Apple silicon <small>1.1.28 · 49 MB</small></a> <a class="dl" href="files/wabilink-client-1.1.28-macos-x64.zip">Intel <small>1.1.28 · 52 MB</small></a></div>
+        <p>Open the <code>.zip</code> (Safari may already have) and drag <strong>WabiLink</strong> into Applications. The first time,
+          Control-click it &rarr; <strong>Open</strong> &rarr; <strong>Open</strong>; on macOS 15 and later, open it, then System Settings
+          &rarr; <strong>Privacy &amp; Security</strong> &rarr; <strong>Open Anyway</strong>.</p>
+      </details>
+      <div class="after">
+        <div class="card"><h4>Updating</h4><p>Quit WabiLink and paste the same commands again. Your profiles are kept.</p>
+          <pre><code>curl -fsSLO https://link.wabione.com/install-macos.sh
+bash install-macos.sh client</code></pre></div>
+        <div class="card"><h4>Removing</h4><p>Drag WabiLink from Applications to the Bin. Settings are in <code>~/Library/Application Support/WabiLink</code>.</p></div>
+      </div>
+    </div>
+
+    <!-- macOS · server -->
+    <div class="guide" data-guide="macos/server">
+      <div class="head"><h3>WabiLink Server for macOS</h3><span class="version">Version 1.1.28</span></div>
+      <p class="intro">Runs as a service: it starts when the Mac starts, before anyone logs in, and restarts if it stops. Copy each
+        box into Terminal as it is - nothing in them needs changing.</p>
+      <div class="tip"><strong>You need:</strong>
+        <ul style="margin:6px 0 0">
+          <li>macOS 13 (Ventura) or later, Apple silicon or Intel;</li>
+          <li>an administrator account on the Mac: <code>sudo</code> asks for its password. Nothing shows as you type it - type it
+            and press <span class="kbd">Return</span>;</li>
+          <li>for others to reach it, the Mac on and awake: System Settings &rarr; <strong>Energy</strong> (or <strong>Battery</strong>
+            &rarr; <strong>Options</strong>) &rarr; <strong>Prevent automatic sleeping when the display is off</strong>.</li>
+        </ul>
+      </div>
+      <p class="part">Install it</p>
+      <ol class="steps">
+        <li><h4>Open Terminal</h4>
+          <p>Press <span class="kbd">⌘</span>+<span class="kbd">Space</span>, type <strong>Terminal</strong> and press <span class="kbd">Return</span>.</p>
+        </li>
+        <li><h4>Install the server</h4>
+          <pre><code>curl -fsSLO https://link.wabione.com/install-macos.sh
+sudo bash install-macos.sh</code></pre>
+          <p>The first command downloads the install script; read it if you like (<code>less install-macos.sh</code>) before the
+            second runs it. It downloads the newest server for your Mac, checks it, installs it in <code>/usr/local/wabilink-server</code>, and starts it
+            as a service. It ends with <em>"&hellip; is installed, running, and starts at every boot."</em> From then on it updates itself
+            at night (<a href="server-commands.html#updates">updates</a>).</p>
+        </li>
+        <li><h4>Let other computers in</h4>
+          <p>Only if the Mac's firewall is on (System Settings &rarr; <strong>Network</strong> &rarr; <strong>Firewall</strong>):
+            <strong>Options&hellip;</strong> &rarr; <strong>+</strong>, <span class="kbd">⌘</span>+<span class="kbd">Shift</span>+<span class="kbd">G</span>,
+            paste <code>/usr/local/wabilink-server/wabilink-server</code>, and set it to <strong>Allow incoming connections</strong>.
+            On a Mac your organisation manages, its firewall may be theirs to set: ask them to allow the server.</p>
+        </li>
+      </ol>
+
+      <p class="part">Set it up</p>
+      <p class="part-intro">Who may use it, and what they get. Pick one way; you can move to the other later: registered with WabiOne,
+        the server starts from what it already had, and unregistered, it gets that back.</p>
+      <div class="ways">
+        <button class="choice way-pick" data-way="online" aria-pressed="false">
+          <span class="icon"><svg class="line" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></span>
+          <strong>Online, with WabiOne</strong><span class="d">People, shares and settings in WabiOne's console, in your browser. Your organization's people sign in with their WabiOne account, and reach it from anywhere.</span>
+        </button>
+        <button class="choice way-pick" data-way="offline" aria-pressed="false">
+          <span class="icon"><svg class="line" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9l3 3-3 3M12 15h5"/></svg></span>
+          <strong>Offline, on this Mac</strong><span class="d">Accounts, shares and settings with commands in Terminal, or the WabiLink app. Nothing is sent to WabiOne.</span>
+        </button>
+      </div>
+      <p class="way-none">Pick one to see its steps.</p>
+
+      <div class="way" data-way="online">
+        <ol class="steps">
+          <li><h4>Get a code from WabiOne</h4>
+            <p>Sign in to WabiOne's console at <a href="https://app.wabione.com/">app.wabione.com</a> (no account yet?
+              <a href="https://www.wabione.com/signup">Create one</a>: it makes your organization). Then <strong>Servers</strong>
+              &rarr; <strong>Add server</strong>, a name if you like (otherwise the Mac's name), and <strong>Get code</strong>.
+              The code works once, for 15 minutes. From a script or a CI pipeline, with no code to copy, an
+              <a href="server-commands.html#wabione-token">API token</a> that may register servers registers it instead.</p>
+          </li>
+          <li><h4>Register this Mac with it</h4>
+            <p>In Terminal, with the code from the console:</p>
+            <pre><code>sudo wabilink-server register K7M2-QX9P-4HRT</code></pre>
+            <p>The console says <strong>Registered</strong>, and within seconds the server is online there.
+              <code>sudo wabilink-server home</code> shows the organization and the connection.</p>
+          </li>
+          <li><h4>Give people access, in the console</h4>
+            <p>On the server's page: <strong>People</strong> &rarr; <strong>Add person</strong> for each person of your organization
+              who may use it, with their shares; <strong>Terminals and desktop</strong>, <strong>Tunnels</strong> and
+              <strong>Databases</strong> for the rest. Changes reach the server within seconds.</p>
+            <p>A share is a folder of this Mac. macOS protects Documents, Desktop and Downloads: for a share in one of them, give the
+              server <strong>Full Disk Access</strong> (System Settings &rarr; <strong>Privacy &amp; Security</strong> &rarr;
+              <strong>Full Disk Access</strong> &rarr; <strong>+</strong>, <span class="kbd">⌘</span>+<span class="kbd">Shift</span>+<span class="kbd">G</span>,
+              paste <code>/usr/local/wabilink-server/wabilink-server</code>, and turn it on).</p>
+          </li>
+          <li><h4>Connect</h4>
+            <p>In the WabiLink app, <strong>Sign in</strong> at the top right, with your WabiOne account: your organization's servers
+              appear, ready to connect. There is no address, password or fingerprint to type: WabiOne vouches for the server.</p>
+            <p>From outside the Mac's network, nothing needs forwarding on the router: WabiOne's rendezvous introduces the app to
+              the server. A few networks (some mobile and carrier networks) don't let that through; from those, forward TCP
+              <code>8009</code> to the Mac.</p>
+          </li>
+        </ol>
+        <div class="tip"><strong>WabiOne manages it from now on.</strong> On the Mac, commands that change its settings are refused,
+          saying so, and the WabiLink app shows them read-only. Its secrets, such as database passwords, stay on the Mac.
+          <code>sudo wabilink-server unregister</code> takes it back, with the server's own settings as they were.</div>
+      </div>
+
+      <div class="way" data-way="offline">
+        <ol class="steps">
+          <li><h4>Make yourself an account</h4>
+            <p>Your WabiLink account, named as your Mac account, and an administrator. It asks for a password for it, twice - one for
+              WabiLink, which may be different from the Mac's:</p>
+            <pre><code>sudo wabilink-server user add "$USER" --admin</code></pre>
+          </li>
+          <li><h4>Share a folder</h4>
+            <p>The Mac's shared folder, as <strong>Files</strong>:</p>
+            <pre><code>sudo wabilink-server share add "$USER" Files /Users/Shared</code></pre>
+            <details><summary>Sharing your Documents, Desktop or Downloads instead</summary>
+              <p>macOS protects those folders: the server may read them only once allowed. System Settings &rarr;
+                <strong>Privacy &amp; Security</strong> &rarr; <strong>Full Disk Access</strong> &rarr; <strong>+</strong>, press
+                <span class="kbd">⌘</span>+<span class="kbd">Shift</span>+<span class="kbd">G</span>, paste
+                <code>/usr/local/wabilink-server/wabilink-server</code>, and turn it on. Then, for example:</p>
+              <pre><code>sudo wabilink-server share add "$USER" Documents "$HOME/Documents"</code></pre>
+            </details>
+          </li>
+          <li><h4>Note the server's fingerprint</h4>
+            <pre><code>sudo wabilink-server identity</code></pre>
+            <p>The app shows it the first time it connects: it should be the same.</p>
+          </li>
+          <li><h4>Connect</h4>
+            <p>In the WabiLink app, <strong>New profile</strong>: this Mac's address, port <code>8009</code>, your account and
+              password; compare the fingerprint, and accept it. The address:</p>
+            <pre><code>ipconfig getifaddr en0 || ipconfig getifaddr en1</code></pre>
+            <p>To reach it from outside your network, forward TCP <code>8009</code> on your router to the Mac. Never forward <code>8010</code>.</p>
+          </li>
+          <li><h4>Everything else</h4>
+            <p>More people and their rights, groups, tunnels, databases and every setting: with <code>sudo wabilink-server</code>
+              here, or from your desk with Server settings, in the app (port <code>8010</code>, your account).</p>
+            <a class="card next" href="server-commands.html"><span><strong>The server's commands</strong><span class="d">Everything a
+              server can be set to, from the command line, with examples</span></span><span class="arrow" aria-hidden="true">&rarr;</span></a>
+          </li>
+        </ol>
+      </div>
+
+      <p class="part">Optional: this Mac's desktop</p>
+      <pre><code>sudo wabilink-server config set desktop-enabled yes
+sudo wabilink-server user desktop "$USER" yes</code></pre>
+      <p>With WabiOne, turn it on in the console instead: <strong>Terminals and desktop</strong>, and the desktop for each person under
+        <strong>People</strong>. The rest is the same either way.</p>
+      <p>Then allow it twice, once, in System Settings &rarr; <strong>Privacy &amp; Security</strong> - in each, <strong>+</strong>,
+        <span class="kbd">⌘</span>+<span class="kbd">Shift</span>+<span class="kbd">G</span>, paste
+        <code>/usr/local/wabilink-server/wabilink-server</code>, and turn it on:</p>
+      <ul>
+        <li><strong>Screen &amp; System Audio Recording</strong> &mdash; to show the screen;</li>
+        <li><strong>Accessibility</strong> &mdash; for the keyboard and the pointer.</li>
+      </ul>
+      <p>macOS may ask by itself the first time someone connects. After an update it may need turning on again.</p>
+      <p>With nobody logged in, viewers see the login window and sign in from it as at the Mac: the account, then its password.
+        A session the viewer found at the login window or locked is locked again when the last viewer has gone; one already
+        open is left as it was. To leave it open instead: <code>sudo wabilink-server config set desktop-lock-on-leave no</code>
+        (with WabiOne, in the console). With FileVault on, a restarted Mac waits at FileVault's unlock screen before macOS starts:
+        sign in at the Mac once, or restart it with <code>sudo fdesetup authrestart</code>.</p>
+      <div class="after">
+        <div class="card"><h4>Updating</h4><p>Nothing to do: it updates itself at night (<a href="server-commands.html#updates">how</a>).
+          To update at once, the same commands again; the accounts and shares are kept.</p>
+          <pre><code>curl -fsSLO https://link.wabione.com/install-macos.sh
+sudo bash install-macos.sh</code></pre></div>
+        <div class="card"><h4>Is it running?</h4>
+          <pre><code>sudo launchctl print system/com.wabilink.server | grep state
+tail -n 20 /Library/Logs/WabiLink/server.log</code></pre></div>
+        <div class="card"><h4>Removing</h4>
+          <pre><code>sudo wabilink-server uninstall-launchd
+sudo rm -rf /usr/local/wabilink-server /usr/local/bin/wabilink-server</code></pre>
+          <p>The accounts and settings stay in <code>/Library/Application Support/WabiLink</code>; delete that too to remove everything.</p></div>
+      </div>
+    </div>
+
+    <!-- Linux · client -->
+    <div class="guide" data-guide="linux/client">
+      <div class="head"><h3>WabiLink for <span data-distro-name>Linux</span></h3><span class="version">Version 1.1.28</span></div>
+      <p class="intro">The app you connect with. It brings its own runtime; the system provides fonts, the display and, optionally, video decoders and sound.</p>
+      <ol class="steps">
+        <li><h4>Install what it uses from the system</h4>
+          <div data-only="fedora">
+            <pre><code>sudo dnf install fontconfig libICE libSM libicu libdav1d libavcodec-free pulseaudio-utils 'libssl.so.3()(64bit)'</code></pre>
+            <p>The last one is OpenSSL 3, which the app needs. Fedora 44 and older already have it; from Fedora 45 it is
+              <code>openssl3-libs</code>, next to OpenSSL 4.</p>
+          </div>
+          <div data-only="rhel">
+            <p>The video decoders come from EPEL:</p>
+            <pre><code>sudo dnf install epel-release
+sudo dnf install fontconfig libICE libSM libicu libdav1d pulseaudio-utils</code></pre>
+          </div>
+          <div data-only="ubuntu debian raspi">
+            <pre><code>sudo apt update
+sudo apt install libfontconfig1 libice6 libsm6 pulseaudio-utils libavcodec-extra
+sudo apt install libicu76 || sudo apt install libicu74 || sudo apt install libicu72
+sudo apt install libdav1d7 || sudo apt install libdav1d6</code></pre>
+          </div>
+          <div data-only="arch">
+            <pre><code>sudo pacman -S --needed fontconfig libice libsm icu dav1d ffmpeg libpulse</code></pre>
+          </div>
+          <div data-only="opensuse">
+            <pre><code>sudo zypper install fontconfig libICE6 libSM6 'libicu??' libdav1d7 pulseaudio-utils</code></pre>
+          </div>
+          <div data-only="other">
+            <p>Fontconfig, libICE, libSM and ICU (<code>libicu</code>, which .NET needs), and for the remote desktop's video dav1d
+              (<code>libdav1d.so.7</code>) and FFmpeg's libavcodec; for its sound <code>pacat</code> or <code>aplay</code>.</p>
+          </div>
+          <p>dav1d and libavcodec decode the remote desktop's video; without them it is sent as lossless tiles, which needs a faster link.</p>
+          <div class="tip" data-only="arch"><strong>On Arch, for now:</strong> its FFmpeg (9) is newer than WabiLink reads, so the remote
+            desktop's video comes as AV1 (dav1d) where the server can send it, and as lossless tiles otherwise.</div>
+          <p data-only="opensuse">openSUSE's own FFmpeg decodes no H.264 or HEVC; dav1d decodes AV1. For all three, FFmpeg from the
+            Packman repository (see the server's instructions).</p>
+        </li>
+        <li><h4>Download it</h4>
+          <p data-only="raspi">For a Raspberry Pi 3, 4 or 5 with the <strong>64-bit</strong> Raspberry Pi OS take <strong>ARM64</strong>; the 32-bit system has no WabiLink app.</p>
+          <p data-not="raspi">Most PCs are <strong>x86_64</strong>; ARM boards and laptops take <strong>ARM64</strong>. <code>uname -m</code> says which.</p>
+          <div class="buttons"><a class="dl" href="files/wabilink-client-1.1.28-linux-x64.tar.gz">x86_64 <small>1.1.28 · 50 MB</small></a> <a class="dl" href="files/wabilink-client-1.1.28-linux-arm64.tar.gz">ARM64 <small>1.1.28 · 47 MB</small></a></div>
+        </li>
+        <li><h4>Install it for yourself, with a menu entry</h4>
+          <pre><code>mkdir -p ~/.local/opt ~/.local/bin ~/.local/share/applications
+tar -xzf ~/Downloads/wabilink-client-1.1.28-linux-*.tar.gz -C ~/.local/opt
+ln -sf ~/.local/opt/wabilink-client/wabilink-client ~/.local/bin/wabilink-client
+ln -sf ~/.local/opt/wabilink-client/wabilink-cli ~/.local/bin/wabilink
+cat &gt; ~/.local/share/applications/wabilink.desktop &lt;&lt;EOF
+[Desktop Entry]
+Type=Application
+Name=WabiLink
+Comment=Files, terminals, tunnels and desktop of your server
+Exec=$HOME/.local/opt/wabilink-client/wabilink-client
+Terminal=false
+Categories=Network;FileTransfer;RemoteAccess;
+EOF</code></pre>
+          <p>WabiLink is now in your applications menu, and <code>wabilink-client</code> starts it from a terminal;
+            <code>wabilink</code> is its command-line client.</p>
+        </li>
+        <li><h4>Connect</h4>
+          <p>Click <strong>New profile</strong>: the server's address (port <code>8009</code>), your account and password. Compare
+            the fingerprint shown the first time with the server's <code>wabilink-server identity</code>.</p>
+          <p>A server you administer: <strong>Server settings</strong>, on its card, opens its users, shares and settings,
+            through its admin port (<code>8010</code>).</p>
+        </li>
+        <li><h4>From the command line <span class="optional">optional</span></h4>
+          <p><code>wabilink</code> does what the app does, from a terminal or a script - files, a terminal on the server, tunnels,
+            and the server's desktop (it opens the app's viewer) - with the app's saved accounts. If <code>wabilink</code> is not
+            found, log in again: <code>~/.local/bin</code> is on the PATH from the next login.</p>
+          <pre><code>wabilink profile add work --host server.example.com --user you
+wabilink terminal -p work              <span class="c"># a shell on the server; Enter then ~. leaves one that hangs</span>
+wabilink tunnel -p work db --local-port 5432
+wabilink help</code></pre>
+        </li>
+      </ol>
+      <div class="after">
+        <div class="card"><h4>Updating</h4><p>Close WabiLink and unpack the new version over the old one:</p>
+          <pre><code>tar -xzf ~/Downloads/wabilink-client-1.1.28-linux-*.tar.gz -C ~/.local/opt</code></pre></div>
+        <div class="card"><h4>Removing</h4>
+          <pre><code>rm -rf ~/.local/opt/wabilink-client ~/.local/bin/wabilink-client ~/.local/bin/wabilink ~/.local/share/applications/wabilink.desktop</code></pre></div>
+      </div>
+    </div>
+
+    <!-- Linux · server -->
+    <div class="guide" data-guide="linux/server">
+      <div class="head"><h3>WabiLink Server for <span data-distro-name>Linux</span></h3><span class="version">Version 1.1.28</span></div>
+      <p class="intro" data-only="fedora rhel ubuntu debian raspi">Installed from WabiLink's signed package repository, so it
+        updates with the rest of the system. It runs as a systemd service under its own <code>wabilink</code> account.</p>
+      <p class="intro" data-only="arch opensuse other">There are no packages for this distribution yet: the server comes as a
+        self-contained archive, which the install script puts in <code>/opt/wabilink</code> and runs as a systemd service under its
+        own <code>wabilink</code> account. The same command updates it.</p>
+      <div class="tip"><strong>On AWS?</strong> A user data script installs and sets up the server when an EC2 instance first boots:
+        see <a href="#aws">WabiLink on AWS</a>.</div>
+      <p class="part">Install it</p>
+      <ol class="steps">
+        <li data-only="fedora rhel ubuntu debian raspi"><h4>Install it</h4>
+          <pre><code>curl -fsSLO https://link.wabione.com/install.sh
+sudo sh install.sh</code></pre>
+          <p>The first command downloads the install script; read it if you like (<code>less install.sh</code>) before the second
+            runs it. It adds the repository and its signing key, then installs <code>wabilink-server</code> with what its optional parts
+            use: ssh for login terminals, the libraries of the remote desktop, and SVT-AV1 for AV1 video where the system has it.
+            It does not start the server yet.</p>
+          <p data-only="raspi">It picks the 64-bit or 32-bit package by itself (Raspberry Pi 2 and later).</p>
+          <details><summary>Or add the repository by hand</summary>
+            <div data-only="fedora rhel"><pre><code>sudo curl -fsSLo /etc/pki/rpm-gpg/RPM-GPG-KEY-wabilink https://link.wabione.com/wabilink.asc
+gpg --show-keys /etc/pki/rpm-gpg/RPM-GPG-KEY-wabilink
+sudo curl -fsSLo /etc/yum.repos.d/wabilink.repo https://link.wabione.com/wabilink.repo
+sudo dnf install wabilink-server</code></pre>
+            <p>The second command shows what is in the key file: go on only if it shows one key (one <code>pub</code> line), and its
+              fingerprint is <code>2C9F6909A29FC1FE2F957F7FACBA86055D3EBAD2</code>. A file with another key in it, or a second one, is not WabiLink's alone.
+              The repository then checks every package against that file, never a key fetched again later; and the server's own
+              updates check against the key it carries, whatever the file holds.</p></div>
+            <div data-only="ubuntu debian raspi"><pre><code>sudo install -d -m 0755 /etc/apt/keyrings
+sudo curl -fsSLo /etc/apt/keyrings/wabilink.asc https://link.wabione.com/wabilink.asc
+gpg --show-keys /etc/apt/keyrings/wabilink.asc
+echo "deb [signed-by=/etc/apt/keyrings/wabilink.asc] https://link.wabione.com/deb stable main" | sudo tee /etc/apt/sources.list.d/wabilink.list
+sudo apt update &amp;&amp; sudo apt install wabilink-server</code></pre>
+            <p>The third command shows what is in the key file: go on only if it shows one key (one <code>pub</code> line), and its
+              fingerprint is <code>2C9F6909A29FC1FE2F957F7FACBA86055D3EBAD2</code>. apt then checks WabiLink's packages against that file alone; and the
+              server's own updates write the key it carries over it.</p></div>
+          </details>
+        </li>
+        <li data-only="arch opensuse other"><h4>Install what it uses from the system</h4>
+          <p>The server brings its own runtime. From the system it needs OpenSSL 3, and for its optional parts: ssh for login
+            terminals, the X11 and PipeWire libraries for this machine's desktop, <code>pacat</code> for its sound, and FFmpeg and
+            SVT-AV1 for video. The packages for other distributions bring these by themselves; here, install them once:</p>
+          <div data-only="arch"><pre><code>sudo pacman -S --needed openssl openssh libx11 libxext libxtst libxfixes libxrandr pipewire libpulse</code></pre></div>
+          <div data-only="opensuse"><pre><code>sudo zypper install libopenssl3 openssh-clients libX11-6 libXext6 libXtst6 libXfixes3 libXrandr2 libpipewire-0_3-0 pulseaudio-utils libavcodec62</code></pre></div>
+          <div data-only="other"><p>glibc, OpenSSL 3 (<code>libssl.so.3</code>) and systemd; for the optional parts <code>ssh</code>,
+            <code>libX11</code>, <code>libXext</code>, <code>libXtst</code>, <code>libXfixes</code>, <code>libXrandr</code>,
+            <code>libpipewire-0.3</code>, <code>pacat</code>, FFmpeg's <code>libavcodec.so.59</code> to <code>.62</code>, and
+            SVT-AV1 2.0 to 3.x (<code>libSvtAv1Enc.so.2</code> or <code>.3</code>).</p></div>
+          <div class="warn" data-only="arch"><strong>Video coding on Arch, for now:</strong> Arch's FFmpeg (9) and SVT-AV1 (4) are newer than this
+            server reads, so this machine's desktop is sent as lossless tiles: sharp, but it needs a fast link (a home network is
+            fine). Files, terminals and tunnels are not affected.</div>
+          <div class="tip" data-only="opensuse"><strong>Video on openSUSE:</strong> its own FFmpeg codes only AV1 on the graphics
+            card (NVIDIA RTX 40 and later, AMD RX 7000 and later, Intel Arc), and its SVT-AV1 (4) is newer than this server reads.
+            Other machines send the desktop as lossless tiles, which need a fast link. For H.264 and HEVC from any recent
+            graphics card, use FFmpeg from the Packman repository (a community repository, not openSUSE's own):
+            <pre><code>sudo zypper ar -cfp 90 https://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Tumbleweed/ packman
+sudo zypper dup --from packman --allow-vendor-change</code></pre>
+            On Leap, use <code>openSUSE_Leap_15.6</code> in place of <code>openSUSE_Tumbleweed</code>.</div>
+        </li>
+        <li data-only="arch opensuse other"><h4>Install it</h4>
+          <pre><code>curl -fsSLO https://link.wabione.com/install.sh
+sudo sh install.sh</code></pre>
+          <p>The first command downloads the install script; read it if you like (<code>less install.sh</code>) before the second
+            runs it. It downloads the newest server for this machine's processor (x86_64, ARM64 or 32-bit ARM), checks it against the
+            published checksums, and puts it in <code>/opt/wabilink</code>. It creates the <code>wabilink</code> account and
+            <code>/var/lib/wabilink</code>, the systemd service, and the agent for this machine's desktop. It does not start the
+            server yet. <code>wabilink-server version</code> says which version is installed.</p>
+          <details><summary>Or install the archive by hand</summary>
+            <p><code>uname -m</code> says which: <code>x86_64</code>, <code>aarch64</code> (ARM64) or <code>armv7l</code> (32-bit ARM).</p>
+            <div class="buttons"><a class="dl" href="files/wabilink-server-1.1.28-linux-x86_64.tar.gz">x86_64 <small>1.1.28 · 39 MB</small></a> <a class="dl" href="files/wabilink-server-1.1.28-linux-aarch64.tar.gz">ARM64 <small>1.1.28 · 37 MB</small></a> <a class="dl" href="files/wabilink-server-1.1.28-linux-armv7l.tar.gz">32-bit ARM <small>1.1.28 · 36 MB</small></a></div>
+            <p>Check it first: the list of checksums, signed with WabiLink's release key, and the archive against it.</p>
+            <pre><code>cd ~/Downloads
+curl -fsSLO https://link.wabione.com/files/SHA256SUMS
+curl -fsSLO https://link.wabione.com/files/SHA256SUMS.asc
+curl -fsSL https://link.wabione.com/wabilink.asc | gpg --import
+gpg --verify SHA256SUMS.asc SHA256SUMS
+sha256sum --ignore-missing -c SHA256SUMS</code></pre>
+            <p><code>gpg</code> should say <em>Good signature</em>, from key <code>2C9F 6909 A29F C1FE 2F95 7F7F ACBA 8605 5D3E BAD2</code>,
+              and <code>sha256sum</code> <em>OK</em> for the archive. Anything else: do not install it.</p>
+            <pre><code>sudo mkdir -p /opt/wabilink
+sudo tar --no-same-owner -xzf ~/Downloads/wabilink-server-1.1.28-linux-$(uname -m).tar.gz -C /opt/wabilink --strip-components=1
+sudo /opt/wabilink/wabilink-server install-systemd
+sudo ln -sf /opt/wabilink/wabilink-server /usr/local/bin/wabilink-server</code></pre>
+            <p>This starts the service now and at every boot. <code>--no-same-owner</code> makes the files root's: without it,
+              <code>tar</code> run as root keeps whatever account the archive names, and that account could change the server. Set up
+              the desktop agent by hand too (this machine's desktop, below). To update, run the install script: it takes over an
+              install made by hand.</p>
+          </details>
+        </li>
+        <li><h4>Start it</h4>
+          <pre><code>sudo systemctl enable --now wabilink</code></pre>
+          <p>It starts now and at every boot, and updates itself at night (<a href="server-commands.html#updates">updates</a>).
+            <code>systemctl status wabilink</code> shows it running; <code>journalctl -u wabilink -f</code> follows its log.</p>
+        </li>
+        <li><h4>Open the firewall</h4>
+          <p>Clients connect on <code>8009</code>. Server settings, in the app, use <code>8010</code>: open that only to where you administer
+            from - below, the local network <code>192.168.1.0/24</code>; put in yours (<code>ip -4 addr</code> shows it).</p>
+          <div data-only="fedora rhel opensuse"><pre><code>sudo firewall-cmd --permanent --add-port=8009/tcp
+sudo firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="192.168.1.0/24" port port="8010" protocol="tcp" accept'
+sudo firewall-cmd --reload</code></pre></div>
+          <div data-only="ubuntu"><p>If ufw is on (<code>sudo ufw status</code>):</p><pre><code>sudo ufw allow 8009/tcp
+sudo ufw allow from 192.168.1.0/24 to any port 8010 proto tcp</code></pre></div>
+          <p data-only="debian raspi">There is no firewall on by default. If you set one up with nftables or iptables, allow TCP <code>8009</code>,
+            and <code>8010</code> from your own network only.</p>
+          <p data-only="arch other">If a firewall is on (firewalld, ufw, nftables), allow TCP <code>8009</code>, and <code>8010</code> from your own
+            network only; the firewalld and ufw commands are as on Fedora and Ubuntu.</p>
+        </li>
+      </ol>
+
+      <p class="part">Set it up</p>
+      <p class="part-intro">Who may use it, and what they get. Pick one way; you can move to the other later: registered with WabiOne,
+        the server starts from what it already had, and unregistered, it gets that back.</p>
+      <div class="ways">
+        <button class="choice way-pick" data-way="online" aria-pressed="false">
+          <span class="icon"><svg class="line" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></span>
+          <strong>Online, with WabiOne</strong><span class="d">People, shares and settings in WabiOne's console, in your browser. Your organization's people sign in with their WabiOne account, and reach it from anywhere.</span>
+        </button>
+        <button class="choice way-pick" data-way="offline" aria-pressed="false">
+          <span class="icon"><svg class="line" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9l3 3-3 3M12 15h5"/></svg></span>
+          <strong>Offline, on this machine</strong><span class="d">Accounts, shares and settings with commands on this machine, or the WabiLink app. Nothing is sent to WabiOne.</span>
+        </button>
+      </div>
+      <p class="way-none">Pick one to see its steps.</p>
+
+      <div class="way" data-way="online">
+        <ol class="steps">
+          <li><h4>Get a code from WabiOne</h4>
+            <p>Sign in to WabiOne's console at <a href="https://app.wabione.com/">app.wabione.com</a> (no account yet?
+              <a href="https://www.wabione.com/signup">Create one</a>: it makes your organization). Then <strong>Servers</strong>
+              &rarr; <strong>Add server</strong>, a name if you like (otherwise the machine's host name), and <strong>Get code</strong>.
+              The code works once, for 15 minutes. From a script or a CI pipeline, with no code to copy, an
+              <a href="server-commands.html#wabione-token">API token</a> that may register servers registers it instead.</p>
+          </li>
+          <li><h4>Register this machine with it</h4>
+            <p>With the code from the console:</p>
+            <pre><code>sudo wabilink-server register K7M2-QX9P-4HRT</code></pre>
+            <p>The console says <strong>Registered</strong>, and within seconds the server is online there.
+              <code>sudo wabilink-server home</code> shows the organization and the connection.</p>
+          </li>
+          <li><h4>Give people access, in the console</h4>
+            <p>On the server's page: <strong>People</strong> &rarr; <strong>Add person</strong> for each person of your organization
+              who may use it, with their shares; <strong>Terminals and desktop</strong>, <strong>Tunnels</strong> and
+              <strong>Databases</strong> for the rest. Changes reach the server within seconds.</p>
+            <p>A share is a folder of this machine, and the server runs as <code>wabilink</code>: it needs to read each share's
+              folder, and write where people upload. For a folder of your own,
+              <code>sudo setfacl -R -m u:wabilink:rwX,d:u:wabilink:rwX /path</code>; <code>sudo wabilink-server share check</code>
+              says which shares' folders it cannot use.</p>
+          </li>
+          <li><h4>Connect</h4>
+            <p>In the WabiLink app, <strong>Sign in</strong> at the top right, with your WabiOne account: your organization's servers
+              appear, ready to connect. There is no address, password or fingerprint to type: WabiOne vouches for the server.</p>
+            <p>From outside this machine's network, nothing needs forwarding on the router: WabiOne's rendezvous introduces the app
+              to the server. A few networks (some mobile and carrier networks) don't let that through; from those, forward TCP
+              <code>8009</code> to this machine.</p>
+          </li>
+        </ol>
+        <div class="tip"><strong>WabiOne manages it from now on.</strong> On this machine, commands that change its settings are
+          refused, saying so, and the WabiLink app shows them read-only. Its secrets, such as database passwords, stay here.
+          <code>sudo wabilink-server unregister</code> takes it back, with the server's own settings as they were.</div>
+      </div>
+
+      <div class="way" data-way="offline">
+        <ol class="steps">
+          <li><h4>Add yourself and a share</h4>
+            <pre><code>sudo wabilink-server user add "$USER" --admin        <span class="c"># asks for a password, twice</span>
+sudo mkdir -p /srv/files &amp;&amp; sudo chown wabilink: /srv/files
+sudo wabilink-server share add "$USER" Files /srv/files
+sudo wabilink-server identity                     <span class="c"># the fingerprint clients will be shown</span></code></pre>
+            <p>The service runs as <code>wabilink</code>: it needs to read each share's folder, and write where people upload. For a
+              folder of your own, <code>sudo setfacl -R -m u:wabilink:rwX,d:u:wabilink:rwX /path</code> gives it access.</p>
+          </li>
+          <li><h4>Connect</h4>
+            <p>In the WabiLink app, <strong>New profile</strong>: this machine's address (<code>hostname -I</code> shows it), port
+              <code>8009</code>, your account and password. Compare the fingerprint it shows the first time with the one above,
+              and accept it.</p>
+            <p>To reach it from outside your network, forward TCP <code>8009</code> on your router to this machine. Never forward <code>8010</code>.</p>
+          </li>
+          <li><h4>Everything else</h4>
+            <p>More people and their rights, groups, tunnels, databases and every setting: with <code>sudo wabilink-server</code>
+              here, or from your desk with Server settings, in the app (port <code>8010</code>, your account).</p>
+            <a class="card next" href="server-commands.html"><span><strong>The server's commands</strong><span class="d">Everything a
+              server can be set to, from the command line, with examples</span></span><span class="arrow" aria-hidden="true">&rarr;</span></a>
+          </li>
+        </ol>
+      </div>
+
+      <p class="part">Optional: this machine's desktop</p>
+      <p>Lets the people you choose see and use this machine's screen from WabiLink (<strong>Server Desktop</strong>), inside their
+        encrypted WabiLink session: no other port is opened. Turn it on, and give it to each account that may use it:</p>
+      <pre><code>sudo wabilink-server config set desktop-enabled yes
+sudo wabilink-server user desktop "$USER" yes</code></pre>
+      <p>With WabiOne, turn it on in the console instead: <strong>Terminals and desktop</strong>, and the desktop for each person under
+        <strong>People</strong>. What this machine needs for it, below, is the same either way.</p>
+      <div data-only="arch opensuse other">
+        <p>A small agent runs in each desktop session and offers its screen to the server. The install script sets it up, as the
+          packages for other distributions do. Installed by hand, set it up once:</p>
+        <pre><code>sudo tee /etc/systemd/user/wabilink-desktop-agent.service &gt;/dev/null &lt;&lt;'EOF'
+[Unit]
+Description=WabiLink desktop agent
+PartOf=graphical-session.target
+After=graphical-session.target
+
+[Service]
+ExecStart=/opt/wabilink/wabilink-server desktop-agent
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=graphical-session.target
+EOF
+sudo systemctl --global enable wabilink-desktop-agent.service</code></pre>
+        <p>It starts in every desktop session from the next login on; in the session you are in now, at once with
+          <code>systemctl --user start wabilink-desktop-agent</code>.</p>
+      </div>
+      <p>Viewers then see whoever is logged in at the machine - locked or not, as on its monitor - and unlock it from the viewer
+        with that account's password. GNOME shows that the screen is shared while someone looks. If someone is working in that
+        session, they are asked first, in a notification naming who asks and from where: <strong>Allow</strong> or
+        <strong>Deny</strong>, and no answer in 30 seconds is a no.</p>
+      <p data-not="raspi"><strong>A login screen of your own</strong> (GNOME 46 and later: Fedora 40, Ubuntu 24.04, Debian 13, RHEL 10
+        and newer): give an account <code>desktop-login</code> as well, and a viewer with nobody at the screen - or no screen at all -
+        gets a login screen of its own. It logs in there as any account of this machine, with that account's password, and may
+        log out: the next connection gives a new login screen. Each WabiLink account sees only its own.</p>
+      <pre data-not="raspi"><code>sudo wabilink-server user desktop-login "$USER" yes
+sudo wabilink-server login-probe        <span class="c"># whether this machine can</span></code></pre>
+      <div class="warn"><strong>Without that, lock, don't log out.</strong> GNOME doesn't share the login screen on the machine's own
+        screen, so once everyone has logged out there is nothing to show until someone logs in at the machine. Lock instead
+        (<span class="kbd">Super</span>+<span class="kbd">L</span>): the viewer shows the lock screen, and you unlock it from there.</div>
+      <p data-not="raspi"><strong>After a restart</strong>, nobody is logged in yet. Two ways to have a desktop there from the start:</p>
+      <ul data-not="raspi">
+        <li><strong>Logged in at boot, locked</strong> (any distribution with GDM, GNOME's login screen): GDM logs the account in on
+          the machine's own screen, and WabiLink locks it at once, as Windows shows its locked console. A viewer unlocks it with
+          the account's password; so can someone at the machine.
+          <pre><code>sudo wabilink-server desktop-setup "$USER" --login
+sudo systemctl reboot</code></pre></li>
+        <li data-only="fedora rhel arch opensuse other"><strong>Always on, with no monitor</strong><span data-only="arch opensuse other"> (where GDM
+          includes GNOME's headless session - <code>desktop-setup</code> says if not)</span>: a separate GNOME session for the
+          account, started at boot on a 1920&times;1080 virtual monitor, locked while no one looks and again after each viewer.
+          Don't use it for an account that also logs in at the machine: GNOME runs one session per account at a time.
+          <pre><code>sudo wabilink-server desktop-setup "$USER"</code></pre></li>
+      </ul>
+      <p data-not="raspi">To undo either: <code>sudo wabilink-server desktop-setup --off</code>. <code>desktop-setup</code> changes the
+        server's settings too, so with WabiOne, run it before registering.</p>
+      <p><strong>Which desktops:</strong> GNOME on Wayland, and any desktop in an X11 session. KDE Plasma, Sway and other Wayland
+        desktops are not supported yet: log in to their X11 session where they still offer one (the choice on the login screen).</p>
+      <p data-only="raspi">Raspberry Pi OS's own desktop (labwc) is not supported yet: switch it to X11 with
+        <code>sudo raspi-config</code> &rarr; Advanced Options &rarr; Wayland &rarr; X11. The screen is sent as lossless tiles.</p>
+      <p><strong>Video from the graphics card:</strong> with a graphics card, the screen is coded on it - 60 frames a second and
+        more. It needs the card's own driver: NVIDIA's driver for NVIDIA cards<span data-only="fedora">
+        (<a href="https://rpmfusion.org/Howto/NVIDIA">RPM Fusion's <code>akmod-nvidia</code></a>)</span><span data-only="ubuntu">
+        (<code>sudo ubuntu-drivers install</code>)</span>, and the VA-API driver for AMD and Intel<span data-only="fedora"> - for H.264
+        and HEVC on AMD and Intel, RPM Fusion's <code>mesa-va-drivers-freeworld</code>, since Fedora's own leaves them out</span>.
+        The viewer's stats panel (the chart button) says what codes the screen, and why.</p>
+      <div class="after">
+        <div class="card" data-only="fedora rhel"><h4>Updating</h4><p>Nothing to do: it updates itself at night (<a href="server-commands.html#updates">how</a>).
+          To update at once, with the system's updates:</p><pre><code>sudo dnf upgrade --refresh</code></pre><p>A running server restarts by itself.</p></div>
+        <div class="card" data-only="ubuntu debian raspi"><h4>Updating</h4><p>Nothing to do: it updates itself at night (<a href="server-commands.html#updates">how</a>).
+          To update at once, with the system's updates:</p><pre><code>sudo apt update &amp;&amp; sudo apt upgrade</code></pre><p>A running server restarts by itself.</p></div>
+        <div class="card" data-only="arch opensuse other"><h4>Updating</h4>
+          <p>Nothing to do: it updates itself at night (<a href="server-commands.html#updates">how</a>). To update at once:</p>
+          <pre><code>curl -fsSLO https://link.wabione.com/install.sh
+sudo sh install.sh</code></pre>
+          <p>The same commands as installing: the newest version replaces the old one, and a running server restarts. The accounts,
+            shares and identity in <code>/var/lib/wabilink</code> are kept. It takes over an install made by hand too, its files
+            made root's. Desktop agents restart as the new version by themselves.</p></div>
+        <div class="card"><h4>Is it running?</h4>
+          <pre><code>systemctl status wabilink
+journalctl -u wabilink -n 50       <span class="c"># its log; -f to follow it</span>
+sudo ss -ltnp | grep -E ':(8009|8010)'</code></pre>
+          <p>The last shows the ports it listens on. From another computer, the app connecting is the test that counts.</p></div>
+        <div class="card" data-only="fedora rhel"><h4>Removing</h4>
+          <pre><code>sudo wabilink-server desktop-setup --off     <span class="c"># only if you used desktop-setup</span>
+sudo dnf remove wabilink-server</code></pre>
+          <p>The accounts, shares and identity in <code>/var/lib/wabilink</code> are kept for a reinstall; to remove everything,
+            also <code>sudo rm -rf /var/lib/wabilink</code>.</p></div>
+        <div class="card" data-only="ubuntu debian raspi"><h4>Removing</h4>
+          <pre><code>sudo wabilink-server desktop-setup --off     <span class="c"># only if you used desktop-setup</span>
+sudo apt remove wabilink-server</code></pre>
+          <p>The accounts, shares and identity in <code>/var/lib/wabilink</code> are kept for a reinstall; to remove everything,
+            also <code>sudo rm -rf /var/lib/wabilink</code>.</p></div>
+        <div class="card" data-only="arch opensuse other"><h4>Removing</h4>
+          <pre><code>sudo wabilink-server desktop-setup --off     <span class="c"># only if you used desktop-setup</span>
+sudo systemctl --global disable wabilink-desktop-agent.service
+sudo rm -f /etc/systemd/user/wabilink-desktop-agent.service
+sudo wabilink-server uninstall-systemd
+sudo rm -rf /opt/wabilink /usr/local/bin/wabilink-server</code></pre>
+          <p>The accounts, shares and identity in <code>/var/lib/wabilink</code> are kept for a reinstall; to remove everything,
+            also <code>sudo rm -rf /var/lib/wabilink</code> and <code>sudo userdel wabilink</code>.</p></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="aws">
+  <div class="wrap">
+    <h2>WabiLink on AWS</h2>
+    <p class="sub">A user data script sets the server up on an EC2 instance when it first boots - nothing to log in to the instance
+      for. Registered with WabiOne by an API token, it needs no code copied from the console: a release script or a CI
+      pipeline adds servers on its own.</p>
+    <div class="warn"><strong>Never put a token or a password in user data.</strong> Any program on the instance can read it, and so
+      can anyone who can view the instance in the console. The script reads it from SSM Parameter Store instead, with the
+      instance's own role.</div>
+
+    <p class="part">The instance's system</p>
+    <div class="ways">
+      <button class="choice aws-pick" data-aws-os="linux" aria-pressed="false">
+        <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c-2.2 0-3.6 1.9-3.6 4.6 0 1.4.4 2.3.1 3.2-.5 1.4-3.2 3.6-3.6 6.3-.2 1.4.5 2.3 1.2 2.6.8.3 1.3.9 2.1 1.6.9.8 2.2.9 3.8.9s2.9-.1 3.8-.9c.8-.7 1.3-1.3 2.1-1.6.7-.3 1.4-1.2 1.2-2.6-.4-2.7-3.1-4.9-3.6-6.3-.3-.9.1-1.8.1-3.2C15.6 3.9 14.2 2 12 2zm-1.5 3.6c.4 0 .7.5.7 1.1s-.3 1.1-.7 1.1-.7-.5-.7-1.1.3-1.1.7-1.1zm3 0c.4 0 .7.5.7 1.1s-.3 1.1-.7 1.1-.7-.5-.7-1.1.3-1.1.7-1.1z"/></svg></span>
+        <strong>Linux</strong><span class="d">Amazon Linux 2023, Ubuntu, Debian, Fedora, RHEL, Rocky Linux or AlmaLinux; Intel, AMD or
+          Graviton. The server from WabiLink's package repository, updated with the system's own updates.</span>
+      </button>
+      <button class="choice aws-pick" data-aws-os="windows" aria-pressed="false">
+        <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5.5l7.5-1v7H3zM11.5 4.4L21 3v8.5h-9.5zM3 12.5h7.5v7l-7.5-1zM11.5 12.5H21V21l-9.5-1.4z"/></svg></span>
+        <strong>Windows Server</strong><span class="d">2022 or 2025, the Full Base images. The server installed by WabiLink Setup, as a
+          service, with the WabiLink app; it updates itself at night.</span>
+      </button>
+    </div>
+    <p class="part">How it is set up</p>
+    <div class="ways">
+      <button class="choice aws-pick" data-aws-way="online" aria-pressed="false">
+        <span class="icon"><svg class="line" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></span>
+        <strong>With WabiOne, by an API token</strong><span class="d">Registered at first boot, then managed in WabiOne's console:
+          people, shares and settings. One token registers any number of servers until it expires or is revoked - for release
+          scripts and CI.</span>
+      </button>
+      <button class="choice aws-pick" data-aws-way="offline" aria-pressed="false">
+        <span class="icon"><svg class="line" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9l3 3-3 3M12 15h5"/></svg></span>
+        <strong>Offline, with an administrator</strong><span class="d">An administrator account and a shared folder on the server, its
+          password from Parameter Store; more with the WabiLink app. Nothing is sent to WabiOne.</span>
+      </button>
+    </div>
+    <p class="way-none" id="aws-none">Pick both to see the steps.</p>
+
+    <div id="aws-steps" hidden>
+      <p>The commands below are for bash, with the <a href="https://aws.amazon.com/cli/">AWS CLI</a> set up with your account
+        (<code>aws configure</code>) - on your computer, or in your pipeline. Each step also says where it is in the AWS console.
+        In Git Bash on Windows, run <code>export MSYS_NO_PATHCONV=1</code> first: otherwise it turns <code>/wabilink/...</code>
+        into a Windows path, and AWS refuses the parameter's name.</p>
+      <ol class="steps">
+        <li data-aws-way="online"><h4>Make an API token in WabiOne</h4>
+          <p>In WabiOne's console at <a href="https://app.wabione.com/">app.wabione.com</a>, as an admin of the organization:
+            <strong>API tokens</strong> &rarr; <strong>Create token</strong>, with a name that says what it is for (<em>CI
+            builds</em>, say), <strong>Register servers</strong> ticked, and how long it works: 30, 90, 180 or 365 days, or until
+            revoked. A token can do only what is ticked: this one, nothing but register servers. It is shown once: copy it. Until
+            then it registers any number of servers; the console shows when it was last used and how many servers it registered,
+            and <strong>Revoke</strong> stops it at once. The servers it registered stay.</p>
+        </li>
+        <li data-aws-way="online"><h4>Put it in Parameter Store</h4>
+          <p>Console: <strong>Systems Manager</strong> &rarr; <strong>Parameter Store</strong> &rarr; <strong>Create parameter</strong>:
+            name <code>/wabilink/registration-token</code>, type <strong>SecureString</strong>, the default key, and the token as its
+            value. Or with the CLI on Linux or macOS - it asks for the token without showing it, and keeps it off the command line:</p>
+          <pre><code>printf 'WabiOne API token: '; stty -echo; read -r token; stty echo; echo
+printf '%s' "$token" | aws ssm put-parameter --name /wabilink/registration-token --type SecureString --value file:///dev/stdin
+unset token</code></pre>
+          <p>In a pipeline, from the token kept as one of its secrets (here <code>WABIONE_REGISTRATION_TOKEN</code>):</p>
+          <pre><code>printf '%s' "$WABIONE_REGISTRATION_TOKEN" | aws ssm put-parameter --name /wabilink/registration-token --type SecureString --value file:///dev/stdin --overwrite</code></pre>
+          <p>The parameter stays for the next launches; a new token replaces it with <code>--overwrite</code>.</p>
+        </li>
+        <li data-aws-way="offline"><h4>Put the administrator's password in Parameter Store</h4>
+          <p>Console: <strong>Systems Manager</strong> &rarr; <strong>Parameter Store</strong> &rarr; <strong>Create parameter</strong>:
+            name <code>/wabilink/admin-password</code>, type <strong>SecureString</strong>, the default key, and the password as its value.
+            Or with the CLI on Linux or macOS - it asks for the password without showing it, and keeps it off the command line:</p>
+          <pre><code>printf 'WabiLink admin password: '; stty -echo; read -r pw; stty echo; echo
+printf '%s' "$pw" | aws ssm put-parameter --name /wabilink/admin-password --type SecureString --value file:///dev/stdin
+unset pw</code></pre>
+          <p>On Windows, use the console for this step: its CLI cannot read a value from standard input, and a password typed into the
+            command line itself would be kept in the shell's history.</p>
+        </li>
+        <li><h4>Give the instance a role that may read it</h4>
+          <p>Console: <strong>IAM</strong> &rarr; <strong>Roles</strong> &rarr; <strong>Create role</strong> for <strong>EC2</strong>,
+            with <strong>AmazonSSMManagedInstanceCore</strong> and an inline policy allowing <code>ssm:GetParameter</code> on the
+            parameters under <code>/wabilink/</code>. Or:</p>
+          <pre><code>aws iam create-role --role-name wabilink-server --assume-role-policy-document '{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Principal":{"Service":"ec2.amazonaws.com"},"Action":"sts:AssumeRole"}]}'
+aws iam put-role-policy --role-name wabilink-server --policy-name read-wabilink-parameters --policy-document '{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Action":"ssm:GetParameter","Resource":"arn:aws:ssm:*:*:parameter/wabilink/*"}]}'
+aws iam attach-role-policy --role-name wabilink-server --policy-arn arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+aws iam create-instance-profile --instance-profile-name wabilink-server
+aws iam add-role-to-instance-profile --instance-profile-name wabilink-server --role-name wabilink-server</code></pre>
+          <p><strong>AmazonSSMManagedInstanceCore</strong> is optional, and recommended: with it, Session Manager gives you a shell on the
+            instance with no key or open port<span data-aws-os="windows" data-aws-way="offline">, and Run Command reads the server's
+            fingerprint below</span>. With a customer-managed KMS key for the parameter instead of the default, also allow
+            <code>kms:Decrypt</code> on that key. One role serves every server: launched with it, each reads the same parameter.</p>
+        </li>
+        <li><h4>Open the ports</h4>
+          <p>A security group allowing TCP <code>8009</code> from where your users are (below, anywhere), in the region's default
+            VPC<span data-aws-os="linux" data-aws-way="offline">, and the admin port, <code>8010</code> (Server settings, in the app), from your own address
+            only</span><span data-aws-os="windows" data-aws-way="offline">, and Remote Desktop's <code>3389</code> from your own
+            address only, for the WabiLink app on the instance</span>:</p>
+          <pre><code>vpc=$(aws ec2 describe-vpcs --filters Name=is-default,Values=true --query 'Vpcs[0].VpcId' --output text); echo "$vpc"
+sg=$(aws ec2 create-security-group --group-name wabilink --description "WabiLink server" --vpc-id "$vpc" --query GroupId --output text)
+aws ec2 authorize-security-group-ingress --group-id "$sg" --protocol tcp --port 8009 --cidr 0.0.0.0/0
+echo "$sg"</code></pre>
+          <pre data-aws-os="linux" data-aws-way="offline"><code>aws ec2 authorize-security-group-ingress --group-id "$sg" --protocol tcp --port 8010 --cidr "$(curl -fsS https://checkip.amazonaws.com)/32"</code></pre>
+          <pre data-aws-os="windows" data-aws-way="offline"><code>aws ec2 authorize-security-group-ingress --group-id "$sg" --protocol tcp --port 3389 --cidr "$(curl -fsS https://checkip.amazonaws.com)/32"</code></pre>
+          <p data-aws-way="online">With WabiOne, 8009 is not strictly needed: WabiOne's rendezvous introduces the app to the server. Open,
+            the app connects to it directly, which is faster.</p>
+          <p>If the first line prints <code>None</code>, the region has no default VPC (accounts set up by an organisation often
+            don't): set <code>vpc=</code> to a VPC of yours that has a public subnet, and add that subnet to the launch below with
+            <code>--subnet-id subnet-...</code>, and <code>--associate-public-ip-address</code> where the subnet does not give its
+            instances a public address itself. The instance needs a public address and a route to the internet - to install the
+            server, and to be reached.</p>
+        </li>
+        <li data-aws-os="linux"><h4>Launch the instance with the script as its user data</h4>
+          <p>The script: <a href="ec2-user-data.sh">ec2-user-data.sh</a>. Its first lines hold the settings, to change if you like:
+            the parameters' names, the WabiOne it registers with, and the server's name there (empty: the instance's Name tag, else
+            its ID); offline, the administrator's name (<code>admin</code>) and the shared folder (<code>/srv/files</code>, as
+            <strong>Files</strong>).</p>
+          <p>Console: <strong>EC2</strong> &rarr; <strong>Launch instance</strong>; under <strong>Advanced details</strong>, the
+            <strong>IAM instance profile</strong> <code>wabilink-server</code>, <strong>Allow tags in metadata</strong>, and the script
+            in <strong>User data</strong>. Or, with Amazon Linux 2023 on Intel or AMD (<code>arm64</code> and a <code>t4g</code> type
+            for Graviton):</p>
+          <pre><code>curl -fsSLO https://link.wabione.com/ec2-user-data.sh
+aws ec2 run-instances \
+  --image-id resolve:ssm:/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64 \
+  --instance-type t3.small \
+  --iam-instance-profile Name=wabilink-server \
+  --security-group-ids "$sg" \
+  --metadata-options HttpTokens=required,InstanceMetadataTags=enabled \
+  --user-data file://ec2-user-data.sh \
+  --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=wabilink}]' \
+  --query 'Instances[0].InstanceId' --output text</code></pre>
+          <p>A small instance is enough for files, terminals and tunnels; the server takes a minute or three to be set up after boot.</p>
+        </li>
+        <li data-aws-os="windows"><h4>Launch the instance with the script as its user data</h4>
+          <p>The script: <a href="ec2-user-data-windows.txt">ec2-user-data-windows.txt</a>, PowerShell between
+            <code>&lt;powershell&gt;</code> tags, as EC2 runs it. Its first lines hold the settings, to change if you like: the
+            parameters' names, the WabiOne it registers with, and the server's name there (empty: the instance's Name tag, else its
+            ID); offline, the administrator's name (<code>admin</code>) and the shared folder (<code>C:\Files</code>, as
+            <strong>Files</strong>). It downloads WabiLink Setup from this site, checks it against the release's list of checksums,
+            and runs it: Setup installs nothing the release key has not signed.</p>
+          <p>Console: <strong>EC2</strong> &rarr; <strong>Launch instance</strong>, with <strong>Microsoft Windows Server 2025 Base</strong>;
+            under <strong>Advanced details</strong>, the <strong>IAM instance profile</strong> <code>wabilink-server</code>,
+            <strong>Allow tags in metadata</strong>, and the script in <strong>User data</strong>. Or:</p>
+          <pre><code>curl -fsSLO https://link.wabione.com/ec2-user-data-windows.txt
+aws ec2 run-instances \
+  --image-id resolve:ssm:/aws/service/ami-windows-latest/Windows_Server-2025-English-Full-Base \
+  --instance-type t3.medium \
+  --iam-instance-profile Name=wabilink-server \
+  --security-group-ids "$sg" \
+  --metadata-options HttpTokens=required,InstanceMetadataTags=enabled \
+  --user-data file://ec2-user-data-windows.txt \
+  --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=wabilink}]' \
+  --query 'Instances[0].InstanceId' --output text</code></pre>
+          <p data-aws-way="offline">For Remote Desktop, add <code>--key-name</code> and one of your key pairs: the console's
+            <strong>Connect</strong> &rarr; <strong>RDP client</strong> decrypts the Administrator's password with it.</p>
+          <p>Windows takes a few minutes to start; the server is set up five to ten minutes after the launch.</p>
+        </li>
+        <li data-aws-way="online"><h4>See it in WabiOne's console</h4>
+          <p>The server appears in <strong>Servers</strong>, online, named by the instance's <strong>Name</strong> tag - or by its
+            instance ID where the tag is not in its metadata. Instances launched together with one Name tag get one name: leave the
+            tag out, or set the script's server name, to tell them apart.</p>
+        </li>
+        <li data-aws-way="online"><h4>Give people access, in the console</h4>
+          <p>On the server's page: <strong>People</strong> &rarr; <strong>Add person</strong> for each person of your organization
+            who may use it, with their shares; <strong>Terminals and desktop</strong>, <strong>Tunnels</strong> and
+            <strong>Databases</strong> for the rest. Changes reach the server within seconds.</p>
+        </li>
+        <li data-aws-way="online"><h4>Connect</h4>
+          <p>In the WabiLink app, <strong>Sign in</strong> at the top right, with your WabiOne account: the server is in the list,
+            ready to connect. There is no address, password or fingerprint to type: WabiOne vouches for the server.</p>
+        </li>
+        <li data-aws-way="offline" data-aws-os="linux"><h4>Get the server's fingerprint</h4>
+          <p>The script writes it to the instance's system log (console: the instance &rarr; <strong>Actions</strong> &rarr;
+            <strong>Monitor and troubleshoot</strong> &rarr; <strong>Get system log</strong>), with its address:</p>
+          <pre><code>aws ec2 get-console-output --instance-id i-0123456789abcdef0 --latest --query Output --output text | grep WABILINK</code></pre>
+          <p>In PowerShell on Windows - where the CLI needs UTF-8 to print the log at all:</p>
+          <pre><code>$env:PYTHONUTF8 = 1
+aws ec2 get-console-output --instance-id i-0123456789abcdef0 --latest --query Output --output text | Select-String -CaseSensitive WABILINK</code></pre>
+          <p>The server is usually set up a minute after the instance starts; the log can take a few minutes more to show it. Through
+            Session Manager, <code>sudo wabilink-server identity</code> shows the fingerprint at once.</p>
+        </li>
+        <li data-aws-way="offline" data-aws-os="windows"><h4>Get the server's fingerprint</h4>
+          <p>The script writes it, with the instance's address, to <code>C:\Windows\Temp\wabilink-ec2-log-*\wabilink-ec2.log</code>, a folder of its own each run that only SYSTEM and the administrators may read. Run Command reads
+            it, with no Remote Desktop (console: <strong>Systems Manager</strong> &rarr; <strong>Run Command</strong>,
+            <strong>AWS-RunPowerShellScript</strong>):</p>
+          <pre><code>id=$(aws ssm send-command --instance-ids i-0123456789abcdef0 --document-name AWS-RunPowerShellScript \
+  --parameters '{"commands":["(Select-String -CaseSensitive WABILINK C:\\Windows\\Temp\\wabilink-ec2-log-*\\wabilink-ec2.log).Line"]}' \
+  --query Command.CommandId --output text)
+aws ssm get-command-invocation --instance-id i-0123456789abcdef0 --command-id "$id" --query StandardOutputContent --output text</code></pre>
+          <p>Asked straight after the first command, the second may answer <code>InvocationDoesNotExist</code>: ask again a few seconds
+            later. Through Session Manager or Remote Desktop, this shows it at once:</p>
+          <pre><code>&amp; "$env:ProgramFiles\WabiLink\Server\wabilink-service.exe" identity</code></pre>
+        </li>
+        <li data-aws-way="offline"><h4>Connect</h4>
+          <p>In the app: the instance's public address, port <code>8009</code>, the administrator and its password; compare the
+            fingerprint it shows with the one above before accepting it. An <strong>Elastic IP</strong> keeps the address the same
+            when the instance is stopped and started.</p>
+          <p data-aws-os="windows">More users and shares with the WabiLink app (This PC's server), on the instance's Start menu, through Remote Desktop.
+            Server settings in the app on your own computer cannot reach it: WabiLink Setup opens the admin port, <code>8010</code>, to the
+            instance's own network only.</p>
+        </li>
+      </ol>
+      <div class="tip" data-aws-way="online"><strong>Several servers, from a release script.</strong> The same parameter, role and
+        launch command make every server: <code>--count 3</code>, or the launch in a loop. Elsewhere than AWS - a machine or VM your
+        pipeline sets up - a server registers itself the same way, with the token on standard input:
+        <a href="server-commands.html#wabione-token">register --token-stdin</a>.</div>
+      <div class="after">
+        <div class="card" data-aws-os="linux"><h4>If it did not finish</h4>
+          <p>The whole run is in <code>/var/log/cloud-init-output.log</code> on the instance (and in the system log). It stops at the
+            first thing that fails, saying why - a token WabiOne refuses (revoked or expired), or a parameter it cannot read (its
+            name, or the role's permission) - and the server is not started. With no token to read, it says so, and sets up offline
+            instead. Fix it, and run the script again on the instance through Session Manager:
+            <code>sudo bash /var/lib/cloud/instance/scripts/part-001</code>.</p></div>
+        <div class="card" data-aws-os="windows"><h4>If it did not finish</h4>
+          <p>The run is in <code>C:\Windows\Temp\wabilink-ec2-log-*\wabilink-ec2.log</code> on the instance, read from an elevated prompt through Session Manager or Remote Desktop,
+            with where WabiLink Setup's own log is. It stops at the first thing that fails, saying why - a token WabiOne refuses
+            (revoked or expired), or a parameter it cannot read (its name, or the role's permission). With no token to read, it
+            says so, and sets up offline instead. Fix it, and launch a new instance: EC2 runs user data at the first boot only.</p></div>
+        <div class="card"><h4>Afterwards</h4>
+          <p data-aws-os="linux">Updates come with the system's own (<code>sudo dnf upgrade --refresh</code>,
+            <code>sudo apt update &amp;&amp; sudo apt upgrade</code>).</p>
+          <p data-aws-os="windows">The server updates itself at night, with WabiLink Setup's own task (the server's
+            <code>auto-update</code> setting turns it off).</p>
+          <p data-aws-way="online">When no more servers are to be added, revoke the token in the console and delete the parameter
+            (<code>aws ssm delete-parameter --name /wabilink/registration-token</code>): the servers it registered stay.</p>
+          <p data-aws-way="offline">More users and shares from Server settings in the app, or through Session Manager. The parameter can be deleted
+            once the instance is set up; the password lives on in the server.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="help">
+  <div class="wrap">
+    <h2>When something doesn't work</h2>
+    <p class="sub">The usual causes, and what to do. Commands on the server need <code>sudo</code> on Linux and macOS, and an
+      administrator prompt on Windows (<code>.\wabilink-service</code> in place of <code>wabilink-server</code>).</p>
+    <div class="after">
+      <div class="card"><h4>The app cannot connect</h4>
+        <ul>
+          <li>Is the server running? Linux: <code>systemctl status wabilink</code>; macOS:
+            <code>sudo launchctl print system/com.wabilink.server | grep state</code>; Windows: <code>.\wabilink-service status</code>.</li>
+          <li>Is port <code>8009</code> open in the server's firewall - and on AWS, its security group; from outside your network,
+            forwarded on the router?</li>
+          <li>The right address? On the server: <code>hostname -I</code> (Linux), <code>ipconfig getifaddr en0</code> (macOS),
+            <code>ipconfig</code> (Windows).</li>
+        </ul></div>
+      <div class="card"><h4>The fingerprint is not the one you expected</h4>
+        <p>Compare it with <code>wabilink-server identity</code> on the server. If they differ, don't accept it: something between
+          you and the server is pretending to be it. If the server was reinstalled without its data, it has a new identity - accept
+          the new one only once the server itself shows it to you.</p></div>
+      <div class="card"><h4>The password is refused</h4>
+        <p>Set a new one on the server: <code>wabilink-server user passwd NAME</code>. After too many failed tries an account is
+          locked; <code>wabilink-server user unlock NAME</code> clears that.</p></div>
+      <div class="card"><h4>A share can't be opened, or uploads fail</h4>
+        <p>On Linux the server runs as the <code>wabilink</code> account, which must be able to read the folder, and write where
+          people upload: <code>sudo setfacl -R -m u:wabilink:rwX,d:u:wabilink:rwX /path</code>. On macOS, Documents, Desktop and
+          Downloads need <strong>Full Disk Access</strong> for <code>/usr/local/wabilink-server/wabilink-server</code>.</p></div>
+      <div class="card"><h4>A setting was changed, and nothing happened</h4>
+        <p>It was run without <code>sudo</code>: settings belong to the service. Run it again with <code>sudo</code> (on Windows, from
+          an administrator prompt). Settings take effect at once; no restart is needed.</p></div>
+      <div class="card"><h4>Server settings will not open</h4>
+        <p>It uses port <code>8010</code>, which the firewall must allow from where you are, and an account made with
+          <code>--admin</code> (or <code>wabilink-server user admin NAME yes</code>).</p></div>
+      <div class="card"><h4>Server Desktop is greyed out, or says it isn't offered</h4>
+        <p>The desktop is off, or the account may not use it:
+          <code>wabilink-server config set desktop-enabled yes</code> and <code>wabilink-server user desktop NAME yes</code>.
+          The client must be 1.1 or later.</p></div>
+      <div class="card"><h4>"GNOME does not let its screen be shared here"</h4>
+        <p>Nobody is logged in at the Linux machine, and GNOME doesn't share its login screen. Lock rather than log out; after a
+          restart, log in at the machine once, or set up <code>desktop-setup NAME --login</code> (see the Linux server guide).</p></div>
+      <div class="card"><h4>"The server's built-in desktop has nothing to show"</h4>
+        <p>No desktop agent runs in a session on that Linux machine. In the session on its screen:
+          <code>systemctl --user status wabilink-desktop-agent</code>, and if it is disabled,
+          <code>systemctl --user enable --now wabilink-desktop-agent</code>. A server installed from the <code>.tar.gz</code>
+          needs the agent set up once (the guide's desktop step).</p></div>
+      <div class="card"><h4>A black screen in the viewer</h4>
+        <p>The screen is blanked or locked: press a key or move the mouse in the viewer, and unlock it with that account's password.
+          On a Mac, black or no keys means its permissions are off: <strong>Screen &amp; System Audio Recording</strong> and
+          <strong>Accessibility</strong> for the server, which an update can turn off again.</p></div>
+      <div class="card"><h4>The desktop is slow or blurry</h4>
+        <p>The chart button in the viewer's bar shows the codec, frames a second, and why that codec was picked. Lossless tiles
+          need a fast link; for video, the server needs its graphics card's driver (or SVT-AV1), and the viewer its decoders - see
+          the optional steps in your system's guide.</p></div>
+      <div class="card"><h4>Where the logs are</h4>
+        <p>Linux: <code>journalctl -u wabilink</code>, and the desktop agent's <code>journalctl --user -u wabilink-desktop-agent</code>.
+          macOS: <code>/Library/Logs/WabiLink/server.log</code>. Windows: <code>C:\ProgramData\WabiLink\Server\logs</code>, and the
+          Application event log.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="verify">
+  <div class="wrap">
+    <h2>Checksums and signatures</h2>
+    <p class="sub">Every download is listed with its SHA-256 in <a href="files/SHA256SUMS">SHA256SUMS</a>, signed in
+      <a href="files/SHA256SUMS.asc">SHA256SUMS.asc</a>. That list, the Linux packages and the repositories are signed with
+      <a href="wabilink.asc">wabilink.asc</a>.</p>
+    <div class="card">
+      <p style="margin-top:0">To check a download, in the folder it is in:</p>
+      <pre><code>curl -fsSLO https://link.wabione.com/files/SHA256SUMS -O https://link.wabione.com/files/SHA256SUMS.asc -O https://link.wabione.com/wabilink.asc
+gpg --show-keys wabilink.asc
+gpg --import wabilink.asc && gpg --verify SHA256SUMS.asc SHA256SUMS
+sha256sum --ignore-missing -c SHA256SUMS          <span class="c"># macOS: shasum -a 256 --ignore-missing -c SHA256SUMS</span></code></pre>
+      <p style="margin-bottom:0">The signing key's fingerprint: <code>2C9F6909A29FC1FE2F957F7FACBA86055D3EBAD2</code>. Go on only if <code>gpg --show-keys</code>
+        shows that one key and no other, and <code>gpg --verify</code> says Good signature with that fingerprint.</p>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+    <div class="footer-brand">
+      <a class="brand" href="https://www.wabione.com/"><img class="logo" src="assets/logo.svg" alt="WabiOne" width="160" height="26"></a>
+      <p>Tools for people who run their own machines and teams.</p>
+    </div>
+    <nav class="footer-nav" aria-label="Footer">
+      <div>
+        <p class="footer-title">Services</p>
+        <ul>
+          <li><a href="https://www.wabione.com/link">WabiLink</a></li>
+          <li><a href="https://www.wabione.com/id">WabiOne ID</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-title">WabiLink</p>
+        <ul>
+          <li><a href="#get">Download</a></li>
+          <li><a href="server-commands.html">Server commands</a></li>
+          <li><a href="#aws">On AWS</a></li>
+          <li><a href="#help">Help</a></li>
+          <li><a href="#verify">Checksums</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-title">Get started</p>
+        <ul>
+          <li><a href="https://www.wabione.com/signup">Create your account</a></li>
+          <li><a href="https://app.wabione.com/">Sign in</a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+  <div class="wrap footer-bottom">
+    <p>&copy; 2026 WabiOne &middot; WabiLink 1.1.28, released 7 November 2026 &middot; the app for Windows, macOS and Linux &middot; server for Windows, macOS, Linux and Raspberry Pi.<br>
+      <span class="tm">Fedora, Rocky Linux, AlmaLinux, Ubuntu, Debian, Raspberry Pi, Arch Linux and openSUSE, and their logos, are their owners' trademarks, shown to say which systems WabiLink runs on. Debian's logo &copy; Software in the Public Interest, CC BY-SA 3.0; Rocky Linux's, CC BY-SA 4.0.</span></p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var names = {
+    windows: 'Windows', macos: 'macOS', linux: 'Linux',
+    fedora: 'Fedora', rhel: 'RHEL, Rocky, AlmaLinux', ubuntu: 'Ubuntu', debian: 'Debian', raspi: 'Raspberry Pi OS',
+    arch: 'Arch Linux', opensuse: 'openSUSE', other: 'Linux',
+    client: 'WabiLink', server: 'Server', setup: 'WabiLink Setup'
+  };
+  // What may be installed on each system: WabiLink Setup is Windows'.
+  function roles(os) { return os === 'windows' ? ['client', 'server', 'setup'] : ['client', 'server']; }
+  var state = { os: null, distro: null, role: null, way: null };
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+
+  // The system this browser runs on, to suggest it.
+  function guess() {
+    var p = ((navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || navigator.userAgent || '').toLowerCase();
+    var ua = (navigator.userAgent || '').toLowerCase();
+    if (p.indexOf('win') >= 0) return { os: 'windows' };
+    if (p.indexOf('mac') >= 0 && !/iphone|ipad/.test(ua)) return { os: 'macos' };
+    if (p.indexOf('linux') >= 0 && ua.indexOf('android') < 0) {
+      var d = /fedora/.test(ua) ? 'fedora' : /ubuntu/.test(ua) ? 'ubuntu' : /debian/.test(ua) ? 'debian' : /raspbian/.test(ua) ? 'raspi' : null;
+      return { os: 'linux', distro: d };
+    }
+    return {};
+  }
+  var guessed = guess();
+  if (guessed.os) {
+    var b = $('[data-os="' + guessed.os + '"]');
+    if (b) b.insertAdjacentHTML('beforeend', '<span class="badge">This computer</span>');
+  }
+  if (guessed.distro) {
+    var d = $('[data-distro="' + guessed.distro + '"]');
+    if (d) d.insertAdjacentHTML('beforeend', '<span class="badge">This computer</span>');
+  }
+
+  function crumb(label, value, back) {
+    var c = document.createElement('button');
+    c.className = 'crumb';
+    c.innerHTML = value + ' <small>change</small>';
+    c.title = 'Change the ' + label;
+    c.addEventListener('click', back);
+    return c;
+  }
+
+  function render(scroll) {
+    // Another system chosen after WabiLink Setup: it is Windows' alone, so the choice is asked again.
+    if (state.os && state.role && roles(state.os).indexOf(state.role) < 0) state.role = null;
+    $$('[data-for-os]').forEach(function (el) { el.hidden = el.getAttribute('data-for-os') !== state.os; });
+    var needDistro = state.os === 'linux';
+    var stageOs = $('#stage-os'), stageDistro = $('#stage-distro'), stageRole = $('#stage-role');
+    stageOs.hidden = !!state.os;
+    stageDistro.hidden = !(state.os && needDistro && !state.distro);
+    stageRole.hidden = !(state.os && (!needDistro || state.distro) && !state.role);
+    $('#role-n').textContent = needDistro ? '3' : '2';
+
+    var crumbs = $('#crumbs');
+    crumbs.innerHTML = '';
+    var parts = [];
+    if (state.os) parts.push(crumb('system', names[state.os], function () { state = { os: null, distro: null, role: state.role, way: state.way }; go(); }));
+    if (state.distro) parts.push(crumb('distribution', names[state.distro], function () { state.distro = null; go(); }));
+    if (state.role) parts.push(crumb('choice', names[state.role], function () { state.role = null; go(); }));
+    parts.forEach(function (p, i) {
+      if (i > 0) { var s = document.createElement('span'); s.className = 'sep'; s.textContent = '›'; crumbs.appendChild(s); }
+      crumbs.appendChild(p);
+    });
+    if (parts.length) {
+      var r = document.createElement('button');
+      r.className = 'reset'; r.textContent = 'Start over';
+      r.addEventListener('click', function () { state = { os: null, distro: null, role: null, way: null }; go(); });
+      crumbs.appendChild(r);
+    }
+
+    var key = state.os && state.role && (!needDistro || state.distro) ? state.os + '/' + state.role : null;
+    $$('.guide').forEach(function (g) {
+      var on = g.getAttribute('data-guide') === key;
+      g.classList.toggle('shown', on);
+      if (!on) return;
+      // The parts for this distribution only.
+      $$('[data-only]', g).forEach(function (el) { el.hidden = el.getAttribute('data-only').split(' ').indexOf(state.distro) < 0; });
+      $$('[data-not]', g).forEach(function (el) { el.hidden = el.getAttribute('data-not').split(' ').indexOf(state.distro) >= 0; });
+      $$('[data-distro-name]', g).forEach(function (el) { el.textContent = names[state.distro] || 'Linux'; });
+      // A server's guide: the way picked to set it up, online with WabiOne or offline, and its steps.
+      $$('.way-pick', g).forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-way') === state.way ? 'true' : 'false'); });
+      $$('.way', g).forEach(function (w) { w.classList.toggle('shown', w.getAttribute('data-way') === state.way); });
+      $$('.way-none', g).forEach(function (el) { el.hidden = !!state.way; });
+    });
+
+    if (scroll) {
+      var target = key ? $('.guide.shown') : $('#get');
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  // The choice is kept in the address, so a link shows the same instructions: #linux/fedora/server,
+  // and with the way to set a server up, #linux/fedora/server/online.
+  function go() {
+    if (state.os && state.role && roles(state.os).indexOf(state.role) < 0) state.role = null;
+    var parts = [state.os, state.distro, state.role, state.role === 'server' ? state.way : null].filter(Boolean);
+    var hash = parts.length ? '#' + parts.join('/') : '#get';
+    if (location.hash !== hash) history.replaceState(null, '', hash);
+    render(false);
+  }
+
+  function fromHash() {
+    var parts = location.hash.replace(/^#/, '').split('/');
+    if (!names[parts[0]] || ['windows', 'macos', 'linux'].indexOf(parts[0]) < 0) return false;
+    state = { os: parts[0], distro: null, role: null, way: null };
+    var i = 1;
+    if (state.os === 'linux' && names[parts[1]] && ['client', 'server', 'admin'].indexOf(parts[1]) < 0) state.distro = parts[i++];
+    // The admin tool, part of the app now: an old link to it opens the app's guide.
+    if (parts[i] === 'admin') parts[i] = 'client';
+    if (roles(state.os).indexOf(parts[i]) >= 0) state.role = parts[i++];
+    if (state.role === 'server' && ['online', 'offline'].indexOf(parts[i]) >= 0) state.way = parts[i];
+    return true;
+  }
+
+  $$('[data-os]').forEach(function (b) { b.addEventListener('click', function () { state.os = b.getAttribute('data-os'); state.distro = null; go(); render(true); }); });
+  $$('[data-distro]').forEach(function (b) { b.addEventListener('click', function () { state.distro = b.getAttribute('data-distro'); go(); render(true); }); });
+  $$('[data-role]').forEach(function (b) { b.addEventListener('click', function () { state.role = b.getAttribute('data-role'); go(); render(true); }); });
+  // "Set up a server" in the hero: the role first, the system next.
+  $$('[data-pick-role]').forEach(function (a) { a.addEventListener('click', function () { state.role = a.getAttribute('data-pick-role'); }); });
+  $$('.way-pick').forEach(function (b) { b.addEventListener('click', function () { state.way = b.getAttribute('data-way'); go(); }); });
+
+  // A copy button on every command.
+  $$('pre').forEach(function (pre) {
+    var box = document.createElement('div');
+    box.className = 'codebox';
+    pre.parentNode.insertBefore(box, pre);
+    box.appendChild(pre);
+    // A command for some distributions only, or one system or way on AWS: the box, its button with
+    // it, is shown or hidden.
+    ['data-only', 'data-not', 'data-aws-os', 'data-aws-way'].forEach(function (a) { if (pre.hasAttribute(a)) { box.setAttribute(a, pre.getAttribute(a)); pre.removeAttribute(a); } });
+    var b = document.createElement('button');
+    b.className = 'copy'; b.type = 'button'; b.textContent = 'Copy';
+    b.addEventListener('click', function () {
+      var text = pre.innerText.split('\n').map(function (l) { return l.replace(/\s+#\s.*$/, ''); }).join('\n').trim();
+      var done = function () { b.textContent = 'Copied'; setTimeout(function () { b.textContent = 'Copy'; }, 1500); };
+      if (navigator.clipboard) navigator.clipboard.writeText(text).then(done, function () {});
+    });
+    box.appendChild(b);
+  });
+
+  // WabiLink on AWS: the instance's system and the way it is set up, each picked; the steps for the
+  // two shown, and kept in the address (#aws/windows/online), so a link shows the same steps.
+  var aws = { os: null, way: null };
+  function awsRender() {
+    $$('.aws-pick').forEach(function (b) {
+      var on = b.hasAttribute('data-aws-os') ? b.getAttribute('data-aws-os') === aws.os : b.getAttribute('data-aws-way') === aws.way;
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+    var both = !!(aws.os && aws.way);
+    $('#aws-steps').hidden = !both;
+    $('#aws-none').hidden = both;
+    $$('#aws-steps [data-aws-os], #aws-steps [data-aws-way]').forEach(function (el) {
+      var os = el.getAttribute('data-aws-os'), way = el.getAttribute('data-aws-way');
+      el.hidden = !!(os && os !== aws.os) || !!(way && way !== aws.way);
+    });
+  }
+  function awsGo() {
+    var hash = ['#aws', aws.os, aws.way].filter(Boolean).join('/');
+    if (location.hash !== hash) history.replaceState(null, '', hash);
+    awsRender();
+  }
+  // #aws alone (the menu's link) keeps what was picked; #aws/linux/online picks.
+  function awsFromHash() {
+    var parts = location.hash.replace(/^#/, '').split('/');
+    if (parts[0] !== 'aws') return false;
+    if (parts.length > 1) {
+      aws = { os: null, way: null };
+      parts.slice(1).forEach(function (p) {
+        if (p === 'linux' || p === 'windows') aws.os = p;
+        if (p === 'online' || p === 'offline') aws.way = p;
+      });
+    }
+    return true;
+  }
+  $$('.aws-pick').forEach(function (b) {
+    b.addEventListener('click', function () {
+      if (b.hasAttribute('data-aws-os')) aws.os = b.getAttribute('data-aws-os'); else aws.way = b.getAttribute('data-aws-way');
+      awsGo();
+    });
+  });
+
+  window.addEventListener('hashchange', function () {
+    if (awsFromHash()) awsGo();
+    else if (fromHash()) render(true);
+  });
+  if (fromHash()) render(true); else render(false);
+  // A link to steps on AWS: there is no element by that name to scroll to, so it is scrolled to here.
+  if (awsFromHash()) { awsGo(); if (location.hash !== '#aws') $('#aws').scrollIntoView(); } else awsRender();
+})();
+</script>
+</body>
+</html>

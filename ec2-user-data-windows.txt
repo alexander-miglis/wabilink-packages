@@ -1,0 +1,259 @@
+<powershell>
+# The WabiLink server on an AWS EC2 Windows instance, set up at its first boot.
+#
+# Give this file as the instance's user data: in the console, Advanced details -> User data;
+# or aws ec2 run-instances ... --user-data file://ec2-user-data-windows.txt. EC2Launch runs
+# what is between the powershell tags once, as an administrator. Windows Server 2022 and 2025,
+# the Full Base images (the WabiLink app needs the desktop).
+#
+# It installs the server with WabiLink Setup - as a service, with the WabiLink app, updating
+# itself at night - and sets it up one of two ways (https://link.wabione.com/#aws has it step by step):
+#   - registered with WabiOne, where Parameter Store has an API token that may register servers
+#     ($TokenParameter, made in WabiOne's console: API tokens): the console then manages it -
+#     its people, shares and settings - and it has no administrator of its own here;
+#   - otherwise offline: an administrator, with its password from Parameter Store
+#     ($PasswordParameter), and a shared folder.
+#
+# Before launching:
+#   - the token or the password in SSM Parameter Store, as a SecureString - never in here:
+#     user data can be read by any program on the instance, and in the EC2 console;
+#   - an instance role that may read it (ssm:GetParameter on parameter/wabilink/*);
+#   - a security group open on TCP 8009.
+#
+# What it did is in C:\Windows\Temp\wabilink-ec2-log-*\wabilink-ec2.log on the instance (a folder
+# of its own each run, read from an elevated prompt or as SYSTEM): the lines starting
+# WABILINK, with the server's fingerprint to compare the first time you connect, and where
+# WabiLink Setup's own log is.
+
+# --- Settings ----------------------------------------------------------------------------
+$TokenParameter    = '/wabilink/registration-token' # a WabiOne API token that may register servers: an SSM SecureString
+$WabiOne           = 'https://app.wabione.com'      # the WabiOne it registers with
+$ServerName        = ''                             # its name there; empty: the instance's Name tag, else its ID
+$Admin             = 'admin'                        # offline: the WabiLink administrator account
+$PasswordParameter = '/wabilink/admin-password'     # its password: an SSM SecureString parameter
+$ShareName         = 'Files'                        # offline: a share for the administrator...
+$SharePath         = 'C:\Files'                     # ...and the folder it is (made either way)
+# ------------------------------------------------------------------------------------------
+
+$site = 'https://link.wabione.com'
+$ErrorActionPreference = 'Stop'
+$ProgressPreference = 'SilentlyContinue' # Invoke-WebRequest is many times slower drawing its progress bar
+[Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
+# The transcript in a folder nobody could have made first, SYSTEM's and the administrators' alone:
+# a fixed name in Windows' Temp, where every account may make files, could be made ahead - or a
+# link put there - and written through as SYSTEM.
+$logFolder = Join-Path $env:SystemRoot ("Temp\wabilink-ec2-log-" + [guid]::NewGuid().ToString('N'))
+$logAccess = New-Object System.Security.AccessControl.DirectorySecurity
+$logAccess.SetAccessRuleProtection($true, $false)
+$logAccess.SetOwner((New-Object System.Security.Principal.SecurityIdentifier('S-1-5-32-544')))
+foreach ($sid in 'S-1-5-18', 'S-1-5-32-544') {
+	$logAccess.AddAccessRule((New-Object System.Security.AccessControl.FileSystemAccessRule((New-Object System.Security.Principal.SecurityIdentifier($sid)), 'FullControl', 'ContainerInherit,ObjectInherit', 'None', 'Allow')))
+}
+[System.IO.Directory]::CreateDirectory($logFolder, $logAccess) | Out-Null
+Start-Transcript -Path (Join-Path $logFolder 'wabilink-ec2.log') | Out-Null
+Write-Output "WABILINK: this run's transcript: $logFolder\wabilink-ec2.log"
+
+# Text piped to the server's commands goes as UTF-8, and they read it as UTF-8: a password with
+# letters beyond ASCII arrives as it was typed, not as question marks.
+$OutputEncoding = New-Object System.Text.UTF8Encoding $false
+try { [Console]::InputEncoding = $OutputEncoding } catch { Write-Output "WABILINK: no console to read UTF-8 from: $($_.Exception.Message)" }
+
+# The instance metadata service (IMDSv2): where this instance runs, and its addresses.
+function Imds([string]$Path) {
+	$token = Invoke-RestMethod -Method Put -Uri 'http://169.254.169.254/latest/api/token' -Headers @{ 'X-aws-ec2-metadata-token-ttl-seconds' = '60' } -TimeoutSec 5
+	Invoke-RestMethod -Uri "http://169.254.169.254/latest/meta-data/$Path" -Headers @{ 'X-aws-ec2-metadata-token' = $token } -TimeoutSec 5
+}
+$region = Imds 'placement/region'
+
+# A parameter, with the instance's role, by AWS Tools for PowerShell (on AWS's Windows images).
+# -WithDecryption $false only asks whether it is there, and may be read.
+function Parameter([string]$Name, [bool]$Decrypt) {
+	(Get-SSMParameter -Name $Name -WithDecryption $Decrypt -Region $region).Value
+}
+
+# A server command, given what is piped to it; what it says is logged, its error lines too, and
+# a failure stops this here. Its error lines are merged as text: Windows PowerShell would take
+# them for this script's own errors, and stop at the first, under 'Stop'.
+$service = Join-Path $env:ProgramFiles 'WabiLink\Server\wabilink-service.exe'
+function Server {
+	$ErrorActionPreference = 'Continue'
+	$input | & $service @args 2>&1 | ForEach-Object { "$_" }
+	if ($LASTEXITCODE -ne 0) { throw "wabilink-service $($args -join ' ') failed (exit $LASTEXITCODE): what it said is just above." }
+}
+
+# SHA256SUMS checked as the release signed it, before anything it lists is run: OpenPGP as far
+# as that takes - the release key (RSA, version 4, of the fingerprint this file was published
+# with) and its signature of the list (SHA-256, -384 or -512), by .NET's RSA. Without it, a
+# list changed along with the downloads, on the site or on the way, would vouch for them; and
+# a launch template keeps this file long after it was downloaded.
+$Signer = '2C9F6909A29FC1FE2F957F7FACBA86055D3EBAD2'
+function Dearmor([string]$Path) {
+	$body = ''; $headers = $false; $in = $false
+	foreach ($line in (Get-Content $Path)) {
+		$line = $line.Trim()
+		if ($line -like '-----BEGIN*') { $headers = $true; continue }
+		if ($headers) { if ($line -eq '') { $headers = $false; $in = $true }; continue }
+		if ($in) { if ($line -like '=*' -or $line -like '-----END*') { break }; $body += $line }
+	}
+	, [Convert]::FromBase64String($body)
+}
+function Be32([byte[]]$B, [int]$I) { ([int]$B[$I] -shl 24) -bor ([int]$B[$I + 1] -shl 16) -bor ([int]$B[$I + 2] -shl 8) -bor [int]$B[$I + 3] }
+function Packets([byte[]]$B) {
+	$i = 0
+	while ($i -lt $B.Length) {
+		$h = [int]$B[$i]; $i++
+		if (-not ($h -band 0x80)) { throw 'not OpenPGP data' }
+		if ($h -band 0x40) {
+			$tag = $h -band 0x3f; $l = [int]$B[$i]; $i++
+			if ($l -lt 192) { $len = $l }
+			elseif ($l -lt 224) { $len = (($l - 192) -shl 8) + [int]$B[$i] + 192; $i++ }
+			elseif ($l -eq 255) { $len = Be32 $B $i; $i += 4 }
+			else { throw 'OpenPGP data in parts' }
+		} else {
+			$tag = ($h -shr 2) -band 0x0f
+			switch ($h -band 3) {
+				0 { $len = [int]$B[$i]; $i += 1 }
+				1 { $len = ([int]$B[$i] -shl 8) -bor [int]$B[$i + 1]; $i += 2 }
+				2 { $len = Be32 $B $i; $i += 4 }
+				default { throw 'OpenPGP data of no length' }
+			}
+		}
+		if ($len -lt 1 -or $i + $len -gt $B.Length) { throw 'OpenPGP data cut short' }
+		[pscustomobject]@{ Tag = $tag; Body = [byte[]]$B[$i..($i + $len - 1)] }
+		$i += $len
+	}
+}
+function Mpi([byte[]]$B, [int]$At) {
+	$n = [int][math]::Floor(((([int]$B[$At] -shl 8) -bor [int]$B[$At + 1]) + 7) / 8)
+	, [byte[]]$B[($At + 2)..($At + 1 + $n)]
+}
+function Test-Signed([string]$Data, [string]$Signature, [string]$Key) {
+	$k = @(Packets (Dearmor $Key)) | Where-Object Tag -eq 6 | Select-Object -First 1
+	$s = @(Packets (Dearmor $Signature)) | Where-Object Tag -eq 2 | Select-Object -First 1
+	if (-not $k -or -not $s) { return $false }
+	$kb = $k.Body; $sb = $s.Body
+	if ($kb[0] -ne 4 -or $kb[5] -notin 1, 3) { return $false }
+	$fingerprint = -join ([Security.Cryptography.SHA1]::Create().ComputeHash([byte[]](@(0x99, ($kb.Length -shr 8), ($kb.Length -band 0xff)) + $kb)) | ForEach-Object { $_.ToString('X2') })
+	if ($fingerprint -ne ($Signer -replace '[^0-9A-Fa-f]', '').ToUpperInvariant()) { return $false }
+	$n = Mpi $kb 6; $e = Mpi $kb (8 + $n.Length)
+	# Version 4, of a binary document, by RSA.
+	if ($sb[0] -ne 4 -or $sb[1] -ne 0 -or $sb[2] -notin 1, 3) { return $false }
+	$name = @{ 8 = 'SHA256'; 9 = 'SHA384'; 10 = 'SHA512' }[[int]$sb[3]]
+	if (-not $name) { return $false }
+	$hashed = 6 + (([int]$sb[4] -shl 8) -bor [int]$sb[5])
+	$sig = Mpi $sb ($hashed + 2 + (([int]$sb[$hashed] -shl 8) -bor [int]$sb[$hashed + 1]) + 2)
+	$trailer = [byte[]](0x04, 0xff, (($hashed -shr 24) -band 0xff), (($hashed -shr 16) -band 0xff), (($hashed -shr 8) -band 0xff), ($hashed -band 0xff))
+	$bytes = [IO.File]::ReadAllBytes($Data)
+	$hash = [Security.Cryptography.HashAlgorithm]::Create($name)
+	[void]$hash.TransformBlock($bytes, 0, $bytes.Length, $null, 0)
+	[void]$hash.TransformBlock($sb, 0, $hashed, $null, 0)
+	[void]$hash.TransformFinalBlock($trailer, 0, $trailer.Length)
+	$p = New-Object Security.Cryptography.RSAParameters
+	$p.Modulus = $n; $p.Exponent = $e
+	$rsa = New-Object Security.Cryptography.RSACng
+	$rsa.ImportParameters($p)
+	if ($sig.Length -lt $n.Length) { $sig = [byte[]](@([byte]0) * ($n.Length - $sig.Length) + $sig) }
+	$rsa.VerifyHash($hash.Hash, $sig, (New-Object Security.Cryptography.HashAlgorithmName $name), [Security.Cryptography.RSASignaturePadding]::Pkcs1)
+}
+
+# Whether a server command succeeds, saying nothing.
+function Succeeds {
+	$ErrorActionPreference = 'Continue'
+	& $service @args *> $null
+	$LASTEXITCODE -eq 0
+}
+
+try {
+	# WabiLink Setup, the newest on the site, as its SHA256SUMS, signed with the release key,
+	# lists it. Setup then fetches the server and the WabiLink app, and installs nothing the
+	# release key has not signed.
+	# A folder nobody could have made first (a name not to be guessed, refused if it is there),
+	# made with its access set: SYSTEM's and the administrators' alone. In Windows' Temp, where
+	# every account may make folders, one made ahead under a guessable name, -Force took as it
+	# was, and what was checked in it could be swapped before it was run.
+	$work = Join-Path $env:SystemRoot ("Temp\wabilink-ec2-" + [guid]::NewGuid().ToString('N'))
+	if (Test-Path -LiteralPath $work) { throw "$work is there already: not used." }
+	$private = New-Object System.Security.AccessControl.DirectorySecurity
+	$private.SetAccessRuleProtection($true, $false)
+	$admins = New-Object System.Security.Principal.SecurityIdentifier('S-1-5-32-544')
+	$private.SetOwner($admins)
+	foreach ($sid in @((New-Object System.Security.Principal.SecurityIdentifier('S-1-5-18')), $admins)) {
+		$private.AddAccessRule((New-Object System.Security.AccessControl.FileSystemAccessRule($sid, 'FullControl', 'ContainerInherit,ObjectInherit', 'None', 'Allow')))
+	}
+	[System.IO.Directory]::CreateDirectory($work, $private) | Out-Null
+	foreach ($file in 'files/SHA256SUMS', 'files/SHA256SUMS.asc', 'wabilink.asc') {
+		Invoke-WebRequest -UseBasicParsing -Uri "$site/$file" -OutFile (Join-Path $work (Split-Path $file -Leaf))
+	}
+	if (-not (Test-Signed "$work\SHA256SUMS" "$work\SHA256SUMS.asc" "$work\wabilink.asc")) {
+		throw "$site/files/SHA256SUMS is not signed by WabiLink's key ($Signer): nothing it lists is run."
+	}
+	$newest = Get-Content "$work\SHA256SUMS" |
+		ForEach-Object { if ($_ -match '^([0-9a-f]{64}) [ *](wabilink-setup-(\d+\.\d+\.\d+)-windows\.exe)$') { [pscustomobject]@{ Hash = $Matches[1]; File = $Matches[2]; Version = [version]$Matches[3] } } } |
+		Sort-Object Version -Descending | Select-Object -First 1
+	if (-not $newest) { throw "$site/files/SHA256SUMS lists no WabiLink Setup." }
+	# Nothing older than the release this file was published with: an older SHA256SUMS, signed when
+	# it was published, checks out still, and whoever answered for the site could have served it.
+	$floor = '1.1.28'
+	if (-not $floor.StartsWith('@') -and $newest.Version -lt [version]$floor) {
+		throw "$site/files/SHA256SUMS offers WabiLink Setup $($newest.Version), older than this file's release ($floor): not run."
+	}
+	$setup = Join-Path $work 'WabiLink Setup.exe'
+	Invoke-WebRequest -UseBasicParsing -Uri "$site/files/$($newest.File)" -OutFile $setup
+	if ((Get-FileHash -Algorithm SHA256 -Path $setup).Hash -ne $newest.Hash) { throw "$($newest.File) is not the file SHA256SUMS lists: not run." }
+
+	# Installed, or what is installed updated: the service as this PC's system account, started,
+	# the firewall opened on 8009, the WabiLink app in the Start menu, updates at night.
+	# Its native libraries unpacked into this private folder, not into SYSTEM's TEMP - Windows'
+	# own on a Windows without a SYSTEM TEMP of its own, where any account may make folders, and
+	# a library made there ahead would run as SYSTEM.
+	$env:DOTNET_BUNDLE_EXTRACT_BASE_DIR = Join-Path $work 'extract'
+	& $setup --quiet | Out-Host
+	Write-Output "WABILINK: WabiLink Setup's own log: where it says above (Its log: ...)"
+	if ($LASTEXITCODE -ne 0) { throw "WabiLink Setup failed (exit $LASTEXITCODE): its log says why." }
+	Remove-Item -Recurse -Force $work
+
+	# A folder to share: the service's system account can write anywhere. Offline it is the
+	# administrator's share; with WabiOne, one for the console to share.
+	New-Item -ItemType Directory -Force -Path $SharePath | Out-Null
+
+	# WabiOne, where there is a token; asked for by name first, so that a launch with no token -
+	# or a role that may read the password only - is set up offline.
+	$hasToken = $true
+	try { Parameter $TokenParameter $false | Out-Null }
+	catch {
+		$hasToken = $false
+		Write-Output "WABILINK: no API token at ${TokenParameter} ($($_.Exception.Message)): set up offline, with an administrator."
+	}
+
+	if ($hasToken) {
+		$name = $ServerName
+		if (-not $name) { try { $name = Imds 'tags/instance/Name' } catch { $name = Imds 'instance-id' } }
+		if ($name.Length -gt 100) { $name = $name.Substring(0, 100) } # a tag may be longer than a server's name
+		# Registered already, it is left as it is: registering again would drop what the console set.
+		if (Succeeds home) {
+			Write-Output 'WABILINK: already registered with WabiOne; left as it is.'
+		} else {
+			Parameter $TokenParameter $true | Server register --token-stdin --name $name --home $WabiOne
+		}
+		Write-Output "WABILINK: wabilink-service $(& $service version) is running, registered with WabiOne as $name."
+		Write-Output "WABILINK: its people, shares and settings are set in WabiOne's console, Servers; the app's Sign in lists it."
+	} else {
+		# Made where it is missing, so that a second run (EC2Launch runs it again after an
+		# interrupted boot) does not stop on what the first made.
+		if (-not (Succeeds share list $Admin)) { Parameter $PasswordParameter $true | Server user add $Admin --admin --password-stdin }
+		$shares = (& $service share list $Admin --json) | Out-String | ConvertFrom-Json
+		if (-not ($shares | Where-Object { $_.name -eq $ShareName })) { Server share add $Admin $ShareName $SharePath }
+		$address = try { Imds 'public-ipv4' } catch { Imds 'local-ipv4' }
+		Write-Output "WABILINK: wabilink-service $(& $service version) is running."
+		Write-Output "WABILINK: connect to $address, port 8009, as $Admin."
+	}
+
+	Write-Output "WABILINK: the server's fingerprint - the app shows it the first time; it must be the same:"
+	& $service identity | ForEach-Object { "WABILINK:   $_" }
+} catch {
+	Write-Output "WABILINK: stopped: $($_.Exception.Message)"
+	throw
+} finally {
+	Stop-Transcript | Out-Null
+}
+</powershell>

@@ -1,0 +1,59 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Architectures: amd64 arm64 armhf
+Codename: stable
+Components: main
+Date: Sat, 07 Nov 2026 17:55:41 +0000
+Description: WabiLink packages
+Label: WabiLink
+Origin: WabiLink
+Suite: stable
+MD5Sum:
+ 151c62e38def11b46c3aa64399a87457              183 Release
+ 3f5ffeb7d9fba6f9155ece989ed97e88             1191 main/binary-amd64/Packages
+ 4be6208bbf4faa2b4377950648c969de              742 main/binary-amd64/Packages.gz
+ 013a16934fa8389188a1526eb505e6da             1191 main/binary-arm64/Packages
+ 00d99dda8ad3001dc31e4b3b0f6296af              742 main/binary-arm64/Packages.gz
+ 80060e6c1bf8ca426e88501aa0e773e2             1191 main/binary-armhf/Packages
+ 522a06f3ed1bcc36dfbfbd9bbdae4990              745 main/binary-armhf/Packages.gz
+SHA1:
+ 0099d7ff9318bd945ee0073570832ce584c3267f              183 Release
+ 7e4ec49e5d5d84cb761236b0d28e4a5a1cb6e6a7             1191 main/binary-amd64/Packages
+ 2a0ca5494470a70ead99b81a5b1fc14427878264              742 main/binary-amd64/Packages.gz
+ 221a6b464a9b979e71d22833a8c155fc69387e45             1191 main/binary-arm64/Packages
+ ad23256fac0988b1c0f17128c793d8635aedd96e              742 main/binary-arm64/Packages.gz
+ 3ea036972a7b89019bc74e8ccd89e1d38fe39791             1191 main/binary-armhf/Packages
+ 79d27b13cfd196b1ddbbb7e961c377a725598ae9              745 main/binary-armhf/Packages.gz
+SHA256:
+ 511eb174b310fbdfb8fcc69785f7f20f0382238148c2555d1727ac642fced3fc              183 Release
+ b41db395d9a2a1f28447d6931a847b390ada0e380aaded3d317f8405e2bd6f02             1191 main/binary-amd64/Packages
+ 7de165b368a9ce7ee967b1d660af4f2f9f990b222126ce882a028b864bd1a9a9              742 main/binary-amd64/Packages.gz
+ 7f5914390f8a9f0d18aae4395c47e8b47d179782fd5f9d4bb5d954a88028c1c6             1191 main/binary-arm64/Packages
+ 5e84d7f1cecf483bbc743fd885fe5655786ac4b7649383b48455db85a78c886d              742 main/binary-arm64/Packages.gz
+ 4e9aa9fb6d2edca0baea429e90576819b970bab005d548f186d20496b16c4d32             1191 main/binary-armhf/Packages
+ ac37e9d4e6e4f4f37db9591b56b1e59ab0bb92e282b20dbcf4c88f1b4ca0d641              745 main/binary-armhf/Packages.gz
+SHA512:
+ 44f48033c23bb0bab6093a7a33a6c1db0b032b78607c6c264b850b854494b50163341f9b6d83df0e1fa8c22b9614941e80c5615bfed0c1c8bbac107cd99486e2              183 Release
+ f1f286f6d883ca02ffd2ecf50f8a04998cc9053f934db74998aaa752f29e7e64f229d02ad96d437e3126a831fc69717d9ef36517d30f5765c9ea0950fd46764b             1191 main/binary-amd64/Packages
+ 5b3887360b899d5952e3715510cd28d1437569dc860c26291d28575d7997ec319e4cfa5623b68e081c3162f91af1b17dd3d580011f7a5d5f5440730d1fff796c              742 main/binary-amd64/Packages.gz
+ f76ad522c303cb3af1fd1714cea18f78910b6b641f9003520dfabb46df675a6fd745ae4a3a96102ce5300f46eb2b38ae948e80cd4fa26edf5e0112c6c010d41b             1191 main/binary-arm64/Packages
+ fa5ef55d038e104f2ae8901766ef3804f1f5164e4f70b703016a65854ae1d31714448996476d8bd9229c57ee6f1e9c2dab3d214069ff15ba40d7345e1504abce              742 main/binary-arm64/Packages.gz
+ 97d0ecc5ca7148ad0051a57188546dce821341858a9b94df8db83c0f8f552780d133cf9795bfa0f3c10184afac444c71e0d6a2f9821401c30a3674c2b799e09e             1191 main/binary-armhf/Packages
+ 27a08f25ad1624fd5d963253a52d86df6f19dc38f78620793ca64f985b65a12533bb584fdb6e00a2157effd3a833c39d39207b13d365c21974da38a7951f7002              745 main/binary-armhf/Packages.gz
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEELJ9pCaKfwf4vlX9/rLqGBV0+utIFAmrvZh0ACgkQrLqGBV0+
+utIt3Q/+Na2NlPVGeg8WBriiYBjPtzUzYUsVoHkXTFMzo2j5Szl4Q32a3OxJLNxc
+zwuk5Y9M4KPWGMNb6+fIIMQ9oFxEFRLszzI8aoFV0Yzv+au+/JRqd3FNTxqQldgt
+JmTFdWN3Zg+0c8hgwf4A4CGBM8ml+G0lFa234hJNd5ch7C/Oe0T/eSUmjR89bv4d
+ieFZuHTO6+asmKAYc6zNTunfOGGjYx/EMapNnjXV1aPl7BU19AZVZEiRcVY0b0h+
+rMKfKF6r5eVBX9o3qARpis7l7M9H0kCmNy87VsEWfaaYGGM+JXqX3h0T738VOCYL
+EJK70OeGQ/d2cSyEreBHhDaPnRa8f3jxFxx0qW+4+STHVLmPGlLSXinQbw4j0/p5
+xH77fwoNn0KIj2TYzu0nNRwSxYO39JI9Pcl5G3eY2E9m+fI4C3/PTxnT7cLgdJvs
+SPWzVLXqQOOWWI6eSmXkwoYfjz+HISg8X+KD/QNnVUX4DlqCZ7mJ9grf9hoahyVe
+AOq7uIHtXwswCYKzrieuWmaViJXvOelZC8yOexmhwkxnbSuERF7kiikXGHUQVMWc
+COgCeHZ+8IciPO5oLPCRODDkNGWNJ5Evlf22D1n+e5imrx/D0VxEEFlwQKcKtvRi
+JnrN2SSx1+50sMXeVX0oQvfsfMIj3akVrNGsgmUF347CRUOni00=
+=HIp+
+-----END PGP SIGNATURE-----
